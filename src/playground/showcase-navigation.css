@@ -30,7 +30,15 @@
   .showcase-page-panel { min-width: 0; }
   .showcase-page-panel[hidden] { display: none; }
   @media (max-width: 767px) { .showcase-breadcrumb-root, .showcase-breadcrumb-group { display: none; } .showcase-breadcrumb { flex: 1; } .showcase-breadcrumb [data-slot="sidebar-trigger"] { flex: none; } .header-actions { flex: none; } }
+  @media (max-width: 480px) {
+    .header-actions { gap: var(--ds-space-1); }
+    .showcase-token-toggle { width: var(--ds-button-height-sm); padding-inline: 0; }
+    .showcase-token-label { display: none; }
+  }
   @media (pointer: coarse) { .showcase-library-search, .showcase-nav-link, .showcase-nav-heading, .showcase-starter-link { min-height: var(--ds-touch-target-min, 44px); } }
+  @media (max-width: 480px) and (pointer: coarse) {
+    .showcase-token-toggle { min-width: var(--ds-touch-target-min, 44px); }
+  }
   @media (prefers-reduced-motion: reduce) { .showcase-nav-heading svg { transition: none; } }
 }
 @layer components {

@@ -87,7 +87,7 @@ function DataWorkspace({ onInspect }: { onInspect: (project: Project) => void })
       </Table>
       <div className="pattern-pagination"><p className="pattern-caption">Showing {(currentPage - 1) * pageSize + 1}–{Math.min(currentPage * pageSize, filtered.length)} of {filtered.length} projects</p><PaginationControls page={currentPage} pageCount={pageCount} onPageChange={setPage} aria-label="Project pages" /></div>
     </>}
-    <p className="pattern-composition-note">Composes FilterBar, FilterChip, SelectionBar, Table, Pagination, Stat, and EmptyState. Try a search with no matches to see recovery.</p>
+
   </div>
 }
 
@@ -108,7 +108,7 @@ function RecordDetail({ project }: { project: Project }) {
       <StatGroup className="pattern-detail-stats"><Stat label="Monthly requests" value="128,450" change={{ label: "↑ 12.8% from last month", tone: "neutral" }} /><Stat label="Error rate" value="0.08%" change={{ label: "↓ 0.03 points, improved", tone: "beneficial" }} help="Illustrative data" /></StatGroup>
       <form onSubmit={saveRecord} className="pattern-form"><FormSection title="Configuration" description="Edit the local record preview. Changes remain on this page." columns={2}><FormField id="pattern-record-name" label="Project name"><Input id="pattern-record-name" value={name} required onChange={(event) => { setName(event.target.value); setSaved(false) }} /></FormField><FormField id="pattern-record-owner" label="Owner"><Input id="pattern-record-owner" value={owner} required onChange={(event) => { setOwner(event.target.value); setSaved(false) }} /></FormField></FormSection><div className="toolbar"><Button type="submit" variant="outline">Save configuration</Button>{saved && <span role="status" className="pattern-save-status"><Check size={14} aria-hidden="true" />Saved in this preview</span>}</div></form>
     </DetailLayout>
-    <p className="pattern-composition-note">Composes DetailLayout, Steps, Timeline, Stat, StatusMessage, DescriptionList, and FormSection. Request a review and edit the record to explore state changes.</p>
+
   </div>
 }
 
@@ -124,9 +124,9 @@ function AccountAccess() {
     setPasswordError(""); setSubmitted(true); setPassword("")
   }
   return <div className="pattern-scenario">
-    <div className="pattern-example-heading"><div><h2>Account access</h2><p>A focused, standalone composition with room for a form and supporting context.</p></div></div>
+    <div className="pattern-example-heading"><div><h2>Account access</h2></div></div>
     <AuthLayout className="pattern-auth-preview min-h-0" brand={<div className="pattern-auth-brand"><Layers size={20} aria-hidden="true" /><span>Evenform workspace</span></div>}
-      aside={<><ShieldCheck size={28} aria-hidden="true" /><h3>A shared place for focused work.</h3><p>Keep projects, people, and decisions connected in one workspace.</p><ul><li>Clear ownership across projects</li><li>Consistent workflows for your team</li><li>Accessible from every device</li></ul><span className="pattern-caption">Example content. This layout can host product context, a testimonial, or no aside at all.</span></>}
+      aside={<><ShieldCheck size={28} aria-hidden="true" /><h3>A shared place for focused work.</h3><p>Keep projects, people, and decisions connected in one workspace.</p><ul><li>Clear ownership across projects</li><li>Consistent workflows for your team</li><li>Accessible from every device</li></ul></>}
       footer={<p>This is a local interaction preview. Use example credentials; no sign-in request is sent.</p>}
     >
       {submitted ? <div role="status"><EmptyState icon={<CircleCheck />} title="Preview complete" headingLevel={3} description={<>The form was validated for <strong>{email}</strong>.{remember ? " Remember-me preference is selected for this preview." : ""}</>} actions={<Button variant="outline" onClick={() => setSubmitted(false)}>Return to sign in</Button>} /></div> : <>
@@ -138,7 +138,7 @@ function AccountAccess() {
         </form>
       </>}
     </AuthLayout>
-    <p className="pattern-composition-note">Composes AuthLayout, FormSection, FormField, Checkbox, and EmptyState. The layout has no authentication logic or nested main landmark.</p>
+
   </div>
 }
 

@@ -1,0 +1,36 @@
+/* Experimental, independent from layout density. Values stay in CSS. */
+:root {
+  --ds-text-control: var(--ds-text-body);
+  --ds-text-control-small: var(--ds-text-label);
+  --ds-control-icon-size: 16px;
+  --ds-control-icon-size-small: 14px;
+}
+:root[data-control-size="small"] {
+  --ds-control-height: 28px;
+  --ds-control-padding-x: 10px;
+  --ds-text-control: 13px;
+  --ds-text-control-small: 12px;
+  --ds-control-icon-size: 14px;
+  --ds-control-icon-size-small: 12px;
+  --ds-textarea-min-height: 80px;
+}
+:root[data-control-size="medium"] {
+  --ds-control-height: 36px;
+  --ds-control-padding-x: 12px;
+  --ds-text-control: 14px;
+  --ds-text-control-small: 13px;
+  --ds-control-icon-size: 16px;
+  --ds-control-icon-size-small: 14px;
+  --ds-textarea-min-height: 96px;
+}
+:root[data-control-size="large"] {
+  --ds-control-height: 44px;
+  --ds-control-padding-x: 16px;
+  --ds-text-control: 15px;
+  --ds-text-control-small: 14px;
+  --ds-control-icon-size: 18px;
+  --ds-control-icon-size-small: 16px;
+  --ds-textarea-min-height: 112px;
+}
+/* Existing component variants still derive their relative heights from
+   --ds-control-height. Explicit utilities/component overrides remain intentional. */

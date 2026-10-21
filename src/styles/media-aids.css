@@ -25,11 +25,11 @@
   .evenform-rating-option { position: relative; display: inline-flex; align-items: center; justify-content: center; width: var(--ds-rating-size, var(--ds-control-height)); height: var(--ds-rating-size, var(--ds-control-height)); color: var(--muted-foreground); border-radius: var(--ds-radius-base); }
   .evenform-rating-option:has(input) { cursor: pointer; }
   .evenform-rating-option svg { width: 1.25rem; height: 1.25rem; fill: transparent; }
-  .evenform-rating-option[data-filled] { color: var(--foreground); }
+  .evenform-rating-option[data-filled] { color: var(--ds-rating-selected-color, var(--primary)); }
   .evenform-rating-option[data-filled] svg { fill: currentColor; }
   .evenform-rating-symbol, .evenform-rating-fraction { display: inline-flex; align-items: center; justify-content: center; }
   .evenform-rating-symbol { position: relative; }
-  .evenform-rating-fraction { position: absolute; inset: 0; color: var(--foreground); clip-path: inset(0 calc(100% - var(--_rating-fill)) 0 0); }
+  .evenform-rating-fraction { position: absolute; inset: 0; color: var(--ds-rating-selected-color, var(--primary)); clip-path: inset(0 calc(100% - var(--_rating-fill)) 0 0); }
   .evenform-rating-fraction svg { fill: currentColor; }
   .evenform-rating-option input { position: absolute; inset: 0; opacity: 0; margin: 0; width: 100%; height: 100%; cursor: inherit; }
   .evenform-rating-option:has(input:focus-visible) { outline: 2px solid var(--ring); outline-offset: 2px; }

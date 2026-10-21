@@ -151,7 +151,7 @@
     border-radius: var(--radius-xl);
     background: var(--popover);
     color: var(--popover-foreground);
-    box-shadow: var(--ds-shadow-overlay);
+    box-shadow: var(--ds-dialog-shadow, var(--ds-elevation-modal, var(--ds-shadow-overlay)));
     font-size: var(--ds-text-body);
     outline: none;
   }
@@ -232,8 +232,8 @@
     color: var(--foreground);
   }
   .evenform-toggle-item[data-pressed] {
-    background: var(--secondary);
-    color: var(--secondary-foreground);
+    background: var(--accent);
+    color: var(--accent-foreground);
   }
   .evenform-toggle-item[data-disabled] {
     pointer-events: none;
@@ -266,7 +266,7 @@
     padding-inline: var(--ds-input-padding-x, var(--ds-control-padding-x));
     text-align: center;
     font-variant-numeric: tabular-nums;
-    font-size: var(--ds-text-body);
+    font-size: var(--ds-text-control, var(--ds-text-body));
     background: transparent;
     outline: none;
   }
@@ -365,7 +365,7 @@
     outline: none;
     background: transparent;
     color: var(--foreground);
-    font-size: var(--ds-text-body);
+    font-size: var(--ds-text-control, var(--ds-text-body));
   }
   .evenform-combobox-input::placeholder {
     color: var(--muted-foreground);

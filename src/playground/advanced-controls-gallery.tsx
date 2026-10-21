@@ -35,7 +35,7 @@ export function AdvancedControlsGallery() {
   const [usage, setUsage] = useState(64)
   const [otp, setOtp] = useState("")
   return <ToastProvider limit={3} timeout={6000}><div className="preview-stack catalog" data-testid="advanced-controls-gallery">
-    <PageSection title="Commands & application navigation" description="Native command menus and link-based navigation solve different tasks. Both keep their keyboard contracts.">
+    <PageSection title="Commands & application navigation" >
       <div className="catalog-grid">
         <div className="catalog-example">
           <div role="group" aria-label="Menubar example" id="example-menubar" className="showcase-example"><Menubar aria-label="Document commands">
@@ -50,15 +50,15 @@ export function AdvancedControlsGallery() {
           <div className="toolbar"><div role="group" aria-label="Toggle example" id="example-toggle" className="showcase-example"><Toggle pressed={pinned} onPressedChange={setPinned}>Pin document</Toggle></div><Badge variant={guides ? "secondary" : "outline"}>Guides {guides ? "visible" : "hidden"}</Badge></div>
         </div>
         <div className="catalog-example">
-          <div role="group" aria-label="Navigation menu example" id="example-navigation-menu" className="showcase-example"><NavigationMenu aria-label="Library navigation"><NavigationMenuList><NavigationMenuItem value="library"><NavigationMenuTrigger>Explore library<NavigationMenuIcon><ChevronDown size={14} /></NavigationMenuIcon></NavigationMenuTrigger><NavigationMenuContent><NavigationMenuLink href="#components"><strong>Components</strong><span className="text-muted-foreground text-label">Inputs, navigation, overlays and feedback.</span></NavigationMenuLink><NavigationMenuLink href="#patterns"><strong>Application patterns</strong><span className="text-muted-foreground text-label">Task-focused layouts built from shared parts.</span></NavigationMenuLink><NavigationMenuLink href="#charts"><strong>Charts</strong><span className="text-muted-foreground text-label">Interactive data visualization with VChart.</span></NavigationMenuLink></NavigationMenuContent></NavigationMenuItem><NavigationMenuItem><NavigationMenuLink href="#foundations">Foundations</NavigationMenuLink></NavigationMenuItem></NavigationMenuList><NavigationMenuOverlay /></NavigationMenu></div>
-          <p className="field-description">Links retain standard browser behavior. Arrow keys move between menu triggers; Escape closes the panel.</p>
-          <p className="text-body">Built with <span role="group" aria-label="Preview card example" id="example-preview-card" className="showcase-example"><PreviewCard><PreviewCardTrigger href="#patterns" className="font-medium underline underline-offset-4">reusable application patterns</PreviewCardTrigger><PreviewCardContent><strong>Application patterns</strong><p className="text-label text-muted-foreground">Composable layouts for workspaces, detail pages, settings and account flows.</p><a href="#patterns" className="text-label underline underline-offset-4">Browse the patterns</a></PreviewCardContent></PreviewCard></span>.</p>
-          <p className="field-description">Hover or focus the link for a preview. Essential information remains available on its destination.</p>
+          <div role="group" aria-label="Navigation menu example" id="example-navigation-menu" className="showcase-example"><NavigationMenu aria-label="Library navigation"><NavigationMenuList><NavigationMenuItem value="library"><NavigationMenuTrigger>Explore library<NavigationMenuIcon><ChevronDown size={14} /></NavigationMenuIcon></NavigationMenuTrigger><NavigationMenuContent><NavigationMenuLink href="#components"><strong>Components</strong><span className="text-muted-foreground text-label">Inputs, navigation, overlays and feedback.</span></NavigationMenuLink><NavigationMenuLink href="#patterns"><strong>Application patterns</strong><span className="text-muted-foreground text-label">Workspaces, details, settings and account access.</span></NavigationMenuLink><NavigationMenuLink href="#charts"><strong>Charts</strong><span className="text-muted-foreground text-label">Interactive data visualization with VChart.</span></NavigationMenuLink></NavigationMenuContent></NavigationMenuItem><NavigationMenuItem><NavigationMenuLink href="#foundations">Foundations</NavigationMenuLink></NavigationMenuItem></NavigationMenuList><NavigationMenuOverlay /></NavigationMenu></div>
+          <p className="field-description">Arrow keys move between menu triggers; Escape closes the panel.</p>
+          <p className="text-body">Built with <span role="group" aria-label="Preview card example" id="example-preview-card" className="showcase-example"><PreviewCard><PreviewCardTrigger href="#patterns" className="font-medium underline underline-offset-4">reusable application patterns</PreviewCardTrigger><PreviewCardContent><strong>Application patterns</strong><p className="text-label text-muted-foreground">Workspaces, detail pages, settings and account access.</p><a href="#patterns" className="text-label underline underline-offset-4">Browse the patterns</a></PreviewCardContent></PreviewCard></span>.</p>
+          <p className="field-description">Hover or focus the link for a preview.</p>
         </div>
       </div>
       <p className="field-description" role="status">{notice || "Choose a document command to see feedback here."}</p>
     </PageSection>
-    <PageSection title="Editing & contained content" description="A roving-focus toolbar, a measurement and a scrollable region remain independent building blocks.">
+    <PageSection title="Editing & contained content" >
       <div className="catalog-grid">
         <div className="catalog-example">
           <div role="group" aria-label="Editor toolbar example" id="example-editor-toolbar" className="showcase-example"><EditorToolbar aria-label="Text formatting"><EditorToolbarGroup aria-label="Formatting"><Toggle pressed={format.bold} onPressedChange={bold => setFormat({...format, bold})} render={<EditorToolbarButton />} aria-label="Bold"><Bold /></Toggle><Toggle pressed={format.italic} onPressedChange={italic => setFormat({...format, italic})} render={<EditorToolbarButton />} aria-label="Italic"><Italic /></Toggle><Toggle pressed={format.underline} onPressedChange={underline => setFormat({...format, underline})} render={<EditorToolbarButton />} aria-label="Underline"><Underline /></Toggle></EditorToolbarGroup><EditorToolbarSeparator /><EditorToolbarGroup aria-label="Document actions"><EditorToolbarButton onClick={() => setNotice("Link insertion selected in this preview.")} aria-label="Insert link"><Link /></EditorToolbarButton><EditorToolbarButton disabled aria-label="Undo formatting"><Undo /></EditorToolbarButton></EditorToolbarGroup></EditorToolbar></div>
@@ -68,16 +68,16 @@ export function AdvancedControlsGallery() {
         </div>
         <div className="catalog-example">
           <div role="group" aria-label="Scroll area example" id="example-scroll-area" className="showcase-example"><ScrollArea className="h-64 rounded-lg border border-border" viewportProps={{"aria-label": "Recent document activity", tabIndex: 0}}><ol className="divide-y divide-border px-card">{Array.from({length: 14}, (_, index) => <li key={index} className="flex items-start justify-between gap-toolbar py-3 text-label"><span><strong className="block font-medium">{["Design review updated", "Comment resolved", "Version published", "Reviewer added"][index % 4]}</strong><span className="text-muted-foreground">{["Alex Kim", "Morgan Lee", "Jamie Davis"][index % 3]}</span></span><span className="text-muted-foreground shrink-0">{index + 1}h ago</span></li>)}</ol></ScrollArea></div>
-          <p className="field-description">A focusable local scroll region supports keyboard scrolling without moving the entire page.</p>
+
         </div>
       </div>
     </PageSection>
-    <PageSection title="Verification & notifications" description="One-time code entry and transient feedback use Base UI’s full state, input and accessibility behavior.">
+    <PageSection title="Verification & notifications" >
       <div className="catalog-grid"><div className="catalog-example">
         <label htmlFor="advanced-verification-code" className="catalog-label">Verification code</label>
         <div role="group" aria-label="OTP field example" id="example-otp-field" className="showcase-example"><OTPField id="advanced-verification-code" length={6} value={otp} onValueChange={setOtp} aria-describedby="advanced-code-description" /></div>
-        <p id="advanced-code-description" className="field-description">Enter or paste any six digits. This demonstrates input behavior; no authentication request is sent.</p>
-        <p className="field-description" role="status">{otp.length === 6 ? "Code complete. Ready for your application to verify." : `${otp.length} of 6 digits entered.`}</p>
+        <p id="advanced-code-description" className="field-description">Enter or paste any six digits. No authentication request is sent.</p>
+        <p className="field-description" role="status">{otp.length === 6 ? "Code complete. No verification request was sent." : `${otp.length} of 6 digits entered.`}</p>
         <div><Button variant="outline" size="sm" disabled={!otp} onClick={() => setOtp("")}>Clear code</Button></div>
       </div><div role="group" aria-label="Toast example" id="example-toast" className="showcase-example"><NotificationExamples /></div></div>
     </PageSection>

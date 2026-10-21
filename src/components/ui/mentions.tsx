@@ -20,7 +20,8 @@ const partClasses: MentionsInputClassNames = {
   suggestionsList:
     "evenform-mentions-list max-h-[var(--_mentions-list-height)] divide-y-0",
   suggestionsStatus: "evenform-mentions-status",
-  suggestionItem: "evenform-mentions-option",
+  suggestionItem:
+    "evenform-mentions-option text-[var(--_mentions-option-color)] hover:bg-[var(--_mentions-option-background)] data-[focused=true]:bg-[var(--_mentions-option-background)] data-[focused=true]:text-[var(--_mentions-option-color)]",
   suggestionItemFocused: "evenform-mentions-option-focused",
   suggestionDisplay: "evenform-mentions-display",
   suggestionHighlight: "evenform-mentions-match",
@@ -72,7 +73,10 @@ function Mention<
   return (
     <MentionPrimitive
       {...props}
-      className={cn("evenform-mention rounded-none bg-[var(--_mention-background)]", className)}
+      className={cn(
+        "evenform-mention rounded-none bg-[var(--_mention-background)]",
+        className
+      )}
     />
   )
 }

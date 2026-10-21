@@ -54,7 +54,8 @@ export function EventCalendar({
         monthText="Month"
         weekTextLong="Week"
         dayText="Day"
-        eventClass="evenform-event-calendar-event"
+        eventClass={info => cn("evenform-event-calendar-event", info.isSelected && "is-selected", info.isDragging && "is-dragging")}
+        popoverClass="evenform-event-calendar-popover"
         headerToolbarClass="evenform-event-calendar-toolbar"
         toolbarTitleClass="evenform-event-calendar-title"
         buttonClass={(info) =>

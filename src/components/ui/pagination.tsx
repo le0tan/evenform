@@ -28,7 +28,7 @@ export function PaginationControls({ page, pageCount, onPageChange, disabled = f
   return <Pagination {...props}><PaginationContent>
     <li><Button variant="outline" size="icon" aria-label="Previous page" disabled={disabled || current === 1} onClick={() => onPageChange(current - 1)}><ChevronLeft /></Button></li>
     {pages.flatMap((n, index) => [index > 0 && n - pages[index - 1] > 1 ? <PaginationEllipsis key={`gap-${n}`} /> : null,
-      <li key={n}><Button variant={n === current ? "secondary" : "ghost"} size="icon" aria-label={`Page ${n}`} aria-current={n === current ? "page" : undefined} disabled={disabled} onClick={() => onPageChange(n)}>{n}</Button></li>])}
+      <li key={n}><Button variant="ghost" className={n === current ? "bg-accent text-accent-foreground hover:bg-accent hover:text-accent-foreground" : undefined} size="icon" aria-label={`Page ${n}`} aria-current={n === current ? "page" : undefined} disabled={disabled} onClick={() => onPageChange(n)}>{n}</Button></li>])}
     <li><Button variant="outline" size="icon" aria-label="Next page" disabled={disabled || current === count} onClick={() => onPageChange(current + 1)}><ChevronRight /></Button></li>
   </PaginationContent></Pagination>
 }

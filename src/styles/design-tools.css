@@ -111,7 +111,9 @@
     flex-direction: column;
     gap: var(--ds-form-field-gap);
   }
-  [data-slot="event-calendar"] {
+  [data-slot="event-calendar"],
+  .evenform-event-calendar-popover,
+  .evenform-event-calendar-event.is-dragging {
     --fc-classic-button: var(--secondary);
     --fc-classic-button-border: var(--border);
     --fc-classic-button-strong: var(--primary);
@@ -139,10 +141,25 @@
     --fc-classic-muted-foreground: var(--muted-foreground);
     --fc-classic-border: var(--border);
     --fc-classic-strong-border: var(--input);
+  }
+  [data-slot="event-calendar"] {
     min-width: 0;
     max-width: 100%;
     overflow-x: auto;
     scrollbar-color: var(--border) var(--background);
+  }
+  .evenform-event-calendar-event.is-selected {
+    box-shadow: var(--ds-calendar-event-shadow, var(--ds-elevation-control));
+  }
+  .evenform-event-calendar-event.is-dragging {
+    box-shadow: var(--ds-calendar-drag-shadow, var(--ds-elevation-popup));
+  }
+  .evenform-event-calendar-popover {
+    background: var(--popover);
+    color: var(--popover-foreground);
+    border-color: var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--ds-calendar-popover-shadow, var(--ds-elevation-popup));
   }
   [data-slot="event-calendar"] > div {
     min-width: 32rem;

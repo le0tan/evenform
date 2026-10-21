@@ -13,7 +13,7 @@ const records = Array.from({ length: 10_000 }, (_, index) => ({
   title: `Review record ${index + 1}`,
   summary:
     index % 3 === 0
-      ? "Check keyboard navigation, long content, and the density of this record. Rows measure their content rather than assuming the same height for every entry."
+      ? "Review the handover notes, confirm the project owner, and record any questions before the next checkpoint."
       : index % 3 === 1
         ? "Confirm the owner and next review date."
         : "Review the current implementation and record any follow-up questions for the team before approving this item.",
@@ -42,7 +42,7 @@ export function ListInputAidsGallery() {
     <div className="evenform-list-input-gallery">
       <PageSection id="example-virtual-list"
         title="Virtual list"
-        description="10,000 records with measured heights. Jump to a record or scroll the region; a focused row stays mounted while it moves outside the visible window."
+        description="10,000 records. Jump to a record or scroll the list."
       >
         <div className="evenform-list-input-stack">
           <SearchField
@@ -118,18 +118,13 @@ export function ListInputAidsGallery() {
                 <p>{record.summary}</p>
                 {expanded.includes(record.id) && (
                   <p>
-                    This additional content changes the measured height. Review
-                    focus, resizing, and scrolling without losing the action you
-                    are currently using.
+                    The next review is scheduled for Thursday. Confirm the handover owner and add any outstanding questions to the project notes.
                   </p>
                 )}
               </article>
             )}
           />
-          <p className="evenform-list-input-note">
-            This is a semantic list. It keeps ordinary links and buttons inside
-            rows; applications own selection, data loading, and pagination.
-          </p>
+
           <VirtualList
             items={smallRecords}
             getItemKey={(item) => item}
@@ -203,7 +198,7 @@ export function ListInputAidsGallery() {
           <FormField
             id="list-input-keywords"
             label="Repeated keywords"
-            description="This field deliberately accepts duplicates and commits a draft when focus leaves the control."
+            description="Duplicate labels are allowed. Moving focus out of the field adds the draft label."
           >
             <InputTag
               id="list-input-keywords"

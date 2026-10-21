@@ -16,7 +16,7 @@
   .evenform-calendar-cell[data-disabled], .evenform-calendar-cell[data-unavailable] { color: var(--muted-foreground); opacity: .45; cursor: default; }
   .evenform-calendar-cell[data-unavailable] { text-decoration: line-through; }
   .evenform-calendar-cell[data-selected] { background: var(--primary); color: var(--primary-foreground); }
-  .evenform-range-calendar .evenform-calendar-cell[data-selected]:not([data-selection-start]):not([data-selection-end]) { border-radius: 0; background: var(--secondary); color: var(--secondary-foreground); }
+  .evenform-range-calendar .evenform-calendar-cell[data-selected]:not([data-selection-start]):not([data-selection-end]) { border-radius: 0; background: var(--accent); color: var(--accent-foreground); }
   .evenform-calendar-cell[data-focus-visible], .evenform-calendar-nav[data-focus-visible], .evenform-date-trigger[data-focus-visible] { outline: 2px solid var(--ring); outline-offset: 2px; }
   .evenform-date-field { display: flex; flex-direction: column; min-width: 0; gap: var(--ds-form-field-gap); }
   .evenform-field-label { color: var(--foreground); font-size: var(--ds-text-label); font-weight: var(--ds-weight-medium); }
@@ -27,7 +27,7 @@
   .evenform-date-control:has([data-focus-visible]) { outline: 2px solid var(--ring); outline-offset: 2px; }
   .evenform-date-field[data-invalid] > .evenform-date-control { border-color: var(--destructive); }
   .evenform-date-field[data-disabled] { opacity: .5; }
-  .evenform-date-input { display: flex; align-items: center; flex: 1; min-width: 0; padding-block: var(--ds-space-1); padding-inline-end: var(--ds-control-padding-x); white-space: nowrap; font-size: var(--ds-text-body); font-variant-numeric: tabular-nums; }
+  .evenform-date-input { display: flex; align-items: center; flex: 1; min-width: 0; padding-block: var(--ds-space-1); padding-inline-end: var(--ds-control-padding-x); white-space: nowrap; font-size: var(--ds-text-control, var(--ds-text-body)); font-variant-numeric: tabular-nums; }
   .evenform-date-segment { padding: 1px; border-radius: 2px; outline: none; }
   .evenform-date-segment[data-placeholder] { color: var(--muted-foreground); }
   .evenform-date-segment[data-focused] { background: var(--primary); color: var(--primary-foreground); }

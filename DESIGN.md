@@ -19,6 +19,12 @@
 - 普通内容优先通过排版和表面关系建立层级，需要轮廓时使用轻边界或细 ring。阴影适合表达浮起、遮挡或可拖动等关系，也可用于确有层次需求的面板；避免边框与阴影重复强调同一边界。渐变、大圆角和强调色应服务于明确的含义、品牌约束或交互，不作为通用装饰惯例，并检查其对层级和一致性的影响。
 - 颜色沿用 shadcn 的 background / foreground / primary / muted / border 等变量。当前额外实现 success / info / warning 状态语义，含 Light / Dark 配对；错误复用 destructive。Badge、StatusMessage、Steps 和指标变化按各自用途使用相同含义。分类图表色不承担业务状态语义。若业务还需新状态，先检查已有语义是否适用，避免仅为换色重复命名。
 
+主题色用于主操作、链接、控件的选中/激活态、进度与评分填充，以及焦点提示；选中态优先使用 accent / accent-foreground 配对，实心操作使用 primary / primary-foreground。普通内容、控件未选中态、Card、页面背景与一般边框保持中性；成功/警告/错误、图表分类、语法色及用户选择的内容颜色保持独立。选中表面上的辅助文字采用配对前景色，避免直接继承中性 muted 文字而降低对比度。组件专属覆盖仍可有意改变默认值，例如评分的 `--ds-rating-selected-color`。
+
+全局 Elevation 使用 control / surface / popup / modal 四级语义。Flat 清除可见立体阴影，Soft 保留轻微控件凸起和现有浮层深度，Layered 加强浮动布局与浮层层级；Tabs 等控件保持轻量。边界、状态隔离和焦点圈不属于立体装饰，不能随 Flat 一起删除。组件可通过专属 shadow token 或 utility 有意覆盖；普通 Card 不因选择 Layered 自动获得阴影。
+
+Demo 的可见文案服务于操作和内容。设计理由、组件归属与实现契约放在文档或源码注释中，不写成页内解释；保留必要的使用帮助、状态反馈和本地预览边界。
+
 ## 分割线的使用判断
 
 分割线是否需要，应根据信息层级、内容密度和阅读任务判断。增加、保留或移除都需要有具体理由；不要习惯性加线，也不要机械地删线。间距、对齐、字重、背景与分割线都是可用的组织手段，选择能让关系更清楚、视觉负担更小的组合。
@@ -84,6 +90,8 @@ Component 层在组件所在元素解析变量，因此也支持局部 override�
 在 HTML 根节点设置 `data-density="compact"` 或 `comfortable`。Dark theme 使用根节点的 `.dark`；ThemeProvider 负责持久化与系统主题监听。主题和密度是两个独立维度。
 
 Playground 的修改施加在根节点，因此 Portal 中的 Dialog / Sheet / Select 也会继承。面板默认值由浏览器从 CSS 解析；会用测量元素解析 `calc()` 和变量别名，避免把 `calc(...)` 当成数字。TS 中只有 label、分类、编辑范围、step 和单位等开发工具 metadata。保留 7 个主要滑杆，Advanced Tokens 按 Layout / Controls / Forms / Data / Overlays / Typography 折叠分组。切换密度会清除当前覆盖值，保证 preset 不被旧值遮蔽。选择 **Copy token overrides** 导出修改过的 CSS 值，不复制一份完整 Token 表。覆盖值和主题存储在浏览器 localStorage，不写回源码。Advanced 可以固定原本派生的语义（例如 input-height），因此主要滑杆改变后该显式值可能保持不变；Reset 或切换密度会清除这些覆盖，恢复派生关系。导出保留 px 与无单位值的区别，行高不会带 px；采用时将 HTML 的 density 设为导出注释指定的值，并最后导入覆盖文件。
+
+滑杆恢复到当前 CSS 回退值时会自动移除对应覆盖，同时清除标记、持久化条目和导出值；回退值按当前 density、control size 及其他覆盖计算，不在 TypeScript 维护默认数字。加载已保存的偏好时也会清除这类冗余覆盖。
 
 窄屏上页面横向 padding 上限为 16px，避免过大的桌面参数挤压内容。移动端 Sidebar 使用单独宽度上限；桌面 `sidebar-width` 控件仅影响桌面导航。Inspector 的固定字号和内边距属于开发工具本身，避免调整产品参数时工具失去可用性。
 

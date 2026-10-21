@@ -44,7 +44,7 @@ export function SettingsLayout({ navigation, children }: { navigation: ReactNode
   return <div className="settings-layout"><nav aria-label="Settings sections" className="settings-navigation">{navigation}</nav><div className="settings-content">{children}</div></div>
 }
 
-export function SettingsGroup({ title, description, children }: { title: string; description: string; children: ReactNode }) {
+export function SettingsGroup({ title, description, children }: { title: string; description?: string; children: ReactNode }) {
   return <PageSection title={title} description={description} className="settings-group">{children}</PageSection>
 }
 

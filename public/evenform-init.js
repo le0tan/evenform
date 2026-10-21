@@ -13,6 +13,12 @@
   root.style.colorScheme = resolved
   try {
     const config = JSON.parse(read(script.dataset.densityKey || "evenform-tokens-v1"))
+    if (["auto", "small", "medium", "large"].includes(config?.controlSize)) root.dataset.controlSize = config.controlSize
+    if (["neutral", "indigo", "teal", "rose", "custom"].includes(config?.palette)) root.dataset.palette = config.palette
+    for (const [name, color] of Object.entries(config?.customTokens || {})) {
+      if (/^--ds-custom-(50|100|200|300|400|500|600|700|800|900|950|(light|dark)-(primary|foreground|hover|accent|accent-foreground|ring))$/.test(name) && typeof color === "string" && /^#[\da-f]{6}$/i.test(color)) root.style.setProperty(name, color)
+    }
+    if (["flat", "soft", "layered"].includes(config?.elevation)) root.dataset.elevation = config.elevation
     if (config?.density === "comfortable" || config?.density === "compact") root.dataset.density = config.density
     for (const [name, value] of Object.entries(config?.overrides || {})) {
       // Numeric values are the original v1 format; strings also support unitless tokens.

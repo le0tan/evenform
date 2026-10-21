@@ -54,7 +54,7 @@ export function ComponentCatalog() {
               <ComboboxContent><ComboboxEmpty>No people found.</ComboboxEmpty><ComboboxList>{(item: string) => <ComboboxItem key={item} value={item}>{item}</ComboboxItem>}</ComboboxList></ComboboxContent>
             </Combobox>
           </FormField>
-          <div role="group" aria-label="Input group example" id="example-input-group" className="showcase-example"><FormField id="catalog-search" label="Input group" description="Icons and supporting text stay inside one focus boundary.">
+          <div role="group" aria-label="Input group example" id="example-input-group" className="showcase-example"><FormField id="catalog-search" label="Input group" >
             <InputGroup><InputGroupAddon><Search size={16} aria-hidden="true" /></InputGroupAddon><InputGroupInput id="catalog-search" placeholder="Search projects…" aria-describedby="catalog-search-description" /><InputGroupAddon align="end"><Kbd>⌘ K</Kbd></InputGroupAddon></InputGroup>
           </FormField></div>
         </div>
@@ -69,7 +69,7 @@ export function ComponentCatalog() {
         </div>
       </div>
     </PageSection>
-    <PageSection title="Actions & overlays" description="Menus for commands. Popovers for a small task. Confirmation when an action needs care.">
+    <PageSection title="Actions & overlays" >
       <div className="catalog-grid">
         <div className="catalog-example">
           <div className="toolbar">
@@ -88,16 +88,16 @@ export function ComponentCatalog() {
       </div>
       {notice && <StatusMessage tone="success" role="status" icon={<Check size={17} />} actions={<Button variant="ghost" size="sm" onClick={() => setNotice("")}>Dismiss message</Button>}>{notice}</StatusMessage>}
     </PageSection>
-    <PageSection title="Navigation & disclosure" description="Native document navigation, controlled pagination and progressive detail.">
+    <PageSection title="Navigation & disclosure" >
       <div className="catalog-grid">
         <div className="catalog-example">
           <div role="group" aria-label="Breadcrumb example" id="example-breadcrumb" className="showcase-example"><BreadcrumbPath items={[{label: "Playground", href: "#workspace"}, {label: "Components"}]} /></div>
           <div role="group" aria-label="Pagination example" id="example-pagination" className="catalog-pagination"><PaginationControls page={page} pageCount={8} onPageChange={setPage} /><p className="field-description" role="status">Page {page} of 8</p></div>
-          <div role="group" aria-label="Collapsible example" id="example-collapsible" className="showcase-example"><Collapsible><CollapsibleTrigger render={<Button variant="ghost" />}>Show implementation note<ChevronDown /></CollapsibleTrigger><CollapsibleContent><p className="field-description">Selection, filtering, network requests and permissions belong to your application. These components own presentation and their native interaction contract.</p></CollapsibleContent></Collapsible></div>
+          <div role="group" aria-label="Collapsible example" id="example-collapsible" className="showcase-example"><Collapsible><CollapsibleTrigger render={<Button variant="ghost" />}>Show project note<ChevronDown /></CollapsibleTrigger><CollapsibleContent><p className="field-description">This project is ready for a final review. Confirm the owner and due date before publishing.</p></CollapsibleContent></Collapsible></div>
         </div>
         <div role="group" aria-label="Accordion example" id="example-accordion" className="showcase-example"><Accordion defaultValue={["tokens"]} className="catalog-example">
-          <AccordionItem value="tokens"><AccordionTrigger>How does configuration work?</AccordionTrigger><AccordionContent>Shared spacing, control sizing and status colors come from CSS semantic tokens. Theme and density apply to portaled content too.</AccordionContent></AccordionItem>
-          <AccordionItem value="composition"><AccordionTrigger>Can I compose my own control?</AccordionTrigger><AccordionContent>Use the exported parts with native Base UI props. App state, label text, validation and data remain yours.</AccordionContent></AccordionItem>
+          <AccordionItem value="tokens"><AccordionTrigger>Who can update this project?</AccordionTrigger><AccordionContent>Project owners and editors can update the brief, schedule and review checklist.</AccordionContent></AccordionItem>
+          <AccordionItem value="composition"><AccordionTrigger>Can I invite another reviewer?</AccordionTrigger><AccordionContent>Open Sharing & access to add a teammate and choose their access level.</AccordionContent></AccordionItem>
           <AccordionItem value="unavailable" disabled><AccordionTrigger>Enterprise policy (unavailable)</AccordionTrigger><AccordionContent>This policy is unavailable.</AccordionContent></AccordionItem>
         </Accordion></div>
       </div>

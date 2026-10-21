@@ -34,9 +34,7 @@ function LoadingExample() {
           {busy && <Spinner />}
           {busy ? "Refreshing preview…" : "Refresh local preview"}
         </Button>
-        <Text as="span" size="caption" tone="muted">
-          A local timer demonstrates the pending state.
-        </Text>
+
       </div>
       <BusyRegion
         busy={busy}
@@ -50,13 +48,12 @@ function LoadingExample() {
         }
       >
         <div className="evenform-utility-summary">
-          <Title as="h3">Design reference</Title>
+          <Title as="h3">Handover summary</Title>
           <Text>
-            The reference includes component APIs, token ownership, and keyboard
-            behavior. Review these together before adopting a new control.
+            Sam is coordinating the handover. Account access is confirmed; the support rota and first reporting date still need review.
           </Text>
           <Text as="span" size="caption" tone="muted">
-            Last saved reference · locally displayed sample
+            Local sample · Updated 21 October
           </Text>
         </div>
       </BusyRegion>
@@ -73,19 +70,17 @@ function ReadingExample() {
   return (
     <div className="evenform-utility-stack">
       <Text tone="muted">
-        Scroll inside this reading region to reveal “Back to document title”.
-        The toolbar sticks inside its container; returning also focuses the
-        document heading.
+        Scroll inside this document to reveal “Back to document title”.
       </Text>
       <div
         className="evenform-utility-scroll"
         ref={container}
         tabIndex={0}
         role="region"
-        aria-label="Scrollable design review guide"
+        aria-label="Scrollable handover guide"
       >
         <Title ref={heading} as="h3" id="utility-document-title" tabIndex={-1}>
-          Design review guide
+          Workspace handover guide
         </Title>
         <Affix className="evenform-utility-reading-toolbar">
           <Text as="span" size="label" weight="medium">
@@ -97,61 +92,40 @@ function ReadingExample() {
         </Affix>
         <Prose measure="full">
           <p>
-            Review starts with a clear account of the task. Describe who is
-            doing the work, the information they need, and the decision the
-            interface helps them make. A smaller set of relevant controls often
-            serves the task better than a complete inventory of features.
+            The workspace handover brings together the current release schedule, team contacts and outstanding questions. Review the summary before the checkpoint so each open item has a clear owner and a planned response.
           </p>
-          <h4>Preserve the content hierarchy</h4>
+          <h4>Confirm the handover owner</h4>
           <p>
-            Use headings to describe the document structure. Change visual size
-            independently when a heading appears in a narrow panel or a dense
-            workspace. Ordinary supporting copy should stay readable without
-            competing with the document title.
+            Sam Rivera will coordinate the handover and keep the checklist up to date. Jordan Lee will answer questions about account access. Add other contacts to the project directory before the team begins its next review.
           </p>
           <p>
-            Use <InlineCode>Title</InlineCode> for a native heading and{" "}
-            <InlineCode>Text</InlineCode> for body or supporting copy. The{" "}
-            <InlineCode>as</InlineCode> prop selects the appropriate element,
-            while CSS tokens keep the appearance consistent across themes and
-            densities.
+            Use <InlineCode>handover-october</InlineCode> as the reference when
+            adding questions to the review queue. Include the affected project,
+            the person who can answer, and the date a response is needed.
           </p>
-          <h4>Check interaction in context</h4>
+          <h4>Check account access</h4>
           <p>
-            Move through the interface with a keyboard. Confirm that controls
-            receive visible focus, selected values are announced, and disabled
-            actions remain understandable. Floating content should return focus
-            to the place where the interaction began.
+            Confirm that each team member can open the workspace and find the projects assigned to them. Ask the workspace owner to resolve missing access before the handover meeting. Record unresolved requests in the review queue.
           </p>
           <ul>
-            <li>Review the real content at narrow and wide widths.</li>
-            <li>Use the same semantic tokens for the same purpose.</li>
+            <li>Confirm the project owner and backup contact.</li>
+            <li>Check the support rota for the first week.</li>
             <li>
-              Check loading, empty, and recovery paths that the task actually
-              needs.
+              Agree on the first reporting date and expected recipients.
             </li>
           </ul>
-          <h4>Keep ownership clear</h4>
+          <h4>Record open questions</h4>
           <p>
-            The design system owns presentation, interaction primitives, and
-            configurable parameters. The application owns data, requests,
-            permissions, and persistence. A demonstration should make the
-            boundary visible when a user could mistake a local preview for a
-            completed service operation.
+            Keep one review queue for questions that remain open. Each entry should name the project, describe the question and identify who will respond. Close an entry only after the answer is recorded where the next reviewer can find it.
           </p>
-          <Blockquote attribution="Evenform design principles">
+          <Blockquote attribution="Illustrative handover note">
             <p>
-              Start with the task. Reuse a pattern when its structure helps the
-              reader, and compose a different structure when the content calls
-              for it.
+              Every open question needs an owner and a date for the next update.
             </p>
           </Blockquote>
-          <h4>Review before publishing</h4>
+          <h4>Confirm the next checkpoint</h4>
           <p>
-            Confirm that the implementation and its documentation describe the
-            same behavior. A successful build establishes source compatibility.
-            A browser review establishes the visual and interaction behavior in
-            the scenarios actually checked.
+            The next checkpoint is Thursday at 10:00 Singapore time. Review the outstanding items, confirm the release schedule and send any remaining questions to the handover owner before the meeting.
           </p>
           <p>
             Return to the document title when you are ready to begin another
@@ -176,44 +150,42 @@ function UtilityAidsGallery() {
     <div className="evenform-utility-gallery">
       <PageSection id="example-spinner"
         title="Loading and busy content"
-        description="A spinner is decorative by default. Loading text stays static unless the application opts into a live role; busy content remains in flow."
+
       >
         <LoadingExample />
       </PageSection>
       <PageSection id="example-typography"
-        title="Typography with meaning"
-        description="Choose a heading level for document structure, a visual size for hierarchy, and a text tone for the message."
+        title="Typography"
+
       >
         <Prose as="article" aria-label="Typography example">
           <Title as="h3" size="page">
-            Clear decisions begin with readable context
+            October handover
           </Title>
           <Text>
-            A reference should answer the reader’s next question. Give the key
-            decision a clear heading, keep supporting copy close, and use{" "}
-            <InlineCode>--ds-text-body</InlineCode> when the task needs the
-            shared body scale.
+            The October release is ready for review. Confirm account access and
+            the support rota, then add any remaining questions to{" "}
+            <InlineCode>handover-october</InlineCode> before Thursday’s checkpoint.
           </Text>
           <Text tone="muted" size="caption">
-            Supporting copy uses the caption scale and muted foreground.
+            Illustrative project note · Updated 21 October 2026
           </Text>
           <Blockquote
             attribution={
               <>
-                Design review note · <cite>Interface writing guide</cite>
+                Team note · <cite>October handover</cite>
               </>
             }
           >
             <Text>
-              State the intended action directly. Describe what the reader can
-              do next.
+              Please confirm the support rota before the next review.
             </Text>
           </Blockquote>
           <ul>
-            <li>Title keeps native heading semantics.</li>
-            <li>Text can render as a paragraph, span, div, or label.</li>
+            <li>Account access confirmed</li>
+            <li>Support rota awaiting confirmation</li>
             <li>
-              Prose gives mixed document content a readable measure and rhythm.
+              First reporting date: 28 October
             </li>
           </ul>
           <Text as="span" tone="success" size="label">
@@ -223,7 +195,7 @@ function UtilityAidsGallery() {
       </PageSection>
       <PageSection id="example-affix"
         title="Sticky reading tools"
-        description="CSS sticky preserves normal document flow. The return action follows the selected scroll container, respects reduced motion, and moves focus to a real heading."
+
       >
         <ReadingExample />
       </PageSection>

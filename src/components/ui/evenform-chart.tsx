@@ -19,7 +19,7 @@ function readTheme(element: HTMLElement, mode: ChartPalette): ITheme {
   canvas.width = canvas.height = 1
   const ctx = canvas.getContext("2d", { willReadFrequently: true })!
   const color = (token: string) => {
-    probe.style.color = `var(${token})`
+    probe.style.color = token.startsWith("--") ? `var(${token})` : token
     ctx.clearRect(0, 0, 1, 1)
     ctx.fillStyle = getComputedStyle(probe).color
     ctx.fillRect(0, 0, 1, 1)
@@ -34,6 +34,15 @@ function readTheme(element: HTMLElement, mode: ChartPalette): ITheme {
     ? ["total", "increase", "decrease"].map((name) => color(`--ds-chart-change-${name}`))
     : Array.from({ length: mode === "sequential" ? 5 : 8 }, (_, index) => color(`--ds-chart-${mode === "sequential" ? "sequential" : "series"}-${index + 1}`))
   const onFill = color("--ds-chart-label-on-fill")
+  probe.style.boxShadow = "var(--ds-chart-tooltip-shadow, var(--ds-shadow-overlay))"
+  const shadowCss = getComputedStyle(probe).boxShadow
+  // VChart accepts one shadow. Use the outermost (last) CSS layer instead of
+  // maintaining a separate set of numeric design defaults in JavaScript.
+  const outerShadow = shadowCss.split(/,(?![^(]*\))/).at(-1) ?? "none"
+  const offsets = [...outerShadow.matchAll(/(-?[\d.]+)px/g)].map(match => Number(match[1]))
+  const shadow = offsets.length >= 3 && !outerShadow.includes("inset")
+    ? { x: offsets[0], y: offsets[1], blur: offsets[2], spread: offsets[3] ?? 0, color: color(outerShadow.replace(/-?[\d.]+px/g, "").trim()) }
+    : { x: 0, y: 0, blur: 0, spread: 0, color: "transparent" }
   probe.remove()
   return {
     name: "evenform",
@@ -61,7 +70,7 @@ function readTheme(element: HTMLElement, mode: ChartPalette): ITheme {
       },
       legend: { item: { label: { style: { fill: muted, fontSize, fontFamily } } } },
       tooltip: {
-        panel: { backgroundColor: surface, border: { color: border, width: 1, radius }, shadow: { x: 0, y: 0, blur: 0, spread: 0, color: "transparent" } },
+        panel: { backgroundColor: surface, border: { color: border, width: 1, radius }, shadow },
         titleLabel: { fill: foreground, fontSize, fontFamily },
         keyLabel: { fill: muted, fontSize, fontFamily },
         valueLabel: { fill: foreground, fontSize, fontFamily },
@@ -109,7 +118,7 @@ export function EvenformChart({ spec, label, description, className, palette = "
     const resize = new ResizeObserver(sync)
     resize.observe(host)
     const preferences = new MutationObserver(sync)
-    preferences.observe(root, { attributes: true, attributeFilter: ["class", "style", "data-density"] })
+    preferences.observe(root, { attributes: true, attributeFilter: ["class", "style", "data-density", "data-palette", "data-elevation", "data-control-size"] })
     // Observe ancestor attributes without watching VChart's own DOM mutations.
     for (let ancestor: HTMLElement | null = host; ancestor && ancestor !== root; ancestor = ancestor.parentElement) {
       preferences.observe(ancestor, { attributes: true, attributeFilter: ["class", "style"] })

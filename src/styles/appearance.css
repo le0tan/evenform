@@ -1,0 +1,116 @@
+/* Exploration: opt-in palette and depth presets. CSS is the only value source.
+   Include this file after the base theme when adopting these data attributes. */
+:root {
+  --ds-palette-indigo: #4f46e5;
+  --ds-palette-teal: #0f766e;
+  --ds-palette-rose: #be123c;
+  --ds-elevation-popup: 0 8px 28px -8px oklch(0 0 0 / 18%);
+  --ds-elevation-modal: var(--ds-elevation-popup);
+}
+:root[data-palette="indigo"] {
+  --ds-brand-solid: var(--ds-palette-indigo);
+  --ds-brand-on-solid: #ffffff;
+  --ds-brand-soft: #a5b4fc;
+}
+:root[data-palette="teal"] {
+  --ds-brand-solid: var(--ds-palette-teal);
+  --ds-brand-on-solid: #ffffff;
+  --ds-brand-soft: #5eead4;
+}
+:root[data-palette="rose"] {
+  --ds-brand-solid: var(--ds-palette-rose);
+  --ds-brand-on-solid: #ffffff;
+  --ds-brand-soft: #fda4af;
+}
+:root:is(
+  [data-palette="indigo"],
+  [data-palette="teal"],
+  [data-palette="rose"]
+) {
+  --primary: var(--ds-brand-solid);
+  --primary-foreground: var(--ds-brand-on-solid);
+  --ds-primary-hover: color-mix(in srgb, var(--primary) 90%, var(--foreground));
+  --ring: var(--primary);
+  --accent: color-mix(in srgb, var(--primary) 10%, var(--background));
+  --accent-foreground: var(--primary);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--accent);
+  --sidebar-accent-foreground: var(--accent-foreground);
+  --sidebar-ring: var(--ring);
+}
+:root.dark:is(
+    [data-palette="indigo"],
+    [data-palette="teal"],
+    [data-palette="rose"]
+  ) {
+  --primary: var(--ds-brand-soft);
+  --primary-foreground: #18181b;
+  --accent: color-mix(in srgb, var(--primary) 12%, var(--background));
+}
+:root[data-elevation="flat"] {
+  /* A transparent shadow composes with Tailwind's border/focus rings. */
+  --ds-elevation-control: 0 0 0 0 transparent;
+  --ds-elevation-surface: 0 0 0 0 transparent;
+  --ds-elevation-popup: none;
+  --ds-elevation-modal: none;
+}
+:root[data-elevation="layered"] {
+  --ds-elevation-surface: 0 4px 12px -4px oklch(0 0 0 / 16%);
+  --ds-elevation-popup:
+    0 4px 8px -4px oklch(0 0 0 / 12%), 0 16px 40px -10px oklch(0 0 0 / 24%);
+  --ds-elevation-modal:
+    0 12px 24px -12px oklch(0 0 0 / 20%), 0 32px 80px -16px oklch(0 0 0 / 32%);
+}
+:root.dark[data-elevation="layered"] {
+  --ds-elevation-surface: 0 4px 12px -4px oklch(0 0 0 / 48%);
+  --ds-elevation-popup:
+    0 4px 8px -4px oklch(0 0 0 / 36%), 0 16px 40px -10px oklch(0 0 0 / 60%);
+  --ds-elevation-modal:
+    0 12px 24px -12px oklch(0 0 0 / 48%), 0 32px 80px -16px oklch(0 0 0 / 72%);
+  --popover: var(--ds-neutral-800);
+}
+/* Flat keeps a hairline boundary for portal surfaces that otherwise rely on shadow.
+   Component-specific overrides and utilities still win in the components layer. */
+@layer components {
+  :root[data-elevation="flat"]
+    :is(
+      .evenform-floating-panel,
+      .evenform-date-popover,
+      .evenform-period-popover,
+      .evenform-toast,
+      .evenform-alert-dialog
+    ) {
+    outline: 1px solid var(--border);
+    outline-offset: -1px;
+  }
+  [data-slot="dialog-content"],
+  [data-slot="sheet-content"],
+  [data-slot="alert-dialog-content"] {
+    box-shadow: var(--ds-dialog-shadow, var(--ds-elevation-modal));
+  }
+}
+
+:root[data-palette="custom"] {
+  --primary: var(--ds-custom-light-primary);
+  --primary-foreground: var(--ds-custom-light-foreground);
+  --ds-primary-hover: var(--ds-custom-light-hover);
+  --accent: var(--ds-custom-light-accent);
+  --accent-foreground: var(--ds-custom-light-accent-foreground);
+  --ring: var(--ds-custom-light-ring);
+}
+:root.dark[data-palette="custom"] {
+  --primary: var(--ds-custom-dark-primary);
+  --primary-foreground: var(--ds-custom-dark-foreground);
+  --ds-primary-hover: var(--ds-custom-dark-hover);
+  --accent: var(--ds-custom-dark-accent);
+  --accent-foreground: var(--ds-custom-dark-accent-foreground);
+  --ring: var(--ds-custom-dark-ring);
+}
+:root[data-palette="custom"] {
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--accent);
+  --sidebar-accent-foreground: var(--accent-foreground);
+  --sidebar-ring: var(--ring);
+}

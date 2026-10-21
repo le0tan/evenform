@@ -159,7 +159,7 @@ export function StructuredDataGallery() {
       </PageSection>
       <PageSection
         title="Transfer between lists"
-        description="Search, select shown items, then move them. Available and selected data stay controlled by the caller."
+         description="Search, select shown items, then move them."
       >
         <div role="group" aria-label="Transfer example" id="example-transfer" className="showcase-example"><Transfer
           items={permissions}
@@ -224,8 +224,7 @@ export function StructuredDataGallery() {
               </ul>
             )}
             <p className="evenform-data-caption" role="status">
-              {files.length} local files ready. The application owns upload,
-              retry and persistence.
+              {files.length} local files ready. No upload has started.
             </p>
           </div>
         </div>
