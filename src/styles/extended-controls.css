@@ -1,0 +1,543 @@
+/* Reusable controls extend the Evenform scale. Defaults stay below utilities.
+   Small icon, radio, slider and overlay-positioning geometry is intentionally
+   local; it does not introduce a second density or semantic token system. */
+@layer components {
+  .evenform-accordion-item + .evenform-accordion-item {
+    border-top: var(--ds-border-width) solid var(--border);
+  }
+  .evenform-accordion-trigger {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: var(--ds-control-height);
+    gap: var(--ds-control-gap);
+    padding-block: var(--ds-space-3);
+    color: var(--foreground);
+    font-size: var(--ds-text-body);
+    font-weight: var(--ds-weight-medium);
+    text-align: start;
+    border-radius: var(--radius-md);
+    outline: none;
+  }
+  .evenform-accordion-trigger:hover {
+    color: var(--muted-foreground);
+  }
+  .evenform-accordion-chevron {
+    transition: transform var(--ds-duration-fast) var(--ds-ease-out);
+  }
+  .evenform-accordion-trigger[data-panel-open] .evenform-accordion-chevron {
+    transform: rotate(180deg);
+  }
+  .evenform-disclosure-panel {
+    overflow: hidden;
+    height: var(--collapsible-panel-height, var(--accordion-panel-height));
+    transition: height var(--ds-duration-standard) var(--ds-ease-out);
+  }
+  .evenform-disclosure-panel[data-starting-style],
+  .evenform-disclosure-panel[data-ending-style] {
+    height: 0;
+  }
+  .evenform-accordion-body {
+    padding-block-end: var(--ds-space-4);
+    color: var(--muted-foreground);
+    font-size: var(--ds-text-body);
+    line-height: var(--ds-leading-normal);
+  }
+
+  .evenform-floating-panel {
+    max-width: min(
+      var(--available-width, 100vw),
+      calc(100vw - var(--ds-space-4))
+    );
+    max-height: var(--available-height);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border-radius: var(--radius-lg);
+    background: var(--popover);
+    color: var(--popover-foreground);
+    box-shadow: var(--ds-shadow-overlay);
+    font-size: var(--ds-text-body);
+    outline: none;
+    transform-origin: var(--transform-origin);
+    transition:
+      opacity var(--ds-duration-fast) var(--ds-ease-out),
+      transform var(--ds-duration-fast) var(--ds-ease-out);
+  }
+  .evenform-floating-panel[data-starting-style],
+  .evenform-floating-panel[data-ending-style] {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  .evenform-popover {
+    display: grid;
+    gap: var(--ds-overlay-gap);
+    width: var(--ds-popover-width, 20rem);
+    padding: var(--ds-popover-inset, var(--ds-overlay-gap));
+  }
+  .evenform-menu {
+    min-width: var(--ds-menu-min-width, 11rem);
+    padding: var(--ds-space-1);
+  }
+  .evenform-menu-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--ds-control-gap);
+    min-height: var(--ds-select-option-height, var(--ds-select-item-height));
+    padding: var(--ds-select-item-padding-y) var(--ds-control-padding-x);
+    border-radius: var(--radius-md);
+    cursor: default;
+    font-size: var(--ds-text-body);
+    outline: none;
+    user-select: none;
+  }
+  .evenform-menu-item > svg {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+  }
+  .evenform-menu-item[data-highlighted],
+  .evenform-menu-item[data-open] {
+    background: var(--accent);
+    color: var(--accent-foreground);
+  }
+  .evenform-menu-item[data-variant="destructive"] {
+    color: var(--destructive);
+  }
+  .evenform-menu-item[data-variant="destructive"][data-highlighted] {
+    background: color-mix(in oklch, var(--destructive) 10%, var(--popover));
+  }
+  .evenform-menu-item[data-disabled] {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+  .evenform-menu-choice {
+    padding-inline-end: calc(var(--ds-control-padding-x) + var(--ds-space-6));
+  }
+  .evenform-menu-indicator {
+    position: absolute;
+    inset-inline-end: var(--ds-control-padding-x);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .evenform-menu-label {
+    padding: var(--ds-space-2) var(--ds-control-padding-x) var(--ds-space-1);
+    color: var(--muted-foreground);
+    font-size: var(--ds-text-caption);
+    font-weight: var(--ds-weight-medium);
+  }
+  .evenform-menu-separator {
+    height: var(--ds-border-width);
+    margin-block: var(--ds-space-1);
+    background: var(--border);
+  }
+
+  .evenform-alert-dialog {
+    position: fixed;
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+    z-index: 50;
+    display: grid;
+    gap: var(--ds-overlay-gap);
+    width: min(
+      calc(100vw - var(--ds-space-8)),
+      var(--ds-dialog-max-width, var(--ds-dialog-width))
+    );
+    max-height: calc(100svh - var(--ds-space-8));
+    overflow-y: auto;
+    padding: var(--ds-dialog-inset, var(--ds-dialog-padding));
+    transform: translate(-50%, -50%);
+    border-radius: var(--radius-xl);
+    background: var(--popover);
+    color: var(--popover-foreground);
+    box-shadow: var(--ds-shadow-overlay);
+    font-size: var(--ds-text-body);
+    outline: none;
+  }
+  .evenform-alert-dialog-header {
+    display: grid;
+    gap: var(--ds-space-2);
+  }
+  .evenform-alert-dialog-footer {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: var(--ds-control-gap);
+  }
+
+  .evenform-radio-group {
+    display: grid;
+    gap: var(--ds-form-field-gap);
+  }
+  .evenform-radio {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    border: var(--ds-border-width) solid var(--input);
+    border-radius: 50%;
+    color: var(--primary-foreground);
+    background: var(--background);
+    outline: none;
+  }
+  .evenform-radio[data-checked] {
+    border-color: var(--primary);
+    background: var(--primary);
+  }
+  .evenform-radio-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+  .evenform-radio[data-invalid] {
+    border-color: var(--destructive);
+  }
+  .evenform-radio[data-disabled] {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  .evenform-toggle-group {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: var(--ds-space-1);
+    align-items: center;
+  }
+  .evenform-toggle-group[data-orientation="vertical"] {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .evenform-toggle-item {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--ds-control-gap);
+    min-height: var(--ds-toggle-height, var(--ds-control-height));
+    min-width: var(--ds-toggle-height, var(--ds-control-height));
+    padding-inline: var(--ds-control-padding-x);
+    border: var(--ds-border-width) solid transparent;
+    border-radius: var(--radius-lg);
+    background: transparent;
+    color: var(--muted-foreground);
+    font-size: var(--ds-text-label);
+    font-weight: var(--ds-weight-medium);
+    outline: none;
+  }
+  .evenform-toggle-item:hover {
+    background: var(--muted);
+    color: var(--foreground);
+  }
+  .evenform-toggle-item[data-pressed] {
+    background: var(--secondary);
+    color: var(--secondary-foreground);
+  }
+  .evenform-toggle-item[data-disabled] {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+  .evenform-toggle-item > svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .evenform-number-field {
+    width: var(--ds-number-field-width, 10rem);
+    max-width: 100%;
+  }
+  .evenform-number-group {
+    display: flex;
+    align-items: stretch;
+    min-height: var(--ds-input-control-height, var(--ds-input-height));
+    border: var(--ds-border-width) solid var(--input);
+    border-radius: var(--radius-lg);
+    background: transparent;
+  }
+  .evenform-number-input {
+    width: 100%;
+    min-width: 0;
+    min-height: calc(
+      var(--ds-input-control-height, var(--ds-input-height)) - 2 *
+        var(--ds-border-width)
+    );
+    padding-inline: var(--ds-input-padding-x, var(--ds-control-padding-x));
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+    font-size: var(--ds-text-body);
+    background: transparent;
+    outline: none;
+  }
+  .evenform-number-step {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: var(--ds-input-control-height, var(--ds-input-height));
+    border-radius: inherit;
+    outline: none;
+    user-select: none;
+  }
+  .evenform-number-step:hover {
+    background: var(--muted);
+  }
+  .evenform-number-field[data-disabled] {
+    opacity: 0.5;
+  }
+  .evenform-number-step[data-disabled] {
+    pointer-events: none;
+    opacity: 0.4;
+  }
+  .evenform-number-group[data-invalid] {
+    border-color: var(--destructive);
+  }
+
+  .evenform-slider {
+    width: 100%;
+  }
+  .evenform-slider-control {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: var(--ds-control-height);
+    width: 100%;
+    touch-action: none;
+    user-select: none;
+  }
+  .evenform-slider-track {
+    position: relative;
+    width: 100%;
+    height: var(--ds-slider-track-size, 4px);
+    border-radius: 99px;
+    background: var(--muted);
+  }
+  .evenform-slider-range {
+    position: absolute;
+    border-radius: inherit;
+    background: var(--primary);
+  }
+  .evenform-slider-thumb {
+    width: var(--ds-slider-thumb-size, 16px);
+    height: var(--ds-slider-thumb-size, 16px);
+    border: var(--ds-border-width) solid var(--primary);
+    border-radius: 50%;
+    background: var(--background);
+    outline: none;
+  }
+  .evenform-slider-control[data-disabled] {
+    opacity: 0.5;
+  }
+  .evenform-slider-control[data-orientation="vertical"] {
+    width: var(--ds-control-height);
+    height: 100%;
+    min-height: 10rem;
+    justify-content: center;
+  }
+  .evenform-slider-track[data-orientation="vertical"] {
+    width: var(--ds-slider-track-size, 4px);
+    height: 100%;
+  }
+  .evenform-slider[data-orientation="vertical"] {
+    width: var(--ds-control-height);
+    height: 10rem;
+  }
+
+  .evenform-combobox-group,
+  .evenform-combobox-chips {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-space-1);
+    width: 100%;
+    min-height: var(--ds-input-control-height, var(--ds-input-height));
+    border: var(--ds-border-width) solid var(--input);
+    border-radius: var(--radius-lg);
+    background: transparent;
+  }
+  .evenform-combobox-input {
+    min-width: 0;
+    width: 100%;
+    min-height: var(--ds-input-control-height, var(--ds-input-height));
+    padding-inline: var(--ds-input-padding-x, var(--ds-control-padding-x));
+    border: var(--ds-border-width) solid var(--input);
+    border-radius: var(--radius-lg);
+    outline: none;
+    background: transparent;
+    color: var(--foreground);
+    font-size: var(--ds-text-body);
+  }
+  .evenform-combobox-input::placeholder {
+    color: var(--muted-foreground);
+  }
+  .evenform-combobox-group .evenform-combobox-input,
+  .evenform-combobox-chips .evenform-combobox-input {
+    flex: 1;
+    min-height: calc(
+      var(--ds-input-control-height, var(--ds-input-height)) - 2 *
+        var(--ds-border-width)
+    );
+    border: 0;
+    border-radius: inherit;
+  }
+  .evenform-combobox-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    min-width: var(--ds-control-height);
+    min-height: var(--ds-control-height);
+    color: var(--muted-foreground);
+    border-radius: var(--radius-md);
+    outline: none;
+  }
+  .evenform-combobox-action:hover {
+    color: var(--foreground);
+    background: var(--muted);
+  }
+  .evenform-combobox-group .evenform-combobox-action {
+    min-height: calc(
+      var(--ds-input-control-height, var(--ds-input-height)) - 2 *
+        var(--ds-border-width)
+    );
+  }
+  .evenform-combobox-popup {
+    width: var(--anchor-width);
+    min-width: min(12rem, var(--available-width, 100vw));
+  }
+  .evenform-combobox-list {
+    padding: var(--ds-space-1);
+  }
+  .evenform-combobox-empty {
+    padding: var(--ds-space-3) var(--ds-control-padding-x);
+    color: var(--muted-foreground);
+    font-size: var(--ds-text-label);
+  }
+  .evenform-combobox-empty:empty {
+    /* Keep the live region mounted and accessible between result updates. */
+    padding: 0;
+  }
+  .evenform-combobox-group[data-disabled],
+  .evenform-combobox-input[data-disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .evenform-combobox-group[data-invalid],
+  .evenform-combobox-input[data-invalid] {
+    border-color: var(--destructive);
+  }
+  .evenform-combobox-chips {
+    flex-wrap: wrap;
+    padding: var(--ds-space-1);
+  }
+  .evenform-combobox-chips .evenform-combobox-input {
+    width: auto;
+    min-width: 5rem;
+    padding-inline: var(--ds-space-2);
+  }
+  .evenform-combobox-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ds-space-1);
+    max-width: 100%;
+    padding: var(--ds-space-1) var(--ds-space-2);
+    border-radius: var(--radius-md);
+    background: var(--secondary);
+    color: var(--secondary-foreground);
+    font-size: var(--ds-text-label);
+    outline: none;
+  }
+  .evenform-chip-remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    border-radius: var(--radius-sm);
+    outline: none;
+  }
+  .evenform-chip-remove:hover {
+    background: var(--muted);
+  }
+
+  .evenform-accordion-trigger:focus-visible,
+  .evenform-radio:focus-visible,
+  .evenform-radio[data-focused],
+  .evenform-toggle-item:focus-visible,
+  .evenform-number-step:focus-visible,
+  .evenform-combobox-input:focus-visible,
+  .evenform-combobox-action:focus-visible,
+  .evenform-chip-remove:focus-visible,
+  .evenform-combobox-chip:focus-visible,
+  .evenform-slider-thumb:focus-within {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  .evenform-number-group:focus-within,
+  .evenform-combobox-group:focus-within,
+  .evenform-combobox-chips:focus-within {
+    border-color: var(--ring);
+    outline: 2px solid color-mix(in oklch, var(--ring) 50%, transparent);
+    outline-offset: 1px;
+  }
+  .evenform-combobox-group .evenform-combobox-input:focus-visible,
+  .evenform-combobox-chips .evenform-combobox-input:focus-visible {
+    outline: none;
+  }
+  .evenform-accordion-trigger[data-disabled] {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  @media (pointer: coarse) {
+    .evenform-accordion-trigger,
+    .evenform-menu-item,
+    .evenform-toggle-item,
+    .evenform-number-input,
+    .evenform-number-step,
+    .evenform-combobox-input,
+    .evenform-combobox-action,
+    .evenform-slider-control {
+      min-height: 44px;
+    }
+    .evenform-number-group,
+    .evenform-combobox-group {
+      min-height: 44px;
+    }
+    .evenform-number-group .evenform-number-input,
+    .evenform-number-group .evenform-number-step,
+    .evenform-combobox-group .evenform-combobox-input,
+    .evenform-combobox-group .evenform-combobox-action {
+      min-height: calc(44px - 2 * var(--ds-border-width));
+    }
+    .evenform-number-step,
+    .evenform-combobox-action {
+      min-width: 44px;
+    }
+    /* Enlarge the radio's pointer target without changing its visual circle. */
+    .evenform-radio {
+      position: relative;
+    }
+    .evenform-radio::before {
+      position: absolute;
+      content: "";
+      width: 44px;
+      height: 44px;
+    }
+    .evenform-radio-group {
+      gap: max(var(--ds-form-field-gap), var(--ds-space-4));
+    }
+    .evenform-chip-remove {
+      min-width: 44px;
+      min-height: 44px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .evenform-disclosure-panel,
+    .evenform-accordion-chevron,
+    .evenform-floating-panel {
+      transition: none;
+    }
+  }
+}

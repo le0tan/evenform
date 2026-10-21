@@ -1,0 +1,183 @@
+/* Virtual positions and measured extents are runtime geometry. Visual parameters
+   live here in the components layer so consumer utilities can override them. */
+@layer components {
+  .evenform-virtual-list {
+    height: var(--ds-virtual-list-height, calc(var(--ds-control-height) * 10));
+    min-width: 0;
+    overflow: auto;
+    overscroll-behavior: contain;
+    border: var(--ds-border-width) solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--background);
+    color: var(--foreground);
+    font-size: var(--ds-text-body);
+    overflow-anchor: none;
+  }
+  .evenform-virtual-list:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  .evenform-virtual-list-content {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .evenform-virtual-list-item {
+    margin: 0;
+    padding: 0;
+    overflow-wrap: anywhere;
+  }
+  .evenform-virtual-list-empty {
+    padding: var(--ds-panel-gap);
+    color: var(--muted-foreground);
+  }
+  .evenform-input-tag-field {
+    display: grid;
+    min-width: 0;
+    gap: var(--ds-form-field-gap);
+  }
+  .evenform-input-tag {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ds-input-tag-gap, var(--ds-space-1));
+    min-width: 0;
+    min-height: var(--ds-input-tag-height, var(--ds-input-height));
+    padding: var(--ds-input-tag-padding, var(--ds-space-1));
+    border: var(--ds-border-width) solid var(--input);
+    border-radius: var(--radius-lg);
+    background: transparent;
+    color: var(--foreground);
+  }
+  .evenform-input-tag:focus-within {
+    border-color: var(--ring);
+    outline: 2px solid color-mix(in oklch, var(--ring) 50%, transparent);
+    outline-offset: 1px;
+  }
+  .evenform-input-tag[data-invalid] {
+    border-color: var(--destructive);
+  }
+  .evenform-input-tag-field[data-disabled] {
+    opacity: 0.5;
+  }
+  .evenform-input-tag-field[data-disabled] .evenform-input-tag {
+    cursor: not-allowed;
+  }
+  .evenform-input-tag-token {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ds-space-1);
+    min-width: 0;
+    max-width: 100%;
+    padding-inline: var(--ds-space-2) var(--ds-space-1);
+    padding-block: var(--ds-space-1);
+    border-radius: var(--radius-md);
+    background: var(--secondary);
+    color: var(--secondary-foreground);
+    font-size: var(--ds-text-label);
+    line-height: var(--ds-leading-tight);
+  }
+  .evenform-input-tag-label {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .evenform-input-tag-remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: var(--ds-input-tag-remove-size, var(--ds-space-5));
+    height: var(--ds-input-tag-remove-size, var(--ds-space-5));
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: inherit;
+    outline: none;
+  }
+  .evenform-input-tag-remove:hover:not(:disabled) {
+    background: var(--muted);
+  }
+  .evenform-input-tag-remove:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  .evenform-input-tag-remove:disabled {
+    cursor: not-allowed;
+  }
+  .evenform-input-tag-input {
+    flex: 1;
+    width: auto;
+    min-width: min(var(--ds-input-tag-draft-width, 8rem), 100%);
+    max-width: 100%;
+    min-height: calc(var(--ds-input-tag-height, var(--ds-input-height)) - 2 * var(--ds-border-width) - 2 * var(--ds-input-tag-padding, var(--ds-space-1)));
+    padding-inline: var(--ds-space-2);
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--foreground);
+    font-family: inherit;
+    font-size: var(--ds-text-body);
+    outline: none;
+  }
+  .evenform-input-tag-input::placeholder {
+    color: var(--muted-foreground);
+  }
+  .evenform-input-tag-input:disabled {
+    cursor: not-allowed;
+  }
+  .evenform-input-tag-error {
+    margin: 0;
+    color: var(--destructive);
+    font-size: var(--ds-text-caption);
+    overflow-wrap: anywhere;
+  }
+  .evenform-list-input-gallery,
+  .evenform-list-input-stack {
+    display: grid;
+    min-width: 0;
+    gap: var(--ds-panel-gap);
+  }
+  .evenform-list-input-gallery {
+    gap: var(--ds-section-gap);
+  }
+  .evenform-list-input-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ds-toolbar-gap);
+  }
+  .evenform-list-input-record {
+    display: grid;
+    gap: var(--ds-form-field-gap);
+    padding: var(--ds-virtual-list-item-inset, var(--ds-panel-gap));
+    border-block-end: var(--ds-border-width) solid var(--border);
+  }
+  .evenform-list-input-record h3 {
+    margin: 0;
+    font-size: var(--ds-text-body);
+    font-weight: var(--ds-weight-medium);
+  }
+  .evenform-list-input-note,
+  .evenform-list-input-record p {
+    margin: 0;
+    color: var(--muted-foreground);
+    font-size: var(--ds-text-caption);
+    line-height: var(--ds-leading-normal);
+    overflow-wrap: anywhere;
+  }
+  .evenform-list-input-record .evenform-list-input-toolbar {
+    justify-content: space-between;
+  }
+  .evenform-list-input-finite {
+    padding: var(--ds-control-padding-x);
+  }
+  @media (pointer: coarse) {
+    .evenform-input-tag-input {
+      min-height: 44px;
+    }
+    .evenform-input-tag-remove {
+      min-width: 44px;
+      min-height: 44px;
+    }
+  }
+}

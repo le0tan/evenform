@@ -1,0 +1,295 @@
+/* Layer 1 · Primitives. CSS is the only source of design values. */
+:root {
+  --ds-space-0: 0px;
+  --ds-space-1: 4px;
+  --ds-space-2: 8px;
+  --ds-space-3: 12px;
+  --ds-space-4: 16px;
+  --ds-space-5: 20px;
+  --ds-space-6: 24px;
+  --ds-space-8: 32px;
+  --ds-space-10: 40px;
+  --ds-space-12: 48px;
+  --ds-space-16: 64px;
+  --ds-neutral-0: oklch(1 0 0);
+  --ds-neutral-50: oklch(0.985 0 0);
+  --ds-neutral-100: oklch(0.97 0 0);
+  --ds-neutral-200: oklch(0.922 0 0);
+  --ds-neutral-300: oklch(0.87 0 0);
+  --ds-neutral-400: oklch(0.708 0 0);
+  --ds-neutral-500: oklch(0.556 0 0);
+  --ds-neutral-600: oklch(0.439 0 0);
+  --ds-neutral-700: oklch(0.371 0 0);
+  --ds-neutral-800: oklch(0.269 0 0);
+  --ds-neutral-900: oklch(0.205 0 0);
+  --ds-neutral-950: oklch(0.145 0 0);
+  --ds-red-600: oklch(0.577 0.245 27.325);
+  --ds-red-400: oklch(0.704 0.191 22.216);
+  --ds-green-700: oklch(0.43 0.1 157);
+  --ds-green-300: oklch(0.8 0.1 157);
+  --ds-blue-600: #4263eb;
+  --ds-blue-400: #91a7ff;
+  --ds-teal-600: #087f6f;
+  --ds-teal-400: #5dd4b8;
+  --ds-violet-600: #8458cf;
+  --ds-violet-400: #bc9aef;
+  --ds-amber-600: #9c650f;
+  --ds-amber-400: #f2bd63;
+  --ds-rose-600: #b54870;
+  --ds-rose-400: #f292b1;
+  --ds-cyan-600: #14758e;
+  --ds-cyan-400: #6dcce5;
+  --ds-indigo-600: #6555b5;
+  --ds-indigo-400: #a99aeb;
+  --ds-lime-600: #617b1b;
+  --ds-lime-400: #bdd06d;
+  --ds-font-sans: 'Geist Variable', 'Inter', sans-serif;
+  --ds-font-mono: 'SFMono-Regular', Consolas, monospace;
+  --ds-font-size-base: 14px;
+  --ds-font-size-caption: calc(var(--ds-font-size-base) - 2px);
+  --ds-font-size-label: calc(var(--ds-font-size-base) - 1px);
+  --ds-font-size-section: calc(var(--ds-font-size-base) + 2px);
+  --ds-font-size-title: calc(var(--ds-font-size-base) + 14px);
+  --ds-font-size-metric: calc(var(--ds-font-size-base) + 12px);
+  --ds-leading-normal: 1.55;
+  --ds-leading-tight: 1.2;
+  --ds-weight-normal: 400;
+  --ds-weight-medium: 500;
+  --ds-weight-semibold: 600;
+  --ds-radius-base: 8px;
+  --ds-border-width: 1px;
+  --ds-shadow-none: none;
+  --ds-shadow-overlay: 0 8px 28px -8px oklch(0 0 0 / 18%);
+  --ds-duration-fast: 140ms;
+  --ds-duration-standard: 200ms;
+  --ds-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* Layer 2 · Semantic. Compact is the default; no global --spacing changes. */
+:root {
+  --ds-page-padding-x: var(--ds-space-8);
+  --ds-page-padding-y: var(--ds-space-8);
+  --ds-content-max-width: 1200px;
+  --ds-section-gap: var(--ds-space-8);
+  --ds-sidebar-width: 224px;
+  --ds-header-height: 60px;
+  --ds-panel-gap: var(--ds-space-4);
+  --ds-card-padding: var(--ds-space-4);
+  --ds-card-gap: var(--ds-space-4);
+  --ds-control-height: 32px;
+  --ds-button-height-sm: calc(var(--ds-control-height) - var(--ds-space-1));
+  --ds-button-height-md: var(--ds-control-height);
+  --ds-button-height-lg: calc(var(--ds-control-height) + var(--ds-space-1));
+  --ds-button-height-xs: calc(var(--ds-control-height) - var(--ds-space-2));
+  --ds-input-height: var(--ds-control-height);
+  --ds-control-padding-x: var(--ds-space-3);
+  --ds-control-gap: var(--ds-space-2);
+  --ds-select-item-height: var(--ds-input-height);
+  --ds-select-item-padding-y: var(--ds-space-1);
+  --ds-form-field-gap: var(--ds-space-2);
+  --ds-form-group-gap: var(--ds-space-5);
+  --ds-toolbar-gap: var(--ds-space-2);
+  --ds-table-row-height: 48px;
+  --ds-table-cell-padding-x: var(--ds-space-3);
+  --ds-table-cell-padding-y: var(--ds-space-2);
+  --ds-description-item-padding-y: var(--ds-table-cell-padding-y);
+  --ds-description-label-width: 128px;
+  --ds-dialog-padding: var(--ds-space-6);
+  --ds-dialog-width: 480px;
+  --ds-sheet-width: 400px;
+  --ds-sheet-padding: var(--ds-dialog-padding);
+  --ds-overlay-gap: var(--ds-panel-gap);
+  --ds-sidebar-item-height: 34px;
+  --ds-sidebar-item-gap: var(--ds-space-1);
+  --ds-sidebar-padding: var(--ds-space-3);
+  --ds-font-body: var(--ds-font-sans);
+  --ds-font-heading: var(--ds-font-sans);
+  --ds-text-body: var(--ds-font-size-base);
+  --ds-text-label: var(--ds-font-size-label);
+  --ds-text-caption: var(--ds-font-size-caption);
+  --ds-text-section-title: var(--ds-font-size-section);
+  --ds-text-page-title: var(--ds-font-size-title);
+  --ds-text-metric: var(--ds-font-size-metric);
+  --ds-line-height-body: var(--ds-leading-normal);
+  --ds-textarea-min-height: 96px;
+  --ds-tabs-gap: var(--ds-space-1);
+  --ds-tabs-padding: var(--ds-space-1);
+  --ds-success: var(--ds-green-700);
+  --ds-success-surface: color-mix(in oklab, var(--ds-success), var(--background) 94%);
+  --ds-info: var(--ds-blue-600);
+  --ds-info-surface: color-mix(in oklab, var(--ds-info), var(--background) 94%);
+  --ds-warning: var(--ds-amber-600);
+  --ds-warning-surface: color-mix(in oklab, var(--ds-warning), var(--background) 94%);
+  /* Categorical data colors are independent of action/status colors. */
+  --ds-chart-series-1: var(--chart-1);
+  --ds-chart-series-2: var(--chart-2);
+  --ds-chart-series-3: var(--chart-3);
+  --ds-chart-series-4: var(--chart-4);
+  --ds-chart-series-5: var(--chart-5);
+  --ds-chart-series-6: var(--ds-cyan-600);
+  --ds-chart-series-7: var(--ds-indigo-600);
+  --ds-chart-series-8: var(--ds-lime-600);
+  --ds-chart-sequential-1: color-mix(in srgb, var(--chart-1) 12%, var(--card));
+  --ds-chart-sequential-2: color-mix(in srgb, var(--chart-1) 32%, var(--card));
+  --ds-chart-sequential-3: color-mix(in srgb, var(--chart-1) 54%, var(--card));
+  --ds-chart-sequential-4: color-mix(in srgb, var(--chart-1) 76%, var(--card));
+  --ds-chart-sequential-5: var(--chart-1);
+  --ds-chart-change-total: var(--chart-1);
+  --ds-chart-change-increase: var(--chart-2);
+  --ds-chart-change-decrease: var(--chart-4);
+  --ds-chart-label-on-fill: var(--ds-neutral-0);
+}
+:root[data-density='comfortable'] {
+  --ds-page-padding-x: var(--ds-space-10);
+  --ds-page-padding-y: var(--ds-space-10);
+  --ds-section-gap: var(--ds-space-10);
+  --ds-panel-gap: var(--ds-space-6);
+  --ds-card-padding: var(--ds-space-6);
+  --ds-card-gap: var(--ds-space-5);
+  --ds-control-height: 40px;
+  --ds-control-padding-x: var(--ds-space-4);
+  --ds-form-field-gap: var(--ds-space-3);
+  --ds-form-group-gap: var(--ds-space-6);
+  --ds-toolbar-gap: var(--ds-space-3);
+  --ds-table-row-height: 56px;
+  --ds-table-cell-padding-y: var(--ds-space-3);
+  --ds-table-cell-padding-x: var(--ds-space-4);
+  --ds-select-item-padding-y: var(--ds-space-2);
+  --ds-dialog-padding: var(--ds-space-8);
+  --ds-sidebar-item-height: 40px;
+  --ds-sidebar-item-gap: var(--ds-space-2);
+}
+.dark {
+  --ds-success: var(--ds-green-300);
+  --ds-info: var(--ds-blue-400);
+  --ds-warning: var(--ds-amber-400);
+  --ds-chart-series-1: var(--chart-1);
+  --ds-chart-series-2: var(--chart-2);
+  --ds-chart-series-3: var(--chart-3);
+  --ds-chart-series-4: var(--chart-4);
+  --ds-chart-series-5: var(--chart-5);
+  --ds-chart-series-6: var(--ds-cyan-400);
+  --ds-chart-series-7: var(--ds-indigo-400);
+  --ds-chart-series-8: var(--ds-lime-400);
+  --ds-chart-label-on-fill: var(--ds-neutral-950);
+}
+
+/* Semantic utility bridge. Values remain CSS variables at runtime. */
+@theme inline {
+  --font-sans: var(--ds-font-body);
+  --font-heading: var(--ds-font-heading);
+  --font-mono: var(--ds-font-mono);
+  --text-sm: var(--ds-text-body);
+  --text-sm--line-height: var(--ds-line-height-body);
+  --text-xs: var(--ds-text-caption);
+  --text-xs--line-height: var(--ds-line-height-body);
+  --text-label: var(--ds-text-label);
+  --text-page-title: var(--ds-text-page-title);
+  --text-section-title: var(--ds-text-section-title);
+  --text-metric: var(--ds-text-metric);
+  --spacing-page-x: var(--ds-page-padding-x);
+  --spacing-page-y: var(--ds-page-padding-y);
+  --spacing-section: var(--ds-section-gap);
+  --spacing-panel: var(--ds-panel-gap);
+  --spacing-card: var(--ds-card-padding);
+  --spacing-field: var(--ds-form-field-gap);
+  --spacing-form: var(--ds-form-group-gap);
+  --spacing-toolbar: var(--ds-toolbar-gap);
+  --spacing-control-x: var(--ds-control-padding-x);
+  --spacing-control-gap: var(--ds-control-gap);
+  --spacing-input: var(--ds-input-height);
+  --spacing-button-xs: var(--ds-button-height-xs);
+  --spacing-button-sm: var(--ds-button-height-sm);
+  --spacing-button-md: var(--ds-button-height-md);
+  --spacing-button-lg: var(--ds-button-height-lg);
+  --spacing-sidebar-item: var(--ds-sidebar-item-height);
+  --spacing-sidebar-gap: var(--ds-sidebar-item-gap);
+  --color-success: var(--ds-success);
+  --color-success-surface: var(--ds-success-surface);
+  --color-info: var(--ds-info);
+  --color-info-surface: var(--ds-info-surface);
+  --color-warning: var(--ds-warning);
+  --color-warning-surface: var(--ds-warning-surface);
+}
+
+/* Layer 3 · Component tokens. Kept on the component so scoped semantic
+   overrides inherit correctly; public component tokens can override them. */
+@layer components {
+[data-slot='card'] {
+  --_card-padding: var(--ds-card-inset, var(--ds-card-padding));
+  --_card-gap: var(--ds-card-stack-gap, var(--ds-card-gap));
+  padding-block: var(--_card-padding);
+  gap: var(--_card-gap);
+}
+[data-slot='card'][data-size='sm'] { padding-block: var(--_card-padding); gap: var(--_card-gap); }
+[data-slot='card-header'], [data-slot='card-content'], [data-slot='card-footer'] {
+  padding-inline: var(--_card-padding);
+}
+[data-slot='card-header'] { row-gap: var(--ds-space-1); }
+[data-slot='card-footer'] { padding-bottom: 0; }
+[data-slot='card-header'].border-b { padding-bottom: var(--_card-padding); }
+[data-slot='card-footer'].border-t { padding-top: var(--_card-padding); }
+[data-ds-component='button'] {
+  border-radius: var(--_button-radius, var(--radius-lg));
+  height: var(--ds-button-height, var(--_button-height, var(--ds-button-height-md)));
+  padding-inline: var(--ds-button-padding-x, var(--ds-control-padding-x));
+  gap: var(--ds-button-gap, var(--ds-control-gap));
+  transition-property: color, background-color, border-color, box-shadow, transform;
+  transition-duration: var(--ds-duration-fast);
+  transition-timing-function: var(--ds-ease-out);
+}
+[data-ds-component='button'][data-ds-size='xs'], [data-ds-component='button'][data-ds-size='icon-xs'] { --_button-height: var(--ds-button-height-xs); --_button-radius: var(--radius-md); }
+[data-ds-component='button'][data-ds-size='sm'], [data-ds-component='button'][data-ds-size='icon-sm'] { --_button-height: var(--ds-button-height-sm); --_button-radius: var(--radius-md); }
+[data-ds-component='button'][data-ds-size='lg'], [data-ds-component='button'][data-ds-size='icon-lg'] { --_button-height: var(--ds-button-height-lg); }
+[data-ds-component='button'][data-ds-size^='icon'] { width: var(--ds-button-height, var(--_button-height, var(--ds-button-height-md))); padding: 0; }
+[data-ds-component='input'], [data-slot='select-trigger'] {
+  height: var(--ds-input-control-height, var(--ds-input-height));
+  padding-inline: var(--ds-input-padding-x, var(--ds-control-padding-x));
+  font-size: var(--ds-text-body);
+}
+[data-slot='textarea'] {
+  min-height: var(--ds-textarea-height, var(--ds-textarea-min-height));
+  padding: var(--ds-space-2) var(--ds-control-padding-x);
+  font-size: var(--ds-text-body);
+}
+[data-slot='dialog-content'] { max-height: calc(100svh - var(--ds-space-8)); overflow-y: auto; padding: var(--ds-dialog-inset, var(--ds-dialog-padding)); max-width: min(calc(100vw - var(--ds-space-8)), var(--ds-dialog-max-width, var(--ds-dialog-width))); gap: var(--ds-overlay-gap); }
+[data-slot='dialog-footer'] { margin: 0; padding: 0; gap: var(--ds-toolbar-gap); }
+[data-slot='sheet-content'] { width: min(100vw, var(--ds-sheet-max-width, var(--ds-sheet-width))); max-width: 100vw; max-height: 100svh; overflow: hidden; gap: var(--ds-overlay-gap); padding-block: var(--ds-sheet-inset, var(--ds-sheet-padding)); }
+[data-slot='sheet-header'], [data-slot='sheet-footer'] { flex-shrink: 0; padding-inline: var(--ds-sheet-inset, var(--ds-sheet-padding)); }
+[data-slot='sheet-body'] { flex: 1; min-height: 0; overflow-y: auto; padding-inline: var(--ds-sheet-inset, var(--ds-sheet-padding)); padding-block: 0; }
+[data-slot='dialog-header'], [data-slot='sheet-header'] { gap: var(--ds-form-field-gap); }
+[data-slot='dialog-header'] { padding-right: var(--ds-space-6); }
+[data-slot='sheet-footer'] { gap: var(--ds-toolbar-gap); }
+[data-slot='select-item'] { min-height: var(--ds-select-option-height, var(--ds-select-item-height)); padding-block: var(--ds-select-item-padding-y); padding-left: var(--ds-control-padding-x); padding-right: calc(var(--ds-control-padding-x) + var(--ds-space-6)); }
+[data-slot='select-trigger'], [data-slot='select-item'] { gap: var(--ds-control-gap); }
+[data-slot='select-list'] { padding: var(--ds-space-1); }
+[data-slot='select-item'][data-highlighted] { background: var(--accent); color: var(--accent-foreground); }
+[data-slot='tabs-list'] { height: auto; gap: var(--ds-tabs-item-gap, var(--ds-tabs-gap)); padding: var(--ds-tabs-inset, var(--ds-tabs-padding)); }
+[data-slot='tabs-trigger'] { min-height: var(--ds-tabs-trigger-height, var(--ds-control-height)); padding-inline: var(--ds-control-padding-x); font-size: var(--ds-text-label); }
+[data-slot='tabs'] { gap: var(--ds-panel-gap); }
+[data-slot='table-row'] { height: var(--ds-table-height, var(--ds-table-row-height)); border-bottom-width: var(--ds-table-divider-width, 0px); }
+[data-slot='table-cell'], [data-slot='table-head'] { padding: var(--ds-table-padding-y, var(--ds-table-cell-padding-y)) var(--ds-table-padding-x, var(--ds-table-cell-padding-x)); }
+[data-slot='table-head'] { height: var(--ds-table-row-height); font-size: var(--ds-text-caption); color: var(--muted-foreground); font-weight: var(--ds-weight-medium); }
+[data-slot='sidebar-wrapper'] { --sidebar-width: var(--ds-sidebar-width); }
+[data-slot='sidebar'] { --sidebar-width: var(--ds-sidebar-width); }
+[data-slot='sidebar-content'], [data-slot='sidebar-header'], [data-slot='sidebar-footer'] { padding: var(--ds-sidebar-inset, var(--ds-sidebar-padding)); }
+[data-slot='sidebar-menu'] { gap: var(--ds-sidebar-menu-gap, var(--ds-sidebar-item-gap)); }
+[data-slot='sidebar-menu-button'] { min-height: var(--ds-sidebar-button-height, var(--ds-sidebar-item-height)); height: auto; padding-inline: var(--ds-space-3); font-size: var(--ds-text-label); }
+[data-slot='sidebar-group'] { padding: 0; }
+[data-slot='sidebar-group-label'] { padding-inline: var(--ds-space-3); margin-block: var(--ds-space-4) var(--ds-space-2); font-size: var(--ds-text-caption); }
+[data-slot='field-group'] { gap: var(--ds-form-group-gap); }
+[data-slot='field'] { gap: var(--ds-form-field-gap); }
+[data-slot='dialog-content'], [data-slot='sheet-content'], [data-slot='select-content'], [data-slot='tooltip-content'] { box-shadow: var(--ds-shadow-overlay); }
+@media (pointer: coarse) {
+  [data-ds-component='button'], [data-ds-component='input'], [data-slot='select-trigger'], [data-slot='select-item'], [data-slot='sidebar-menu-button'], [data-slot='tabs-trigger'] { min-height: 44px; }
+  [data-ds-component='button'][data-ds-size^='icon'] { min-width: 44px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
+
+[data-slot='select-trigger'][data-size='sm'] { height: var(--ds-input-control-height, var(--ds-button-height-sm)); }
+[data-slot='sheet-content'][data-side='top'], [data-slot='sheet-content'][data-side='bottom'] { width: 100%; }
+[data-slot='card']:has(>img:first-child) { padding-top: 0; }
+
+}

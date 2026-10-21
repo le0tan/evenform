@@ -1,0 +1,269 @@
+/* Data and form compositions share Evenform's density, type and semantic colors.
+   Checkbox/icon geometry and the local responsive breakpoint are structural. */
+@layer components {
+  .evenform-input-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    min-width: var(--ds-control-height);
+    min-height: calc(var(--ds-input-height) - 2 * var(--ds-border-width));
+    border-radius: var(--radius-md);
+    color: var(--muted-foreground);
+    outline: none;
+  }
+  .evenform-input-action:hover {
+    background: var(--muted);
+    color: var(--foreground);
+  }
+  .evenform-input-action:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  .evenform-input-action:disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+  .evenform-search-field input[type="search"]::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+  }
+  .evenform-form,
+  .evenform-fieldset {
+    display: grid;
+    min-width: 0;
+    gap: var(--ds-form-group-gap);
+  }
+  .evenform-fieldset {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  .evenform-fieldset-legend {
+    margin-block-end: var(--ds-form-field-gap);
+    font-size: var(--ds-text-section-title);
+    font-weight: var(--ds-weight-medium);
+  }
+  .evenform-form-field,
+  .evenform-checkbox-group {
+    display: grid;
+    min-width: 0;
+    gap: var(--ds-form-field-gap);
+  }
+  .evenform-form-field-label {
+    width: fit-content;
+    color: var(--foreground);
+    font-size: var(--ds-text-label);
+    font-weight: var(--ds-weight-medium);
+  }
+  .evenform-form-field-description,
+  .evenform-form-field-error {
+    font-size: var(--ds-text-caption);
+    line-height: var(--ds-leading-normal);
+    overflow-wrap: anywhere;
+  }
+  .evenform-form-field-description {
+    color: var(--muted-foreground);
+  }
+  .evenform-form-field-error {
+    color: var(--destructive);
+  }
+  .evenform-form-field[data-disabled],
+  .evenform-checkbox-group[data-disabled],
+  .evenform-fieldset[data-disabled] {
+    opacity: 0.5;
+  }
+  .evenform-data-table {
+    --ds-table-divider-width: var(--ds-border-width);
+  }
+  .evenform-data-table[data-column-sizing] {
+    table-layout: fixed;
+  }
+  .evenform-data-table-head {
+    position: relative;
+  }
+  .evenform-data-table-head:has(.evenform-data-table-resize) {
+    padding-inline-end: calc(var(--ds-table-padding-x, var(--ds-table-cell-padding-x)) + var(--ds-space-2));
+  }
+  .evenform-data-table [data-pinned] {
+    position: sticky;
+    z-index: 1;
+    background: var(--background);
+  }
+  .evenform-data-table thead [data-pinned] {
+    z-index: 2;
+  }
+  .evenform-data-table tr:hover > [data-pinned] {
+    background: color-mix(in oklab, var(--muted) 50%, var(--background));
+  }
+  .evenform-data-table tr[data-state="selected"] > [data-pinned] {
+    background: var(--muted);
+  }
+  .evenform-data-table [data-pinned="start"] {
+    border-inline-end: var(--ds-border-width) solid var(--border);
+  }
+  .evenform-data-table [data-pinned="end"] {
+    border-inline-start: var(--ds-border-width) solid var(--border);
+  }
+  .evenform-data-table-tree-cell {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-control-gap);
+    padding-inline-start: calc(var(--_data-table-depth, 0) * var(--ds-data-table-tree-indent, var(--ds-space-5)));
+  }
+  .evenform-data-table-tree-content {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .evenform-data-table[data-column-sizing] td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .evenform-data-table-tree-spacer {
+    width: var(--ds-button-height-sm);
+    flex-shrink: 0;
+  }
+  .evenform-data-table-resize {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-end: 0;
+    width: var(--ds-data-table-resize-target, var(--ds-space-3));
+    cursor: col-resize;
+    touch-action: none;
+    user-select: none;
+    outline: none;
+  }
+  .evenform-data-table-resize::after {
+    content: "";
+    position: absolute;
+    inset-block: var(--ds-space-2);
+    inset-inline-end: 0;
+    width: var(--ds-border-width);
+    background: var(--border);
+  }
+  .evenform-data-table-resize:hover::after,
+  .evenform-data-table-resize[data-resizing]::after,
+  .evenform-data-table-resize:focus-visible::after {
+    width: 2px;
+    background: var(--ring);
+  }
+  .evenform-data-table-resize:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: -2px;
+  }
+  .evenform-data-table-sort {
+    justify-content: flex-start;
+    max-width: 100%;
+    padding-inline: var(--ds-space-1);
+    margin-inline: calc(-1 * var(--ds-space-1));
+  }
+  .evenform-data-table-checkbox {
+    display: block;
+    width: 16px;
+    height: 16px;
+    accent-color: var(--primary);
+    cursor: pointer;
+  }
+  .evenform-data-table-checkbox:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+  }
+  .evenform-data-table-checkbox:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+  .evenform-data-table-state {
+    padding: var(--ds-section-gap) var(--ds-control-padding-x);
+    text-align: center;
+    white-space: normal;
+    color: var(--muted-foreground);
+  }
+  .evenform-data-table-state [role="alert"] {
+    color: var(--destructive);
+  }
+  .evenform-data-table-pagination {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ds-control-gap);
+    font-size: var(--ds-text-label);
+  }
+  .evenform-data-table-page-size {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ds-control-gap);
+    color: var(--muted-foreground);
+  }
+  .evenform-data-table-page-size > label { color: var(--muted-foreground); font-size: var(--ds-text-label); font-weight: var(--ds-weight-normal); }
+  .evenform-data-table-page-size [data-slot="select-trigger"] { min-width: var(--ds-space-16); color: var(--foreground); }
+  .evenform-data-forms-select { display: grid; gap: var(--ds-form-field-gap); min-width: 0; }
+  .evenform-data-forms-select > label { font-size: var(--ds-text-caption); color: var(--muted-foreground); }
+  .evenform-data-forms-select [data-slot="select-trigger"] { min-width: 10rem; width: 100%; }
+  .evenform-data-forms-summary { justify-content: space-between; }
+  .evenform-data-forms-summary > .evenform-data-forms-select { margin-inline-start: auto; }
+  .evenform-data-table-page-status {
+    margin-inline-start: auto;
+    font-variant-numeric: tabular-nums;
+    color: var(--muted-foreground);
+  }
+  .evenform-data-forms-gallery,
+  .evenform-data-table-example {
+    display: grid;
+    min-width: 0;
+    gap: var(--ds-panel-gap);
+  }
+  .evenform-data-forms-columns {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--ds-section-gap);
+  }
+  .evenform-data-forms-toolbar {
+    display: flex;
+    align-items: end;
+    flex-wrap: wrap;
+    gap: var(--ds-toolbar-gap);
+  }
+  .evenform-data-forms-toolbar > .evenform-search-field,
+  .evenform-data-forms-toolbar > .showcase-example:has(.evenform-search-field) {
+    flex: 1;
+    min-width: min(100%, 12rem);
+  }
+  .evenform-data-forms-choice {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ds-control-gap);
+    min-height: var(--ds-control-height);
+    font-size: var(--ds-text-label);
+  }
+  .evenform-data-forms-caption {
+    font-size: var(--ds-text-caption);
+    color: var(--muted-foreground);
+  }
+  @media (max-width: 48rem) {
+    .evenform-data-forms-columns {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  @media (pointer: coarse) {
+    .evenform-input-action,
+    .evenform-data-forms-choice {
+      min-height: 44px;
+    }
+    .evenform-input-action {
+      min-width: 44px;
+    }
+    .evenform-data-table-checkbox {
+      width: 24px;
+      height: 24px;
+    }
+    .evenform-data-table-resize {
+      width: max(var(--ds-space-5), var(--ds-data-table-resize-target, var(--ds-space-3)));
+    }
+    .evenform-data-table-tree-spacer {
+      width: 44px;
+    }
+    .evenform-checkbox-group {
+      gap: max(var(--ds-form-field-gap), var(--ds-space-4));
+    }
+  }
+}

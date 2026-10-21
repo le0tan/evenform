@@ -1,0 +1,31 @@
+/* Period geometry stays local; typography, color and density follow Evenform. */
+@layer components {
+  .evenform-period-field { display: flex; flex-direction: column; min-width: 0; gap: var(--ds-form-field-gap); }
+  .evenform-period-control { display: flex; align-items: center; gap: var(--ds-space-1); }
+  .evenform-period-trigger { display: flex; align-items: center; justify-content: space-between; gap: var(--ds-control-gap); width: 100%; min-width: 0; min-height: var(--ds-input-control-height, var(--ds-input-height)); padding-inline: var(--ds-input-padding-x, var(--ds-control-padding-x)); border: var(--ds-border-width) solid var(--input); border-radius: var(--radius-lg); background: var(--background); color: var(--foreground); font-size: var(--ds-text-body); text-align: start; outline: none; }
+  .evenform-period-trigger > span { min-width: 0; overflow-wrap: anywhere; }
+  .evenform-period-trigger svg { flex: none; color: var(--muted-foreground); }
+  .evenform-period-trigger [data-placeholder] { color: var(--muted-foreground); }
+  .evenform-period-trigger[data-hovered]:not([aria-disabled]) { background: var(--muted); }
+  .evenform-period-field[data-invalid] .evenform-period-trigger { border-color: var(--destructive); }
+  .evenform-period-field[data-disabled] { opacity: .5; }
+  .evenform-period-popover { z-index: 50; max-width: calc(100vw - var(--ds-space-4)); max-height: var(--available-height); overflow: auto; border-radius: var(--radius-lg); background: var(--popover); color: var(--popover-foreground); box-shadow: var(--ds-shadow-overlay); outline: none; }
+  .evenform-period-dialog { width: var(--ds-period-width, 20rem); max-width: 100%; padding: var(--ds-period-padding, var(--ds-space-3)); outline: none; }
+  .evenform-period-header { display: flex; align-items: center; justify-content: space-between; gap: var(--ds-control-gap); margin-bottom: var(--ds-space-2); }
+  .evenform-period-heading { font-size: var(--ds-text-body); font-weight: var(--ds-weight-medium); text-align: center; }
+  .evenform-period-nav, .evenform-period-clear { display: inline-flex; align-items: center; justify-content: center; flex: none; width: var(--ds-control-height); height: var(--ds-control-height); border-radius: var(--radius-md); color: var(--muted-foreground); outline: none; }
+  .evenform-period-nav[data-hovered], .evenform-period-clear[data-hovered] { color: var(--foreground); background: var(--muted); }
+  .evenform-period-nav[data-disabled], .evenform-period-clear[data-disabled] { opacity: .4; }
+  .evenform-period-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--ds-space-1); outline: none; font-variant-numeric: tabular-nums; }
+  .evenform-period-list[data-mode="quarter"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .evenform-period-list[data-mode="week"] { grid-template-columns: minmax(0, 1fr); }
+  .evenform-period-option { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--ds-space-1); min-height: var(--ds-period-option-height, var(--ds-control-height)); padding: var(--ds-space-2); border-radius: var(--radius-md); font-size: var(--ds-text-label); text-align: center; cursor: pointer; outline: none; }
+  .evenform-period-option strong { font-weight: var(--ds-weight-medium); }
+  .evenform-period-option > span { font-size: var(--ds-text-caption); color: var(--muted-foreground); }
+  .evenform-period-option[data-hovered] { background: var(--muted); }
+  .evenform-period-option[data-selected] { color: var(--primary-foreground); background: var(--primary); }
+  .evenform-period-option[data-selected] > span { color: inherit; }
+  .evenform-period-option[data-disabled] { color: var(--muted-foreground); opacity: .4; cursor: default; }
+  .evenform-period-trigger[data-focus-visible], .evenform-period-option[data-focus-visible], .evenform-period-nav[data-focus-visible], .evenform-period-clear[data-focus-visible] { outline: 2px solid var(--ring); outline-offset: 2px; }
+  @media (pointer: coarse) { .evenform-period-trigger, .evenform-period-option, .evenform-period-nav, .evenform-period-clear { min-height: 44px; } .evenform-period-nav, .evenform-period-clear { min-width: 44px; } }
+}

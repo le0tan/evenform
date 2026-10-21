@@ -1,0 +1,88 @@
+# Development
+
+Install dependencies with `npm ci` on Node.js 22.13+ (22.x) or 24+; the manual CI workflow checks Node.js 22 and 24.
+Read [DESIGN.md](../DESIGN.md) before changing UI behavior, layout, or tokens.
+CSS is the only source of design parameters.
+
+## Fast checks
+
+```bash
+npm run typecheck
+npm run lint
+npm run verify:navigation
+npm run build
+npm run build:starter
+```
+
+The navigation check validates catalog links and example targets. Production
+builds also generate complete dependency notices and fail when required license
+metadata/text is missing. `npm run build` writes both HTML entries to `dist/`;
+`npm run build:starter` produces an independent root entry in `dist-starter/`.
+Keep `LICENSE`, `THIRD_PARTY_NOTICES.md`, and `third-party-licenses.json` with
+either deployment.
+
+## Manual GitHub checks
+
+GitHub CI runs only through **Actions → CI → Run workflow**. Pushes and pull
+requests do not trigger it. Pages deployment is a separate manual workflow;
+see [publishing and releases](releasing.md#manual-github-workflows) for its
+account-plan prerequisite and deployment steps.
+
+Dependency version updates are also maintainer-initiated; no scheduled
+Dependabot version-update configuration is installed.
+
+## Browser verification
+
+Install Chromium once:
+
+```bash
+npx playwright install chromium
+```
+
+Start `npm run dev -- --host 127.0.0.1 --port 5173` in another terminal, then run:
+
+```bash
+npm run verify:ui
+```
+
+For checks that exercise the production bootstrap and built Starter, build both
+outputs and start `npm run preview -- --host 127.0.0.1 --port 4173`, then run:
+
+```bash
+npm run verify:refinements
+npm run verify:details
+```
+
+`EVENFORM_URL` overrides the target origin for these scripts. The default is
+port 5173 for `verify:ui` and port 4173 for the other scripts.
+`PLAYWRIGHT_EXECUTABLE_PATH` can point to an existing Chromium executable.
+Scripts write screenshots and results under `evidence/`. Keep results tied to
+their actual checkout and run; do not interpret historical screenshots as a
+current passing test. These scripts exercise representative flows, not every
+upstream component option.
+
+Set `EVENFORM_EVIDENCE_DIR` to an absolute directory path ending in `/` to save a
+new run separately without overwriting older results.
+
+Match verification to the change: a local component adjustment needs its own
+state/keyboard checks; shared layout or token changes need representative uses,
+light/dark, compact/comfortable, and desktop/mobile screenshots. Documentation
+changes do not require browser runs. Do not copy third-party documentation
+screenshots into public assets without reviewing their reuse rights.
+
+## Updating dependencies
+
+Use npm and commit `package-lock.json` with intentional dependency updates. The
+lockfile uses the public npm registry. Inspect upstream API and license changes,
+run relevant UI verification, and rebuild both outputs. Some packages omit
+license files from npm; the exact-version mappings in `licenses/sources.json`
+need a reviewed upstream snapshot after those versions change. Do not substitute
+a generic MIT text without the correct copyright holder.
+
+`components.json` retains the official `base-nova` style identifier. That is the
+upstream shadcn preset name, independent of the Evenform project name.
+
+The Evenform rename changes project-specific classes, storage keys, custom
+events, and the chart adapter to `evenform-*` / `EvenformChart`. Earlier local
+Nova Showcase preferences are not migrated. The Starter's separate `app-*`
+keys are unchanged. Historical evidence retains the name used when recorded.

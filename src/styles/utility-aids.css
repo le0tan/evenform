@@ -1,0 +1,60 @@
+@layer components {
+  .evenform-spinner { width: var(--ds-spinner-size, 1rem); height: var(--ds-spinner-size, 1rem); flex-shrink: 0; animation: evenform-spinner-turn var(--ds-spinner-duration, 1s) linear infinite; }
+  @keyframes evenform-spinner-turn { to { transform: rotate(360deg); } }
+  .evenform-loading-state { display: flex; align-items: start; gap: var(--ds-loading-gap, var(--ds-control-gap)); color: var(--foreground); font-size: var(--ds-text-body); }
+  .evenform-loading-state > :first-child { display: flex; align-items: center; min-height: calc(var(--ds-text-body) * var(--ds-line-height-body)); }
+  .evenform-loading-state-content { display: flex; flex-direction: column; gap: var(--ds-form-field-gap); min-width: 0; }
+  .evenform-loading-description { margin: 0; color: var(--muted-foreground); font-size: var(--ds-text-caption); }
+  .evenform-busy-region { display: flex; flex-direction: column; gap: var(--ds-panel-gap); min-width: 0; }
+  .evenform-title { margin: 0; font-family: var(--ds-font-heading); font-size: var(--ds-title-size, var(--ds-text-section-title)); font-weight: var(--ds-title-weight, var(--ds-weight-semibold)); line-height: var(--ds-leading-tight); color: var(--foreground); overflow-wrap: anywhere; text-wrap: balance; }
+  .evenform-title[data-size=page] { font-size: var(--ds-title-size, var(--ds-text-page-title)); }
+  .evenform-title[data-size=label] { font-size: var(--ds-title-size, var(--ds-text-label)); }
+  .evenform-text { margin: 0; font-family: var(--ds-font-body); font-size: var(--ds-text-size, var(--ds-text-body)); line-height: var(--ds-line-height-body); color: var(--foreground); overflow-wrap: anywhere; }
+  .evenform-text[data-size=label] { font-size: var(--ds-text-size, var(--ds-text-label)); }
+  .evenform-text[data-size=caption] { font-size: var(--ds-text-size, var(--ds-text-caption)); }
+  .evenform-text[data-tone=muted] { color: var(--muted-foreground); }
+  .evenform-text[data-tone=success] { color: var(--ds-success); }
+  .evenform-text[data-tone=info] { color: var(--ds-info); }
+  .evenform-text[data-tone=warning] { color: var(--ds-warning); }
+  .evenform-text[data-tone=destructive] { color: var(--destructive); }
+  .evenform-text[data-weight=normal] { font-weight: var(--ds-weight-normal); }
+  .evenform-text[data-weight=medium] { font-weight: var(--ds-weight-medium); }
+  .evenform-text[data-weight=semibold] { font-weight: var(--ds-weight-semibold); }
+  .evenform-prose { max-width: var(--ds-prose-measure, 72ch); font-size: var(--ds-text-body); line-height: var(--ds-line-height-body); color: var(--foreground); overflow-wrap: anywhere; }
+  .evenform-prose[data-measure=full] { max-width: none; }
+  .evenform-prose > :where(*) { margin-block: 0; }
+  .evenform-prose > :not(:first-child) { margin-block-start: var(--ds-prose-gap, var(--ds-panel-gap)); }
+  .evenform-prose > :where(span) { display: block; }
+  .evenform-prose :where(h1, h2, h3, h4, h5, h6) { font-family: var(--ds-font-heading); font-weight: var(--ds-weight-semibold); line-height: var(--ds-leading-tight); text-wrap: balance; }
+  .evenform-prose > :where(h1, h2, h3, h4, h5, h6):not(:first-child) { margin-block-start: var(--ds-section-gap); }
+  .evenform-prose :where(h1) { font-size: var(--ds-text-page-title); }
+  .evenform-prose :where(h2, h3) { font-size: var(--ds-text-section-title); }
+  .evenform-prose :where(h4, h5, h6) { font-size: var(--ds-text-body); }
+  .evenform-prose :where(a) { color: var(--primary); text-decoration: underline; text-underline-offset: .2em; }
+  .evenform-prose :where(a:focus-visible) { outline: 2px solid var(--ring); outline-offset: 2px; }
+  .evenform-prose :where(ul, ol) { padding-inline-start: var(--ds-space-6); }
+  .evenform-prose :where(ul) { list-style: disc; }
+  .evenform-prose :where(ol) { list-style: decimal; }
+  .evenform-prose :where(li + li) { margin-block-start: var(--ds-space-2); }
+  .evenform-blockquote { margin: 0; padding-inline-start: var(--ds-blockquote-inset, var(--ds-control-padding-x)); border-inline-start: var(--ds-border-width) solid var(--border); color: var(--foreground); }
+  .evenform-blockquote > :first-child { margin-block-start: 0; }
+  .evenform-blockquote > :last-child { margin-block-end: 0; }
+  .evenform-blockquote-attribution { margin-block-start: var(--ds-form-field-gap); font-size: var(--ds-text-caption); color: var(--muted-foreground); }
+  .evenform-inline-code { border-radius: var(--ds-inline-code-radius, var(--ds-space-1)); background: var(--muted); color: var(--foreground); padding: .125em .3em; font-family: var(--ds-font-mono); font-size: .9em; }
+  .evenform-affix { position: sticky; z-index: var(--ds-affix-z-index, 10); }
+  .evenform-affix[data-edge=top] { top: var(--ds-affix-offset, 0px); }
+  .evenform-affix[data-edge=bottom] { bottom: var(--ds-affix-offset, 0px); }
+  [data-slot=back-to-top][hidden] { display: none; }
+  @media (prefers-reduced-motion: reduce) { .evenform-spinner { animation: none; } }
+}
+
+@layer components {
+  .evenform-utility-gallery { display: flex; flex-direction: column; gap: var(--ds-section-gap); min-width: 0; }
+  .evenform-utility-stack { display: flex; flex-direction: column; gap: var(--ds-panel-gap); min-width: 0; }
+  .evenform-utility-summary { display: flex; flex-direction: column; gap: var(--ds-form-field-gap); }
+  .evenform-utility-scroll { height: 24rem; overflow: auto; overscroll-behavior: contain; border: var(--ds-border-width) solid var(--border); border-radius: var(--ds-radius-base); scrollbar-gutter: stable; isolation: isolate; }
+  .evenform-utility-scroll > .evenform-title { margin: var(--ds-card-padding) var(--ds-card-padding) 0; }
+  .evenform-utility-scroll > .evenform-prose { padding: var(--ds-card-padding); }
+  .evenform-utility-scroll:focus-visible, .evenform-utility-scroll :where(h3):focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+  .evenform-utility-reading-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--ds-control-gap); padding: var(--ds-space-3) var(--ds-card-padding); margin-block-start: var(--ds-panel-gap); background: var(--background); border-bottom: var(--ds-border-width) solid var(--border); }
+}

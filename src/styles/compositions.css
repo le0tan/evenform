@@ -1,0 +1,46 @@
+@layer components {
+  .ds-breadcrumb-list { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ds-control-gap); color: var(--muted-foreground); font-size: var(--ds-text-label); }
+  .ds-breadcrumb-item { display: inline-flex; align-items: center; min-width: 0; overflow-wrap: anywhere; }
+  .ds-breadcrumb-link { text-decoration: none; text-underline-offset: 3px; }
+  .ds-breadcrumb-link:hover { color: var(--foreground); text-decoration: underline; }
+  .ds-breadcrumb-page { color: var(--foreground); font-weight: var(--ds-weight-medium); }
+  .ds-breadcrumb-separator, .ds-breadcrumb-ellipsis { display: inline-flex; align-items: center; }
+  .ds-button-group { display: inline-flex; align-items: stretch; gap: 0; width: fit-content; isolation: isolate; }
+  .ds-button-group > [data-ds-component='button'] { border-radius: 0; }
+  .ds-button-group > [data-ds-component='button']:focus-visible { z-index: 1; }
+  .ds-button-group[data-orientation='horizontal'] > :first-child { border-start-start-radius: var(--radius); border-end-start-radius: var(--radius); }
+  .ds-button-group[data-orientation='horizontal'] > :last-child { border-start-end-radius: var(--radius); border-end-end-radius: var(--radius); }
+  .ds-button-group[data-orientation='horizontal'] > :not(:first-child) { margin-inline-start: calc(-1 * var(--ds-border-width)); }
+  .ds-button-group[data-orientation='vertical'] { flex-direction: column; }
+  .ds-button-group[data-orientation='vertical'] > :first-child { border-start-start-radius: var(--radius); border-start-end-radius: var(--radius); }
+  .ds-button-group[data-orientation='vertical'] > :last-child { border-end-start-radius: var(--radius); border-end-end-radius: var(--radius); }
+  .ds-button-group[data-orientation='vertical'] > :not(:first-child) { margin-block-start: calc(-1 * var(--ds-border-width)); }
+  .ds-button-group-text { display: inline-flex; align-items: center; justify-content: center; min-height: var(--ds-control-height); padding-inline: var(--ds-control-padding-x); border: var(--ds-border-width) solid var(--input); background: var(--muted); font-size: var(--ds-text-label); }
+  .ds-input-group { display: flex; align-items: center; gap: var(--ds-control-gap); min-height: var(--ds-input-height); border: var(--ds-border-width) solid var(--input); border-radius: var(--radius); padding-inline: var(--ds-control-padding-x); }
+  .ds-input-group:focus-within { outline: 2px solid var(--ring); outline-offset: 2px; }
+  .ds-input-group:has(input:disabled, textarea:disabled) { background: color-mix(in oklch, var(--input) 50%, transparent); }
+  .ds-input-group:has([aria-invalid='true']) { border-color: var(--destructive); }
+  .ds-input-group-input { border: 0; box-shadow: none; border-radius: 0; padding-inline: 0; background: transparent; flex: 1; min-width: 0; }
+  .ds-input-group > input.ds-input-group-input { height: calc(var(--ds-input-control-height, var(--ds-input-height)) - 2 * var(--ds-border-width)); }
+  .ds-input-group-input:focus-visible { outline: none; box-shadow: none; }
+  .ds-input-group-addon { display: inline-flex; align-items: center; gap: var(--ds-control-gap); flex-shrink: 0; color: var(--muted-foreground); font-size: var(--ds-text-label); }
+  .ds-input-group-addon[data-align='end'] { order: 2; }
+  .ds-pagination-content { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ds-space-1); }
+  .ds-pagination-link { display: inline-flex; align-items: center; justify-content: center; min-height: var(--ds-control-height); min-width: var(--ds-control-height); padding-inline: var(--ds-control-padding-x); border-radius: var(--radius); font-size: var(--ds-text-label); text-decoration: none; }
+  .ds-pagination-link:hover, .ds-pagination-link[aria-current='page'] { background: var(--muted); color: var(--foreground); }
+  .ds-pagination-link[aria-current='page'] { font-weight: var(--ds-weight-medium); }
+  .ds-pagination-ellipsis { display: inline-flex; padding: var(--ds-space-2); color: var(--muted-foreground); }
+  .ds-tag { display: inline-flex; align-items: center; gap: var(--ds-space-1); max-width: 100%; padding: var(--ds-space-1) var(--ds-space-2); border-radius: calc(var(--radius) * .6); border: var(--ds-border-width) solid var(--border); font-size: var(--ds-text-caption); line-height: var(--ds-leading-tight); overflow-wrap: anywhere; }
+  .ds-tag button { display: inline-flex; align-items: center; justify-content: center; border-radius: 2px; color: var(--muted-foreground); min-width: 16px; min-height: 16px; }
+  .ds-tag button:hover { background: var(--muted); color: var(--foreground); }
+  .ds-tag[data-disabled] { opacity: .5; }
+  .ds-kbd { display: inline-flex; align-items: center; justify-content: center; min-width: 20px; padding: 2px var(--ds-space-1); border: var(--ds-border-width) solid var(--border); border-radius: calc(var(--radius) * .5); background: var(--muted); font-family: var(--ds-font-mono); font-size: var(--ds-text-caption); line-height: var(--ds-leading-tight); color: var(--muted-foreground); }
+  .ds-selection-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--ds-toolbar-gap); padding: var(--ds-space-2) var(--ds-control-padding-x); background: var(--muted); border-radius: var(--radius); font-size: var(--ds-text-label); }
+  .ds-form-section { min-width: 0; padding: 0; margin: 0; border: 0; container: evenform-form-section / inline-size; }
+  .ds-form-section legend { font-size: var(--ds-text-section-title); font-weight: var(--ds-weight-medium); margin-bottom: var(--ds-space-1); }
+  .ds-form-section-description { color: var(--muted-foreground); font-size: var(--ds-text-label); margin-bottom: var(--ds-panel-gap); }
+  .ds-form-section-fields { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--ds-form-group-gap); }
+  @container evenform-form-section (min-width: 36rem) { .ds-form-section-fields[data-columns='2'] { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  /* Joined borders and tiny keyboard glyphs are geometry, not a separate spacing scale. */
+  @media (pointer: coarse) { .ds-tag button { min-width: 28px; min-height: 28px; } .ds-pagination-link { min-height: 44px; min-width: 44px; } }
+}

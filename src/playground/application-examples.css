@@ -1,0 +1,111 @@
+@layer components {
+  .application-example {
+    display: grid;
+    gap: var(--ds-panel-gap);
+    min-width: 0;
+  }
+  .application-example > .page-header {
+    margin-bottom: 0;
+  }
+  .application-filter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--ds-toolbar-gap);
+  }
+  .application-filter .toolbar {
+    flex-wrap: wrap;
+  }
+  .application-section-title {
+    font-size: var(--ds-text-section-title, 16px);
+    font-weight: 600;
+    margin-bottom: var(--ds-space-4);
+  }
+  .application-example td {
+    font-variant-numeric: tabular-nums;
+  }
+  .application-chart-legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--ds-space-4);
+    margin-block: var(--ds-space-3);
+    font-size: var(--ds-text-caption);
+    color: var(--muted-foreground);
+  }
+  .application-chart-legend li {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ds-space-2);
+  }
+  .application-chart-legend li span {
+    width: 16px;
+    height: 3px;
+  }
+  .application-source {
+    max-height: 320px;
+    overflow: auto;
+    margin-top: var(--ds-space-4);
+  }
+  .application-inbox-list {
+    display: grid;
+    gap: var(--ds-space-3);
+    align-content: start;
+  }
+  .application-ticket {
+    display: grid;
+    gap: var(--ds-space-2);
+    text-align: left;
+    padding: var(--ds-card-padding);
+    border-radius: var(--ds-radius-base);
+    background: transparent;
+  }
+  .application-ticket:hover {
+    background: var(--muted);
+  }
+  .application-ticket[aria-pressed="true"] {
+    background: var(--accent);
+    box-shadow: inset 0 0 0 1px var(--border);
+  }
+  .application-ticket-meta {
+    font-size: var(--ds-text-caption);
+    color: var(--muted-foreground);
+  }
+  .application-conversation {
+    display: grid;
+    gap: var(--ds-space-4);
+  }
+  .application-conversation h2 {
+    font-size: var(--ds-text-section-title, 16px);
+    font-weight: 600;
+  }
+  .application-message {
+    padding-block: var(--ds-space-4);
+    border-bottom: 1px solid var(--border);
+  }
+  .application-message h3 {
+    font-weight: 500;
+    margin-bottom: var(--ds-space-2);
+  }
+  .application-message p {
+    max-width: 68ch;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+  .application-reply {
+    display: grid;
+    gap: var(--ds-form-field-gap);
+  }
+  .application-reply .toolbar {
+    flex-wrap: wrap;
+  }
+  @media (max-width: 767px) {
+    .application-filter {
+      align-items: flex-start;
+    }
+    .application-example > [data-slot="stat-group"] {
+      grid-template-columns: 1fr;
+    }
+  }
+}

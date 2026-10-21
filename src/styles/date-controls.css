@@ -1,0 +1,42 @@
+/* Calendar geometry is a component concern. Shared typography, surfaces,
+   control sizes and density remain the same Evenform decisions. */
+@layer components {
+  .evenform-calendar { width: fit-content; max-width: 100%; padding: var(--ds-calendar-padding, var(--ds-space-2)); color: var(--foreground); font-size: var(--ds-text-label); }
+  .evenform-calendar-header { display: flex; justify-content: space-between; align-items: center; gap: var(--ds-control-gap); margin-bottom: var(--ds-space-2); }
+  .evenform-calendar-header > h2 { font-weight: var(--ds-weight-medium); font-size: var(--ds-text-body); }
+  .evenform-calendar-nav, .evenform-date-trigger { display: inline-flex; align-items: center; justify-content: center; width: var(--ds-control-height); height: var(--ds-control-height); flex: none; border-radius: var(--radius-md); outline: none; color: var(--muted-foreground); }
+  .evenform-calendar-nav[data-hovered], .evenform-date-trigger[data-hovered] { background: var(--muted); color: var(--foreground); }
+  .evenform-calendar-nav[data-disabled], .evenform-date-trigger[data-disabled] { opacity: .5; }
+  .evenform-calendar-grid { border-collapse: separate; border-spacing: 2px; font-variant-numeric: tabular-nums; }
+  .evenform-calendar-weekday { color: var(--muted-foreground); font-size: var(--ds-text-caption); font-weight: var(--ds-weight-normal); padding-bottom: var(--ds-space-1); }
+  .evenform-calendar-cell { display: grid; place-items: center; width: var(--ds-calendar-cell-size, var(--ds-control-height)); height: var(--ds-calendar-cell-size, var(--ds-control-height)); border-radius: var(--radius-md); outline: none; cursor: pointer; }
+  .evenform-calendar-cell[data-hovered] { background: var(--muted); }
+  .evenform-calendar-cell[data-today] { text-decoration: underline; text-underline-offset: 3px; }
+  .evenform-calendar-cell[data-outside-month] { color: var(--muted-foreground); }
+  .evenform-calendar-cell[data-disabled], .evenform-calendar-cell[data-unavailable] { color: var(--muted-foreground); opacity: .45; cursor: default; }
+  .evenform-calendar-cell[data-unavailable] { text-decoration: line-through; }
+  .evenform-calendar-cell[data-selected] { background: var(--primary); color: var(--primary-foreground); }
+  .evenform-range-calendar .evenform-calendar-cell[data-selected]:not([data-selection-start]):not([data-selection-end]) { border-radius: 0; background: var(--secondary); color: var(--secondary-foreground); }
+  .evenform-calendar-cell[data-focus-visible], .evenform-calendar-nav[data-focus-visible], .evenform-date-trigger[data-focus-visible] { outline: 2px solid var(--ring); outline-offset: 2px; }
+  .evenform-date-field { display: flex; flex-direction: column; min-width: 0; gap: var(--ds-form-field-gap); }
+  .evenform-field-label { color: var(--foreground); font-size: var(--ds-text-label); font-weight: var(--ds-weight-medium); }
+  .evenform-field-description { color: var(--muted-foreground); font-size: var(--ds-text-caption); }
+  .evenform-field-error { color: var(--destructive); font-size: var(--ds-text-caption); }
+  .evenform-field-error:empty { display: none; }
+  .evenform-date-control { display: flex; align-items: center; min-width: 0; min-height: var(--ds-input-control-height, var(--ds-input-height)); border: var(--ds-border-width) solid var(--input); border-radius: var(--radius-lg); padding-inline-start: var(--ds-control-padding-x); }
+  .evenform-date-control:has([data-focus-visible]) { outline: 2px solid var(--ring); outline-offset: 2px; }
+  .evenform-date-field[data-invalid] > .evenform-date-control { border-color: var(--destructive); }
+  .evenform-date-field[data-disabled] { opacity: .5; }
+  .evenform-date-input { display: flex; align-items: center; flex: 1; min-width: 0; padding-block: var(--ds-space-1); padding-inline-end: var(--ds-control-padding-x); white-space: nowrap; font-size: var(--ds-text-body); font-variant-numeric: tabular-nums; }
+  .evenform-date-segment { padding: 1px; border-radius: 2px; outline: none; }
+  .evenform-date-segment[data-placeholder] { color: var(--muted-foreground); }
+  .evenform-date-segment[data-focused] { background: var(--primary); color: var(--primary-foreground); }
+  .evenform-date-trigger { width: calc(var(--ds-input-control-height, var(--ds-input-height)) - 2 * var(--ds-border-width)); height: calc(var(--ds-input-control-height, var(--ds-input-height)) - 2 * var(--ds-border-width)); }
+  .evenform-date-range-control { flex-wrap: wrap; column-gap: var(--ds-space-1); }
+  .evenform-date-range-control > .evenform-date-input { flex: 0 1 auto; padding-inline-end: 0; }
+  .evenform-date-range-control > .evenform-date-trigger { margin-inline-start: auto; }
+  .evenform-date-range-separator { color: var(--muted-foreground); }
+  .evenform-date-popover { z-index: 50; max-width: calc(100vw - var(--ds-space-4)); max-height: var(--available-height); overflow: auto; background: var(--popover); color: var(--popover-foreground); border-radius: var(--radius-lg); box-shadow: var(--ds-shadow-overlay); outline: none; }
+  .evenform-date-dialog { padding: var(--ds-space-2); outline: none; }
+  @media (pointer: coarse) { .evenform-calendar-cell, .evenform-calendar-nav, .evenform-date-trigger { min-height: 44px; min-width: 44px; } .evenform-date-control { min-height: 44px; } }
+}

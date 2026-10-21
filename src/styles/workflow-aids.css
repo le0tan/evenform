@@ -1,0 +1,213 @@
+@layer components {
+  [data-slot="calendar-agenda"] {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-section-gap);
+    min-width: 0;
+  }
+  [data-slot="agenda-day-header"] {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--ds-toolbar-gap);
+    margin-block-end: var(--ds-control-gap);
+  }
+  [data-slot="agenda-day-header"] h3 {
+    font-weight: var(--ds-weight-medium);
+  }
+  [data-slot="agenda-events"] {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  [data-slot="agenda-event"] {
+    display: grid;
+    grid-template-columns: minmax(0, var(--ds-agenda-time-width, 7rem)) minmax(
+        0,
+        1fr
+      );
+    gap: var(--ds-panel-gap);
+    padding-block: var(--ds-table-cell-padding-y);
+    border-block-end: var(--ds-border-width) solid var(--border);
+  }
+  [data-slot="agenda-event"]:last-child {
+    border-block-end: 0;
+  }
+  [data-slot="agenda-time"] {
+    color: var(--muted-foreground);
+    font-size: var(--ds-text-label);
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+  }
+  [data-slot="agenda-event-body"] {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  [data-slot="agenda-event-title"] {
+    font-weight: var(--ds-weight-medium);
+  }
+  [data-slot="agenda-event-meta"],
+  [data-slot="agenda-event-description"] {
+    color: var(--muted-foreground);
+    font-size: var(--ds-text-label);
+    margin-block-start: var(--ds-space-1);
+    line-height: var(--ds-leading-normal);
+  }
+  [data-slot="agenda-event-actions"] {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ds-toolbar-gap);
+    margin-block-start: var(--ds-control-gap);
+  }
+  [data-slot="step-form"] {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-section-gap);
+    min-width: 0;
+  }
+  [data-slot="step-form-content"] {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-form-group-gap);
+  }
+  [data-slot="step-form-fields"] {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    min-width: 0;
+  }
+  [data-slot="step-form-content"] > header h2 {
+    font-size: var(--ds-text-section-title);
+    font-weight: var(--ds-weight-semibold);
+  }
+  [data-slot="step-form-content"] > header h2:focus {
+    outline: none;
+  }
+  [data-slot="step-form-count"] {
+    color: var(--muted-foreground);
+    font-size: var(--ds-text-caption);
+    margin-block-end: var(--ds-space-1);
+  }
+  [data-slot="step-form-description"] {
+    margin-block-start: var(--ds-control-gap);
+    color: var(--muted-foreground);
+    line-height: var(--ds-leading-normal);
+  }
+  [data-slot="step-form-navigation"] {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ds-toolbar-gap);
+    padding-block-start: var(--ds-card-padding);
+    border-block-start: var(--ds-border-width) solid var(--border);
+  }
+  [data-slot="step-form-status"] {
+    min-width: 0;
+    color: var(--muted-foreground);
+    font-size: var(--ds-text-label);
+  }
+  [data-slot="header-shell"] {
+    display: flex;
+    flex-direction: column;
+    min-height: var(--ds-header-shell-min-height, 100svh);
+    min-width: 0;
+    background: var(--background);
+  }
+  [data-slot="header-shell-header"] {
+    border-block-end: var(--ds-border-width) solid var(--border);
+  }
+  [data-slot="header-shell-header-content"] {
+    min-height: var(--ds-header-height);
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--ds-toolbar-gap);
+  }
+  [data-slot="header-shell-header-content"],
+  [data-slot="header-shell-secondary-navigation"] > div,
+  [data-slot="header-shell-content"],
+  [data-slot="header-shell-footer"] > div {
+    width: 100%;
+    max-width: var(--ds-content-max-width);
+    margin-inline: auto;
+    padding-inline: var(--ds-page-padding-x);
+  }
+  [data-slot="header-shell-secondary-navigation"] {
+    background: var(--muted);
+  }
+  [data-slot="header-shell-secondary-navigation"] > div {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ds-toolbar-gap);
+    padding-block: var(--ds-control-gap);
+  }
+  [data-slot="header-shell-content"] {
+    flex: 1;
+    min-width: 0;
+    padding-block: var(--ds-page-padding-y);
+  }
+  [data-slot="header-shell-content"]:focus {
+    outline: none;
+  }
+  [data-slot="header-shell-footer"] {
+    color: var(--muted-foreground);
+    font-size: var(--ds-text-label);
+    border-block-start: var(--ds-border-width) solid var(--border);
+  }
+  [data-slot="header-shell-footer"] > div {
+    padding-block: var(--ds-card-padding);
+  }
+  .workflow-aids-gallery,
+  .workflow-aids-example {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-panel-gap);
+    min-width: 0;
+  }
+  .workflow-aids-gallery > div > h2 {
+    font-size: var(--ds-text-section-title);
+    font-weight: var(--ds-weight-semibold);
+  }
+  .workflow-aids-note {
+    color: var(--muted-foreground);
+    font-size: var(--ds-text-label);
+    line-height: var(--ds-leading-normal);
+  }
+  .workflow-aids-gallery [data-slot="tabs-list"] {
+    height: auto;
+    flex-wrap: wrap;
+  }
+  .workflow-agenda-columns {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--ds-section-gap);
+  }
+  .workflow-shell-preview {
+    --ds-header-shell-min-height: 24rem;
+    border: var(--ds-border-width) solid var(--border);
+    border-radius: var(--radius);
+    overflow: clip;
+  }
+  .workflow-shell-heading {
+    font-size: var(--ds-text-section-title);
+    font-weight: var(--ds-weight-semibold);
+    margin-block-end: var(--ds-control-gap);
+  }
+  .workflow-shell-copy {
+    max-width: 65ch;
+    line-height: var(--ds-leading-normal);
+  }
+  @media (min-width: 48rem) {
+    .workflow-agenda-columns {
+      grid-template-columns: auto minmax(0, 1fr);
+    }
+  }
+  @media (max-width: 30rem) {
+    [data-slot="agenda-event"] {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--ds-control-gap);
+    }
+  }
+}

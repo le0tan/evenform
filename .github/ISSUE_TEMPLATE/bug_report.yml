@@ -1,0 +1,24 @@
+name: Bug report
+description: Report a reproducible component, token, or documentation issue.
+body:
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Expected and actual behavior
+      description: Explain the problem and the affected component or page.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Provide minimal code or steps, with screenshots if useful. Redact private data.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Include the commit/version, browser, OS, theme, density, and viewport where relevant.
+    validations:
+      required: true

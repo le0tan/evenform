@@ -1,0 +1,356 @@
+/* Structural breakpoints, list scroll limits and checkbox/icon geometry stay local.
+   Every theme, type, spacing and density value comes from the existing Evenform scale. */
+@layer components {
+  .evenform-tree {
+    display: grid;
+    gap: var(--ds-space-1);
+    min-width: 0;
+    outline: none;
+  }
+  .evenform-tree-item {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-control-gap);
+    min-height: var(--ds-control-height);
+    min-width: 0;
+    padding-inline-start: calc(
+      (var(--tree-item-level, 1) - 1) * var(--ds-space-5) + var(--ds-space-2)
+    );
+    padding-inline-end: var(--ds-space-2);
+    border-radius: var(--radius-md);
+    color: var(--foreground);
+    outline: none;
+    font-size: var(--ds-text-body);
+  }
+  /* React Aria's gridcell uses inline display: contents. The row owns layout. */
+  .evenform-tree-item[data-hovered] {
+    background: var(--muted);
+  }
+  .evenform-tree-item[data-selected] {
+    background: var(--accent);
+    color: var(--accent-foreground);
+  }
+  .evenform-tree-item[data-disabled] {
+    opacity: 0.5;
+  }
+  .evenform-tree-item[data-focus-visible],
+  .evenform-tree-item[data-focus-visible-within],
+  .evenform-tree[data-focus-visible] {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  .evenform-tree-chevron {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: var(--ds-control-height);
+    border-radius: var(--radius-sm);
+    color: inherit;
+    outline: none;
+  }
+  .evenform-tree-item:not([data-has-child-items]) .evenform-tree-chevron {
+    visibility: hidden;
+  }
+  .evenform-tree-chevron svg {
+    transition: transform var(--ds-duration-fast) var(--ds-ease-out);
+  }
+  .evenform-tree-item[data-expanded] .evenform-tree-chevron svg {
+    transform: rotate(90deg);
+  }
+  .evenform-tree-chevron[data-focus-visible],
+  .evenform-tree-checkbox[data-focus-visible] {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  .evenform-tree-label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ds-control-gap);
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .evenform-tree-label > svg {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    color: var(--muted-foreground);
+  }
+  .evenform-tree-checkbox {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ds-control-gap);
+    flex-shrink: 0;
+    border-radius: var(--radius-sm);
+  }
+  .evenform-tree-checkbox-box {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    border: var(--ds-border-width) solid var(--input);
+    border-radius: 4px;
+  }
+  .evenform-tree-checkbox[data-selected] .evenform-tree-checkbox-box {
+    color: var(--primary-foreground);
+    background: var(--primary);
+    border-color: var(--primary);
+  }
+  .evenform-tree-select {
+    display: grid;
+    gap: var(--ds-form-field-gap);
+    min-width: 0;
+  }
+  .evenform-tree-select-label {
+    font-size: var(--ds-text-label);
+    font-weight: var(--ds-weight-medium);
+  }
+  .evenform-tree-select-trigger {
+    width: 100%;
+    min-width: 0;
+    justify-content: space-between;
+  }
+  .evenform-tree-select-trigger > span {
+    flex: 1;
+    min-width: 0;
+    text-align: start;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .evenform-tree-select-trigger [data-placeholder] {
+    color: var(--muted-foreground);
+  }
+  .evenform-tree-select-popup {
+    width: var(--ds-tree-select-width, max(var(--anchor-width), 18rem));
+  }
+  .evenform-tree-select-popup .evenform-tree {
+    max-height: 20rem;
+    overflow-y: auto;
+    padding: var(--ds-space-1);
+  }
+  .evenform-data-caption,
+  .evenform-file-list-copy > small {
+    color: var(--muted-foreground);
+    font-size: var(--ds-text-caption);
+    line-height: var(--ds-leading-normal);
+  }
+  .evenform-data-error {
+    color: var(--destructive);
+    font-size: var(--ds-text-caption);
+    line-height: var(--ds-leading-normal);
+  }
+  .evenform-data-empty {
+    padding: var(--ds-panel-gap);
+    text-align: center;
+    color: var(--muted-foreground);
+    font-size: var(--ds-text-body);
+  }
+  .evenform-transfer {
+    container: evenform-transfer / inline-size;
+    min-width: 0;
+  }
+  .evenform-transfer-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    gap: var(--ds-panel-gap);
+  }
+  .evenform-transfer-pane {
+    min-width: 0;
+    margin: 0;
+    padding: var(--ds-card-padding);
+    border: var(--ds-border-width) solid var(--border);
+    border-radius: var(--radius-lg);
+    display: grid;
+    gap: var(--ds-control-gap);
+  }
+  .evenform-transfer-pane > legend {
+    display: flex;
+    gap: var(--ds-control-gap);
+    padding-inline: var(--ds-space-1);
+    font-size: var(--ds-text-label);
+    font-weight: var(--ds-weight-medium);
+  }
+  .evenform-transfer-pane:nth-child(2) {
+    grid-column: 3;
+  }
+  .evenform-transfer-actions {
+    grid-column: 2;
+    grid-row: 1;
+    display: grid;
+    gap: var(--ds-control-gap);
+  }
+  .evenform-transfer-check-all,
+  .evenform-transfer-item {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-control-gap);
+    min-height: var(--ds-control-height);
+    font-size: var(--ds-text-body);
+  }
+  .evenform-transfer-check-all > .evenform-data-caption {
+    margin-inline-start: auto;
+  }
+  .evenform-transfer input[type="checkbox"] {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    accent-color: var(--primary);
+  }
+  .evenform-transfer input[type="checkbox"]:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+  }
+  .evenform-transfer-item {
+    padding: var(--ds-space-2);
+    border-radius: var(--radius-md);
+  }
+  .evenform-transfer-item:has(input:checked) {
+    background: var(--accent);
+    color: var(--accent-foreground);
+  }
+  .evenform-transfer-item:hover {
+    background: var(--muted);
+  }
+  .evenform-transfer-item[data-disabled],
+  .evenform-transfer-pane:disabled {
+    opacity: 0.5;
+  }
+  .evenform-transfer-list {
+    min-height: 12rem;
+    max-height: 18rem;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .evenform-transfer-item > span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .evenform-transfer-item small {
+    display: block;
+    margin-top: var(--ds-space-1);
+    color: var(--muted-foreground);
+    font-size: var(--ds-text-caption);
+  }
+  .evenform-file-upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--ds-panel-gap);
+    padding: var(--ds-card-padding);
+    border: var(--ds-border-width) dashed var(--input);
+    border-radius: var(--radius-lg);
+    text-align: center;
+    color: var(--foreground);
+  }
+  .evenform-file-upload[data-dragging] {
+    background: var(--accent);
+    border-color: var(--ring);
+  }
+  .evenform-file-upload:focus-within {
+    border-color: var(--ring);
+  }
+  .evenform-file-upload[data-disabled] {
+    opacity: 0.5;
+  }
+  .evenform-file-upload > svg {
+    color: var(--muted-foreground);
+  }
+  .evenform-file-upload-copy {
+    display: grid;
+    gap: var(--ds-form-field-gap);
+  }
+  .evenform-file-upload-copy > p {
+    margin: 0;
+    font-size: var(--ds-text-body);
+    font-weight: var(--ds-weight-medium);
+  }
+  .evenform-file-list {
+    display: grid;
+    gap: var(--ds-control-gap);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+  .evenform-file-list-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--ds-control-gap);
+    padding-block: var(--ds-space-3);
+    font-size: var(--ds-text-body);
+  }
+  .evenform-file-list-item > svg {
+    flex-shrink: 0;
+    color: var(--muted-foreground);
+    margin-top: var(--ds-space-1);
+  }
+  .evenform-file-list-copy {
+    flex: 1;
+    min-width: 0;
+    display: grid;
+    gap: var(--ds-space-1);
+    overflow-wrap: anywhere;
+  }
+  .evenform-file-list-copy > [data-slot="progress"] {
+    margin-top: var(--ds-space-1);
+  }
+  .evenform-structured-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--ds-panel-gap);
+  }
+  .evenform-structured-example {
+    display: grid;
+    align-content: start;
+    min-width: 0;
+    gap: var(--ds-form-group-gap);
+  }
+  .evenform-structured-feedback {
+    display: grid;
+    gap: var(--ds-form-field-gap);
+    margin: 0;
+    padding-inline-start: var(--ds-space-5);
+  }
+  @container evenform-transfer (max-width: 42rem) {
+    .evenform-transfer-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .evenform-transfer-pane:nth-child(2) {
+      grid-column: 1;
+      grid-row: 3;
+    }
+    .evenform-transfer-actions {
+      grid-column: 1;
+      grid-row: 2;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .evenform-transfer-actions button {
+      white-space: normal;
+      height: auto;
+      min-height: var(--ds-control-height);
+    }
+  }
+  @media (max-width: 48rem) {
+    .evenform-structured-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  @media (pointer: coarse) {
+    .evenform-tree-item,
+    .evenform-tree-chevron,
+    .evenform-transfer-check-all,
+    .evenform-transfer-item {
+      min-height: 44px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .evenform-tree-chevron svg {
+      transition: none;
+    }
+  }
+}

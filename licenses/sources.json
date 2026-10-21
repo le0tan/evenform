@@ -1,0 +1,38 @@
+[
+  {
+    "file": "shadcn-ui.txt",
+    "url": "https://raw.githubusercontent.com/shadcn-ui/ui/main/LICENSE.md",
+    "reviewed": "2026-10-21",
+    "packages": ["shadcn@4.22.1"]
+  },
+  {
+    "file": "visactor-vchart.txt",
+    "url": "https://raw.githubusercontent.com/VisActor/VChart/v2.2.0/LICENSE",
+    "reviewed": "2026-10-21",
+    "packages": ["@visactor/vchart@2.2.0", "@visactor/vutils-extension@2.2.0"]
+  },
+  {
+    "file": "visactor-vrender.txt",
+    "url": "https://raw.githubusercontent.com/VisActor/VRender/v1.1.12/LICENSE",
+    "reviewed": "2026-10-21",
+    "packages": ["@visactor/vrender@1.1.12", "@visactor/vrender-animate@1.1.12", "@visactor/vrender-components@1.1.12", "@visactor/vrender-core@1.1.12", "@visactor/vrender-kits@1.1.12"]
+  },
+  {
+    "file": "visactor-vutil.txt",
+    "url": "https://raw.githubusercontent.com/VisActor/VUtil/v1.0.28/LICENSE",
+    "reviewed": "2026-10-21",
+    "packages": ["@visactor/vdataset@1.0.28", "@visactor/vlayouts@1.0.28", "@visactor/vscale@1.0.28", "@visactor/vutils@1.0.28"]
+  },
+  {
+    "file": "embla-carousel.txt",
+    "url": "https://raw.githubusercontent.com/davidjerleke/embla-carousel/v8.6.0/LICENSE",
+    "reviewed": "2026-10-21",
+    "packages": ["embla-carousel@8.6.0", "embla-carousel-react@8.6.0", "embla-carousel-reactive-utils@8.6.0"]
+  },
+  {
+    "file": "react-remove-scroll-bar.txt",
+    "url": "https://raw.githubusercontent.com/theKashey/react-remove-scroll-bar/master/LICENSE",
+    "reviewed": "2026-10-21",
+    "packages": ["react-remove-scroll-bar@2.3.8"]
+  }
+]

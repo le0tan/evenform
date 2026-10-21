@@ -1,0 +1,32 @@
+@layer components {
+  .catalog { container: evenform-catalog / inline-size; }
+  .component-browser { min-width: 0; }
+  .component-browser > .showcase-page-panel { display: flex; flex-direction: column; gap: var(--ds-section-gap); }
+  /* Documentation occupies a muted header; the live example stays on the canvas. */
+  .component-browser .page-section {
+    padding: var(--ds-panel-gap);
+    border: var(--ds-border-width) solid var(--border);
+    border-radius: var(--radius-lg);
+  }
+  .component-browser .page-section > .section-header {
+    margin: calc(-1 * var(--ds-panel-gap)) calc(-1 * var(--ds-panel-gap)) 0;
+    padding: var(--ds-space-4) var(--ds-panel-gap);
+    border-bottom: var(--ds-border-width) solid var(--border);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    background: var(--muted);
+  }
+  .catalog-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--ds-panel-gap); }
+  .catalog-example { display: flex; flex-direction: column; align-items: stretch; min-width: 0; gap: var(--ds-form-group-gap); }
+  .catalog-fieldset { border: 0; min-width: 0; padding: 0; margin: 0; }
+  .catalog-fieldset legend, .catalog-label { display: block; font-size: var(--ds-text-label); font-weight: var(--ds-weight-medium); margin-bottom: var(--ds-form-field-gap); }
+  .catalog-choice { display: flex; align-items: flex-start; gap: var(--ds-control-gap); font-size: var(--ds-text-label); cursor: pointer; }
+  .catalog-choice [data-slot='radio-group-item'] { margin-top: 2px; }
+  .catalog-choice:has([data-disabled]) { color: var(--muted-foreground); cursor: default; }
+  .catalog-choice small { display: block; font-size: var(--ds-text-caption); color: var(--muted-foreground); margin-top: var(--ds-space-1); }
+  .catalog-range output { float: inline-end; font-weight: var(--ds-weight-normal); color: var(--muted-foreground); font-variant-numeric: tabular-nums; }
+  .catalog-pagination { display: flex; flex-direction: column; gap: var(--ds-control-gap); align-items: flex-start; }
+  .catalog .evenform-combobox-input { width: 100%; }
+  .catalog [data-slot='combobox-chips'] input { width: 8rem; flex: 1; }
+  @container evenform-catalog (max-width: 42rem) { .catalog-grid { grid-template-columns: minmax(0, 1fr); gap: var(--ds-section-gap); } }
+  @media (max-width: 760px) { .catalog-grid { grid-template-columns: minmax(0, 1fr); gap: var(--ds-section-gap); } }
+}

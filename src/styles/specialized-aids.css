@@ -1,0 +1,49 @@
+@layer components {
+  .evenform-watermark { position: relative; isolation: isolate; min-width: 0; }
+  .evenform-watermark-content { position: relative; z-index: 0; }
+  .evenform-watermark-layer { position: absolute; inset: 0; overflow: hidden; pointer-events: none; user-select: none; z-index: 1; opacity: var(--ds-watermark-opacity, .12); color: var(--ds-watermark-color, var(--foreground)); }
+  .evenform-watermark-measure { position: absolute; visibility: hidden; width: var(--ds-watermark-tile-width, calc(var(--ds-control-height) * 7)); height: var(--ds-watermark-tile-height, calc(var(--ds-control-height) * 4)); }
+  .evenform-watermark-layer > svg { position: absolute; inset: 0; }
+  .evenform-watermark-mark { transform: rotate(var(--ds-watermark-angle, -22deg)); transform-origin: center; transform-box: fill-box; fill: currentColor; font-family: var(--ds-font-body); font-size: var(--ds-watermark-font-size, var(--ds-text-label)); font-weight: var(--ds-weight-medium); }
+  .evenform-countdown { font-variant-numeric: tabular-nums; font-family: var(--ds-countdown-font, var(--ds-font-mono)); font-size: var(--ds-countdown-size, var(--ds-text-body)); color: var(--foreground); }
+  .evenform-countdown[data-invalid] { color: var(--destructive); }
+  .evenform-mentions { position: relative; min-width: 0; width: 100%; font-family: var(--ds-font-body); font-size: var(--ds-text-body); line-height: var(--ds-line-height-body); }
+  .evenform-mentions-control { --_mentions-radius: var(--ds-mentions-radius, var(--ds-radius-base)); --_mentions-border-width: var(--ds-border-width); --_mentions-background: var(--ds-mentions-background, var(--background)); position: relative; border: var(--_mentions-border-width) solid var(--input); border-radius: var(--_mentions-radius); background: var(--_mentions-background); }
+  .evenform-mentions-control:focus-within { outline: 2px solid var(--ring); outline-offset: 2px; }
+  .evenform-mentions-control:has(:disabled) { opacity: .5; }
+  .evenform-mentions-control:has([aria-invalid=true]) { border-color: var(--destructive); }
+  .evenform-mentions-input, .evenform-mentions-highlighter { box-sizing: border-box; margin: 0; padding: var(--ds-mentions-padding-y, var(--ds-space-2)) var(--ds-mentions-padding-x, var(--ds-control-padding-x)); font: inherit; letter-spacing: inherit; text-align: start; tab-size: 2; }
+  .evenform-mentions-input { position: relative; display: block; width: 100%; min-height: var(--ds-mentions-height, var(--ds-textarea-min-height)); border: 0; outline: none; color: var(--foreground); background: transparent; resize: vertical; overflow: auto; white-space: pre-wrap; overflow-wrap: break-word; }
+  .evenform-mentions-input[data-single-line] { min-height: var(--ds-input-height); height: var(--ds-input-height); padding-block: 0; white-space: pre; }
+  .evenform-mentions-highlighter { width: 100%; overflow: hidden; color: transparent; pointer-events: none; white-space: pre-wrap; overflow-wrap: break-word; }
+  .evenform-mentions-highlighter[data-single-line] { display: flex; align-items: center; padding-block: 0; white-space: pre; }
+  .evenform-mentions-substring { display: inline; color: transparent; white-space: inherit; }
+  .evenform-mentions-caret { position: relative; display: inline-block; width: 0; height: 0; vertical-align: baseline; }
+  .evenform-mention { --_mention-background: var(--ds-mentions-highlight, var(--muted)); font: inherit; color: transparent; padding: 0; border-radius: 0; }
+  .evenform-mention[data-mention-selection] { --_mention-background: var(--ds-mentions-selected-highlight, var(--secondary)); }
+  .evenform-mentions-suggestions { --_mentions-list-min-width: min(14rem, calc(100vw - var(--ds-page-padding-x) * 2)); z-index: 100; min-width: var(--_mentions-list-min-width); max-width: calc(100vw - var(--ds-page-padding-x) * 2); border: var(--ds-border-width) solid var(--border); border-radius: var(--ds-radius-base); background: var(--popover); color: var(--popover-foreground); overflow: hidden; }
+  .evenform-mentions-list { --_mentions-list-height: var(--ds-mentions-list-height, 16rem); margin: 0; padding: var(--ds-space-1); max-height: var(--_mentions-list-height); list-style: none; overflow-y: auto; }
+  .evenform-mentions-option { cursor: pointer; margin: 0; min-height: var(--ds-select-item-height); padding: var(--ds-space-2) var(--ds-control-padding-x); color: var(--popover-foreground); font-size: var(--ds-text-body); }
+  .evenform-mentions-option[data-focused=true], .evenform-mentions-option:hover { background: var(--muted); color: var(--foreground); }
+  .evenform-mentions-match { color: inherit; font-weight: var(--ds-weight-semibold); }
+  .evenform-mentions-status, .evenform-mentions-loading { padding: var(--ds-space-3) var(--ds-control-padding-x); color: var(--muted-foreground); font-size: var(--ds-text-caption); }
+  .evenform-mentions-spinner { display: flex; align-items: center; gap: var(--ds-space-1); padding: 0; border: 0; background: transparent; color: var(--muted-foreground); }
+  .evenform-mentions-spinner-dot { display: inline-block; width: var(--ds-space-1); height: var(--ds-space-1); border-radius: 50%; background: currentColor; }
+  .evenform-mentions-inline { position: absolute; pointer-events: none; color: var(--muted-foreground); }
+  .evenform-mentions-inline-prefix { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+}
+
+@layer components {
+  .evenform-specialized-gallery { display: flex; flex-direction: column; gap: var(--ds-section-gap); min-width: 0; }
+  .evenform-specialized-stack { display: flex; flex-direction: column; gap: var(--ds-form-field-gap); min-width: 0; }
+  .evenform-specialized-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--ds-panel-gap); }
+  .evenform-specialized-person { display: flex; align-items: baseline; flex-wrap: wrap; justify-content: space-between; gap: var(--ds-control-gap); }
+  .evenform-specialized-output { margin: 0; display: grid; gap: var(--ds-form-field-gap); font-size: var(--ds-text-caption); }
+  .evenform-specialized-output > div { display: grid; grid-template-columns: minmax(7rem, 9rem) minmax(0, 1fr); gap: var(--ds-control-gap); }
+  .evenform-specialized-output dt { color: var(--muted-foreground); }
+  .evenform-specialized-output dd { margin: 0; overflow-wrap: anywhere; white-space: pre-wrap; }
+  .evenform-specialized-countdown { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--ds-panel-gap); }
+  .evenform-specialized-countdown .evenform-countdown { --ds-countdown-size: var(--ds-text-page-title); }
+  .evenform-specialized-watermark { padding: var(--ds-card-padding); min-height: 12rem; border: var(--ds-border-width) solid var(--border); border-radius: var(--ds-radius-base); overflow: hidden; }
+  @media (max-width: 40rem) { .evenform-specialized-grid { grid-template-columns: minmax(0, 1fr); } .evenform-specialized-output > div { grid-template-columns: minmax(0, 1fr); } }
+}

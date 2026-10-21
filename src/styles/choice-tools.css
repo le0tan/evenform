@@ -1,0 +1,47 @@
+@layer components {
+  .evenform-color-picker { display: flex; flex-direction: column; gap: var(--ds-form-group-gap); min-width: 0; max-width: var(--ds-color-picker-width, 20rem); border: 0; margin: 0; padding: 0; }
+  .evenform-color-picker > legend { margin-bottom: var(--ds-form-field-gap); }
+  .evenform-color-area { width: 100%; aspect-ratio: var(--ds-color-area-ratio, 1.6); border-radius: var(--radius-lg); touch-action: none; }
+  .evenform-color-slider { display: grid; gap: var(--ds-form-field-gap); }
+  .evenform-color-track { height: 16px; border-radius: var(--radius-md); touch-action: none; }
+  .evenform-color-thumb { width: 20px; height: 20px; border: 2px solid var(--background); border-radius: 50%; box-shadow: 0 0 0 1px var(--foreground); outline: none; }
+  .evenform-color-thumb[data-focus-visible] { outline: 2px solid var(--ring); outline-offset: 3px; }
+  .evenform-color-slider[data-orientation='vertical'] .evenform-color-track { height: 12rem; width: 16px; }
+  .evenform-color-area[data-disabled], .evenform-color-slider[data-disabled] { opacity: .5; }
+  .evenform-color-value { display: flex; align-items: flex-end; gap: var(--ds-control-gap); }
+  .evenform-color-field { flex: 1; }
+  .evenform-color-input { width: 100%; min-width: 0; height: var(--ds-input-control-height, var(--ds-input-height)); padding-inline: var(--ds-control-padding-x); border: var(--ds-border-width) solid var(--input); border-radius: var(--radius-lg); background: transparent; font-size: var(--ds-text-body); outline: none; }
+  .evenform-color-input[data-focus-visible] { outline: 2px solid var(--ring); outline-offset: 2px; }
+  .evenform-color-input[aria-invalid='true'] { border-color: var(--destructive); }
+  .evenform-color-swatch { width: var(--ds-control-height); height: var(--ds-control-height); flex: none; border: var(--ds-border-width) solid var(--border); border-radius: var(--radius-lg); }
+  .evenform-command { display: flex; flex-direction: column; min-width: 0; width: 100%; color: var(--popover-foreground); background: var(--popover); }
+  .evenform-command-search { display: flex; align-items: center; gap: var(--ds-control-gap); border-bottom: var(--ds-border-width) solid var(--border); padding-inline: var(--ds-control-padding-x); }
+  .evenform-command-search > svg { flex: none; color: var(--muted-foreground); }
+  .evenform-command-input { width: 100%; min-width: 0; height: calc(var(--ds-control-height) + var(--ds-space-4)); background: transparent; outline: none; font-size: var(--ds-text-body); }
+  .evenform-command-input::placeholder { color: var(--muted-foreground); }
+  .evenform-command-list { max-height: var(--ds-command-list-height, min(22rem, 55svh)); overflow-y: auto; overscroll-behavior: contain; padding: var(--ds-space-1); }
+  .evenform-command-empty { padding: var(--ds-card-padding); color: var(--muted-foreground); text-align: center; font-size: var(--ds-text-label); }
+  .evenform-command-group [cmdk-group-heading] { padding: var(--ds-space-2) var(--ds-control-padding-x); color: var(--muted-foreground); font-size: var(--ds-text-caption); }
+  .evenform-command-item { display: flex; align-items: center; gap: var(--ds-control-gap); min-height: var(--ds-select-item-height); padding: var(--ds-select-item-padding-y) var(--ds-control-padding-x); border-radius: var(--radius-md); font-size: var(--ds-text-body); cursor: pointer; }
+  .evenform-command-item[data-selected='true'] { background: var(--accent); color: var(--accent-foreground); }
+  .evenform-command-item[data-disabled='true'] { opacity: .5; pointer-events: none; }
+  .evenform-command-item > svg { width: 16px; height: 16px; flex: none; }
+  .evenform-command-separator { height: var(--ds-border-width); margin: var(--ds-space-1) 0; background: var(--border); }
+  .evenform-command-shortcut { margin-inline-start: auto; color: var(--muted-foreground); font-size: var(--ds-text-caption); }
+  @media (pointer: coarse) { .evenform-command-item, .evenform-color-input, .evenform-color-swatch { min-height: 44px; } }
+}
+@layer components {
+  .evenform-cascader { display: flex; flex-direction: column; gap: var(--ds-form-field-gap); min-width: 0; }
+  .evenform-cascader-trigger-row { display: flex; flex-wrap: wrap; gap: var(--ds-control-gap); }
+  .evenform-cascader-trigger { justify-content: space-between; min-width: 0; width: 100%; }
+  .evenform-cascader-trigger > span { overflow-wrap: anywhere; white-space: normal; text-align: start; }
+  .evenform-cascader-popup { width: auto; max-width: calc(100vw - var(--ds-space-4)); }
+  .evenform-cascader-path { display: flex; flex-wrap: wrap; gap: var(--ds-space-1); }
+  .evenform-cascader-columns { display: flex; gap: var(--ds-control-gap); overflow-x: auto; max-width: 100%; }
+  .evenform-cascader-list { width: var(--ds-cascader-column-width, 11rem); flex: none; max-height: min(18rem, 50svh); overflow-y: auto; outline: none; }
+  .evenform-cascader-option { display: flex; align-items: center; justify-content: space-between; gap: var(--ds-control-gap); min-height: var(--ds-select-item-height); padding: var(--ds-select-item-padding-y) var(--ds-control-padding-x); border-radius: var(--radius-md); font-size: var(--ds-text-body); cursor: pointer; outline: none; }
+  .evenform-cascader-option[data-hovered], .evenform-cascader-option[data-selected] { background: var(--accent); color: var(--accent-foreground); }
+  .evenform-cascader-option[data-focus-visible] { outline: 2px solid var(--ring); outline-offset: -2px; }
+  .evenform-cascader-option[data-disabled] { opacity: .5; cursor: default; }
+  @media (pointer: coarse) { .evenform-cascader-option { min-height: 44px; } }
+}

@@ -1,0 +1,71 @@
+import { useId, type ComponentProps, type ReactNode } from "react"
+import { cn } from "@/lib/utils"
+
+export interface HeaderShellProps extends Omit<
+  ComponentProps<"div">,
+  "children"
+> {
+  header: ReactNode
+  children: ReactNode
+  secondaryNavigation?: ReactNode
+  secondaryNavigationLabel?: string
+  footer?: ReactNode
+  mainId?: string
+  skipLabel?: string
+  /** Use div only when embedding the shell inside an existing main landmark.
+   * With the default main, children must be content rather than another main. */
+  contentAs?: "main" | "div"
+  contentClassName?: string
+}
+/** A page shell without persistent sidebar navigation. Owns one main landmark. */
+export function HeaderShell({
+  header,
+  children,
+  secondaryNavigation,
+  secondaryNavigationLabel = "Section navigation",
+  footer,
+  mainId,
+  skipLabel = "Skip to content",
+  contentAs: Content = "main",
+  contentClassName,
+  className,
+  ...props
+}: HeaderShellProps) {
+  const id = useId()
+  const contentId = mainId ?? `header-shell-${id}`
+  return (
+    <div
+      data-slot="header-shell"
+      className={cn("evenform-header-shell", className)}
+      {...props}
+    >
+      <a className="skip-link" href={`#${contentId}`}>
+        {skipLabel}
+      </a>
+      <header data-slot="header-shell-header">
+        <div data-slot="header-shell-header-content">{header}</div>
+      </header>
+      {secondaryNavigation && (
+        <nav
+          data-slot="header-shell-secondary-navigation"
+          aria-label={secondaryNavigationLabel}
+        >
+          <div>{secondaryNavigation}</div>
+        </nav>
+      )}
+      <Content
+        id={contentId}
+        tabIndex={-1}
+        data-slot="header-shell-content"
+        className={contentClassName}
+      >
+        {children}
+      </Content>
+      {footer && (
+        <footer data-slot="header-shell-footer">
+          <div>{footer}</div>
+        </footer>
+      )}
+    </div>
+  )
+}

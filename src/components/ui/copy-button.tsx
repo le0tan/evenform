@@ -1,0 +1,100 @@
+import { useEffect, useRef, useState, type ComponentProps } from "react"
+import { CheckIcon, CopyIcon, LoaderCircleIcon } from "lucide-react"
+import { Button } from "@/components/ui/button"
+
+type CopyButtonProps = Omit<
+  ComponentProps<typeof Button>,
+  "onCopy" | "value"
+> & {
+  value: string | (() => string | Promise<string>)
+  label?: string
+  copiedLabel?: string
+  errorLabel?: string
+  onCopy?: (value: string) => void
+  onCopyError?: (error: unknown) => void
+}
+
+function CopyButton({
+  value,
+  label = "Copy",
+  copiedLabel = "Copied",
+  errorLabel = "Copy failed. Try again.",
+  onCopy,
+  onCopyError,
+  children,
+  onClick,
+  disabled,
+  variant = "outline",
+  ...props
+}: CopyButtonProps) {
+  const [status, setStatus] = useState<"idle" | "copying" | "copied" | "error">(
+    "idle"
+  )
+  const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
+  const pending = useRef(false)
+  const mounted = useRef(true)
+  useEffect(() => {
+    mounted.current = true
+    return () => {
+      mounted.current = false
+      clearTimeout(timer.current)
+    }
+  }, [])
+  const text =
+    status === "copied" ? copiedLabel : status === "error" ? errorLabel : label
+  return (
+    <span data-slot="copy-button" className="evenform-copy-button">
+      <Button
+        {...props}
+        variant={variant}
+        disabled={disabled || status === "copying"}
+        aria-busy={status === "copying" || undefined}
+        onClick={async (event) => {
+          onClick?.(event)
+          if (event.defaultPrevented || pending.current) return
+          pending.current = true
+          clearTimeout(timer.current)
+          setStatus("copying")
+          let copiedValue: string | undefined
+          try {
+            const result = typeof value === "function" ? await value() : value
+            if (!navigator.clipboard?.writeText)
+              throw new Error(
+                "Clipboard requires a secure context and browser permission."
+              )
+            await navigator.clipboard.writeText(result)
+            if (mounted.current) {
+              setStatus("copied")
+              timer.current = setTimeout(() => setStatus("idle"), 2500)
+            }
+            copiedValue = result
+          } catch (error) {
+            if (mounted.current) setStatus("error")
+            onCopyError?.(error)
+          } finally {
+            pending.current = false
+          }
+          if (copiedValue !== undefined) onCopy?.(copiedValue)
+        }}
+      >
+        {status === "copied" ? (
+          <CheckIcon aria-hidden="true" />
+        ) : status === "copying" ? (
+          <LoaderCircleIcon aria-hidden="true" />
+        ) : (
+          <CopyIcon aria-hidden="true" />
+        )}
+        {children ?? text}
+      </Button>
+      <span className="sr-only" role="status">
+        {status === "copied"
+          ? copiedLabel
+          : status === "error"
+            ? errorLabel
+            : ""}
+      </span>
+    </span>
+  )
+}
+
+export { CopyButton, type CopyButtonProps }

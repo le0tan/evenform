@@ -1,0 +1,17 @@
+name: Feature request
+description: Propose a focused capability or improvement.
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or task
+      description: What user task is difficult with the current components?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior and alternatives
+      description: Describe the desired API or interaction and any existing compositions considered.
+    validations:
+      required: true

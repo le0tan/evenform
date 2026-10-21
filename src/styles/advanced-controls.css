@@ -1,0 +1,157 @@
+/* New controls share the established density and state semantics. Popup widths,
+   scrollbar rails and OTP glyph geometry are local component parameters. */
+@layer components {
+  .evenform-menubar,
+  .evenform-navigation-list,
+  .evenform-editor-toolbar,
+  .evenform-editor-toolbar-group {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-space-1);
+    max-width: 100%;
+  }
+  .evenform-menubar, .evenform-editor-toolbar { flex-wrap: wrap; }
+  .evenform-navigation-list { flex-wrap: wrap; list-style: none; margin: 0; padding: 0; }
+  .evenform-menubar[data-orientation="vertical"],
+  .evenform-editor-toolbar[data-orientation="vertical"],
+  .evenform-editor-toolbar-group[data-orientation="vertical"] { flex-direction: column; align-items: stretch; }
+  .evenform-menu-bar-trigger,
+  .evenform-editor-toolbar-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    gap: var(--ds-control-gap);
+    min-height: var(--ds-control-height);
+    padding-inline: var(--ds-control-padding-x);
+    border-radius: var(--radius-md);
+    color: var(--foreground);
+    font-size: var(--ds-text-body);
+    font-weight: var(--ds-weight-medium);
+    outline: none;
+  }
+  .evenform-menu-bar-trigger:hover,
+  .evenform-menu-bar-trigger[data-popup-open],
+  .evenform-menu-bar-trigger[data-open],
+  .evenform-editor-toolbar-button:hover,
+  .evenform-editor-toolbar-button[aria-pressed="true"] { background: var(--accent); color: var(--accent-foreground); }
+  .evenform-menu-bar-trigger[data-disabled],
+  .evenform-editor-toolbar-button[data-disabled] { opacity: 0.5; cursor: not-allowed; }
+  .evenform-menu-bar-trigger > svg,
+  .evenform-editor-toolbar-button > svg { width: 16px; height: 16px; }
+  .evenform-navigation-content {
+    display: grid;
+    width: var(--ds-navigation-content-width, 22rem);
+    max-width: calc(100vw - var(--ds-space-8));
+    gap: var(--ds-space-1);
+    padding: var(--ds-space-2);
+  }
+  .evenform-navigation-popup { overflow: hidden; }
+  .evenform-navigation-viewport { position: relative; width: 100%; height: 100%; }
+  .evenform-navigation-link {
+    display: grid;
+    gap: var(--ds-space-1);
+    padding: var(--ds-space-3);
+    border-radius: var(--radius-md);
+    color: var(--foreground);
+    text-decoration: none;
+    font-size: var(--ds-text-body);
+    outline: none;
+  }
+  .evenform-navigation-link:hover,
+  .evenform-navigation-link[data-active] { background: var(--accent); color: var(--accent-foreground); }
+  .evenform-preview-card { display: grid; gap: var(--ds-space-3); width: var(--ds-preview-card-width, 20rem); padding: var(--ds-overlay-gap); }
+  .evenform-scroll-area { position: relative; overflow: hidden; min-width: 0; }
+  .evenform-scroll-viewport { width: 100%; height: 100%; overscroll-behavior: contain; border-radius: inherit; outline: none; }
+  .evenform-scroll-content { min-width: 100%; }
+  .evenform-scrollbar {
+    display: flex;
+    padding: 2px;
+    background: transparent;
+    opacity: 0;
+    transition: opacity var(--ds-duration-fast) var(--ds-ease-out);
+    user-select: none;
+    touch-action: none;
+  }
+  .evenform-scrollbar[data-orientation="vertical"] { width: var(--ds-scrollbar-size, 10px); margin: 2px; }
+  .evenform-scrollbar[data-orientation="horizontal"] { height: var(--ds-scrollbar-size, 10px); margin: 2px; }
+  .evenform-scrollbar[data-hovering],
+  .evenform-scrollbar[data-scrolling],
+  .evenform-scroll-area:focus-within .evenform-scrollbar { opacity: 1; }
+  .evenform-scroll-thumb { flex-shrink: 0; width: 100%; border-radius: 99px; background: color-mix(in oklab, var(--muted-foreground) 65%, var(--background)); }
+  .evenform-scroll-thumb[data-orientation="horizontal"] { height: 100%; }
+  .evenform-scroll-thumb:hover { background: var(--muted-foreground); }
+  .evenform-scroll-corner { background: transparent; }
+  .evenform-meter { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: var(--ds-form-field-gap); width: 100%; }
+  .evenform-meter-label { font-size: var(--ds-text-label); font-weight: var(--ds-weight-medium); }
+  .evenform-meter-value { color: var(--muted-foreground); font-size: var(--ds-text-label); font-variant-numeric: tabular-nums; }
+  .evenform-meter-track { grid-column: 1 / -1; overflow: hidden; height: var(--ds-meter-track-size, var(--ds-space-2)); border-radius: 99px; background: var(--muted); }
+  .evenform-meter-indicator { height: 100%; background: var(--primary); border-radius: inherit; }
+  .evenform-otp-field { display: flex; flex-wrap: wrap; gap: var(--ds-space-2); align-items: center; }
+  .evenform-otp-input {
+    width: var(--ds-otp-input-width, var(--ds-control-height));
+    min-width: 0;
+    height: var(--ds-input-control-height, var(--ds-input-height));
+    border: var(--ds-border-width) solid var(--input);
+    border-radius: var(--radius-lg);
+    background: transparent;
+    color: var(--foreground);
+    text-align: center;
+    font-size: var(--ds-text-body);
+    font-variant-numeric: tabular-nums;
+    outline: none;
+  }
+  .evenform-otp-input[data-invalid], .evenform-otp-input[aria-invalid="true"] { border-color: var(--destructive); }
+  .evenform-otp-input[data-disabled] { opacity: 0.5; cursor: not-allowed; }
+  .evenform-otp-separator { width: var(--ds-space-2); height: var(--ds-border-width); background: var(--muted-foreground); }
+  .evenform-editor-toolbar { gap: var(--ds-control-gap); }
+  .evenform-editor-toolbar-input { min-width: 0; height: var(--ds-control-height); padding-inline: var(--ds-control-padding-x); background: transparent; border: var(--ds-border-width) solid var(--input); border-radius: var(--radius-md); font-size: var(--ds-text-body); outline: none; }
+  .evenform-editor-toolbar-separator { height: var(--ds-space-5); width: var(--ds-border-width); background: var(--border); margin-inline: var(--ds-space-1); }
+  .evenform-editor-toolbar-separator[data-orientation="horizontal"] { width: 100%; height: var(--ds-border-width); margin-block: var(--ds-space-1); }
+  .evenform-toast-viewport {
+    position: fixed;
+    z-index: 60;
+    inset-block-end: max(var(--ds-space-4), env(safe-area-inset-bottom));
+    inset-inline-end: max(var(--ds-space-4), env(safe-area-inset-right));
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: var(--ds-space-2);
+    width: min(var(--ds-toast-width, 24rem), calc(100vw - var(--ds-space-8)));
+    outline: none;
+  }
+  .evenform-toast {
+    position: relative;
+    flex-shrink: 0;
+    border-radius: var(--radius-lg);
+    background: var(--popover);
+    color: var(--popover-foreground);
+    box-shadow: var(--ds-shadow-overlay);
+    transform: translate(var(--toast-swipe-movement-x, 0px), var(--toast-swipe-movement-y, 0px));
+    transition: opacity var(--ds-duration-fast) var(--ds-ease-out), transform var(--ds-duration-fast) var(--ds-ease-out);
+    outline: none;
+  }
+  .evenform-toast[data-starting-style], .evenform-toast[data-ending-style] { opacity: 0; transform: translateY(var(--ds-space-2)); }
+  .evenform-toast[data-limited] { display: none; }
+  .evenform-toast[data-swiping] { transition: none; }
+  .evenform-toast-content { display: flex; align-items: flex-start; gap: var(--ds-control-gap); padding: var(--ds-card-padding); }
+  .evenform-toast-copy { display: grid; flex: 1; min-width: 0; gap: var(--ds-space-1); overflow-wrap: anywhere; }
+  .evenform-toast-title { font-size: var(--ds-text-body); font-weight: var(--ds-weight-semibold); }
+  .evenform-toast-description { color: var(--muted-foreground); font-size: var(--ds-text-label); line-height: var(--ds-leading-normal); }
+  .evenform-toast-action { justify-self: start; min-height: var(--ds-control-height); border-radius: var(--radius-md); font-size: var(--ds-text-label); font-weight: var(--ds-weight-medium); text-decoration: underline; text-underline-offset: 3px; }
+  .evenform-toast-close { display: inline-flex; flex-shrink: 0; align-items: center; justify-content: center; width: var(--ds-control-height); height: var(--ds-control-height); margin-block-start: calc(-1 * var(--ds-space-1)); margin-inline-end: calc(-1 * var(--ds-space-1)); border-radius: var(--radius-md); color: var(--muted-foreground); outline: none; }
+  .evenform-toast-close:hover { color: var(--foreground); background: var(--muted); }
+  .evenform-menu-bar-trigger:focus-visible, .evenform-editor-toolbar-button:focus-visible,
+  .evenform-editor-toolbar-input:focus-visible, .evenform-navigation-link:focus-visible,
+  .evenform-scroll-viewport:focus-visible, .evenform-otp-input:focus-visible,
+  .evenform-toast-close:focus-visible, .evenform-toast-action:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+  @media (pointer: coarse) {
+    .evenform-menu-bar-trigger, .evenform-editor-toolbar-button, .evenform-editor-toolbar-input,
+    .evenform-otp-input, .evenform-toast-close, .evenform-toast-action { min-height: 44px; }
+    .evenform-otp-input, .evenform-toast-close { min-width: 44px; }
+    .evenform-scrollbar { opacity: 1; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .evenform-toast, .evenform-scrollbar { transition: none; }
+  }
+}
