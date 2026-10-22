@@ -8,6 +8,7 @@ import timeGridPlugin from "@fullcalendar/react/timegrid"
 import interactionPlugin from "@fullcalendar/react/interaction"
 import classicThemePlugin from "@fullcalendar/react/themes/classic"
 import { cn } from "@/lib/utils"
+import "./event-calendar.css"
 
 export interface EventCalendarProps extends CalendarOptions {
   ref?: Ref<CalendarRef>

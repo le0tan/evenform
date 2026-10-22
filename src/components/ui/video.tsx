@@ -1,5 +1,5 @@
 import type { ComponentProps } from "react"
-import { cn } from "cn"
+import { cn } from "@/lib/utils"
 
 /** Uses native playback, captions, keyboard controls and browser media settings. */
 function Video({

@@ -1,5 +1,5 @@
 import { useId, type ComponentProps, type ReactNode } from "react"
-import { cn } from "cn"
+import { cn } from "@/lib/utils"
 import { CopyButton } from "@/components/ui/copy-button"
 
 type CodeBlockProps = Omit<ComponentProps<"figure">, "children"> & {

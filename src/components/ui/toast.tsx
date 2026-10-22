@@ -1,7 +1,7 @@
 import { Toast as ToastPrimitive } from "@base-ui/react/toast"
 import { useEffect, type CSSProperties } from "react"
 import { XIcon } from "lucide-react"
-import { cn } from "cn"
+import { cn } from "@/lib/utils"
 const ToastProvider = ToastPrimitive.Provider
 const ToastPortal = ToastPrimitive.Portal
 const useToastManager = ToastPrimitive.useToastManager

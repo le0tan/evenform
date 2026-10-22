@@ -1,5 +1,5 @@
 import { OTPField as OTPFieldPrimitive } from "@base-ui/react/otp-field"
-import { cn } from "cn"
+import { cn } from "@/lib/utils"
 function OTPFieldRoot({ className, ...props }: OTPFieldPrimitive.Root.Props) {
   return <OTPFieldPrimitive.Root data-slot="OTPFieldRoot" className={(state) => cn("evenform-otp-field", typeof className === "function" ? className(state) : className)} {...props} />
 }

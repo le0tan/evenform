@@ -1,5 +1,5 @@
 import { Meter as MeterPrimitive } from "@base-ui/react/meter"
-import { cn } from "cn"
+import { cn } from "@/lib/utils"
 function MeterRoot({ className, ...props }: MeterPrimitive.Root.Props) {
   return <MeterPrimitive.Root data-slot="MeterRoot" className={(state) => cn("evenform-meter", typeof className === "function" ? className(state) : className)} {...props} />
 }

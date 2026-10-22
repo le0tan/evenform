@@ -6,7 +6,7 @@ import {
   type MentionsInputHandle,
   type MentionsInputClassNames,
 } from "react-mentions-ts"
-import { cn } from "cn"
+import { cn } from "@/lib/utils"
 
 const partClasses: MentionsInputClassNames = {
   control:

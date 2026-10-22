@@ -1,5 +1,5 @@
 import type { ComponentProps } from "react"
-import { cn } from "cn"
+import { cn } from "@/lib/utils"
 
 /** Sticky positioning stays inside the nearest scroll container and keeps its normal flow space.
  * Configure --ds-affix-offset on this element to clear a local header or footer. */

@@ -1,0 +1,155 @@
+/* Base controls, overlays and layout patterns; no optional package CSS. */
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/geist";
+@import "./styles/tokens.css";
+@import "./styles/appearance.css";
+@import "./styles/control-sizing.css";
+@import "./styles/patterns.css";
+@import "./styles/extended-controls.css";
+@import "./styles/extended-patterns.css";
+@import "./styles/motion.css";
+
+/* Verification fixtures and recorded DOM are not application utility sources. */
+@source not "../evidence";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+    --default-transition-duration: var(--ds-duration-fast);
+    --default-transition-timing-function: var(--ds-ease-out);
+    --font-heading: var(--ds-font-heading);
+    --font-sans: var(--ds-font-body);
+    --color-sidebar-ring: var(--sidebar-ring);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar: var(--sidebar);
+    --color-chart-5: var(--chart-5);
+    --color-chart-4: var(--chart-4);
+    --color-chart-3: var(--chart-3);
+    --color-chart-2: var(--chart-2);
+    --color-chart-1: var(--chart-1);
+    --color-ring: var(--ring);
+    --color-input: var(--input);
+    --color-border: var(--border);
+    --color-destructive: var(--destructive);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-accent: var(--accent);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-muted: var(--muted);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-secondary: var(--secondary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-primary: var(--primary);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-popover: var(--popover);
+    --color-card-foreground: var(--card-foreground);
+    --color-card: var(--card);
+    --color-foreground: var(--foreground);
+    --color-background: var(--background);
+    --radius-sm: calc(var(--radius) * 0.6);
+    --radius-md: calc(var(--radius) * 0.8);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) * 1.4);
+    --radius-2xl: calc(var(--radius) * 1.8);
+    --radius-3xl: calc(var(--radius) * 2.2);
+    --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+    --background: var(--ds-neutral-0);
+    --foreground: var(--ds-neutral-950);
+    --card: var(--ds-neutral-0);
+    --card-foreground: var(--ds-neutral-950);
+    --popover: var(--ds-neutral-0);
+    --popover-foreground: var(--ds-neutral-950);
+    --primary: var(--ds-neutral-900);
+    --primary-foreground: var(--ds-neutral-50);
+    --secondary: var(--ds-neutral-100);
+    --secondary-foreground: var(--ds-neutral-900);
+    --muted: var(--ds-neutral-100);
+    --muted-foreground: var(--ds-neutral-500);
+    --accent: var(--ds-neutral-100);
+    --accent-foreground: var(--ds-neutral-900);
+    --destructive: var(--ds-red-600);
+    --border: var(--ds-neutral-200);
+    --input: var(--ds-neutral-200);
+    --ring: var(--ds-neutral-400);
+    --chart-1: var(--ds-blue-600);
+    --chart-2: var(--ds-teal-600);
+    --chart-3: var(--ds-violet-600);
+    --chart-4: var(--ds-amber-600);
+    --chart-5: var(--ds-rose-600);
+    --radius: var(--ds-radius-base);
+    --sidebar: var(--ds-neutral-50);
+    --sidebar-foreground: var(--ds-neutral-950);
+    --sidebar-primary: var(--ds-neutral-900);
+    --sidebar-primary-foreground: var(--ds-neutral-50);
+    --sidebar-accent: var(--ds-neutral-100);
+    --sidebar-accent-foreground: var(--ds-neutral-900);
+    --sidebar-border: var(--ds-neutral-200);
+    --sidebar-ring: var(--ds-neutral-400);
+}
+
+.dark {
+    --background: var(--ds-neutral-950);
+    --foreground: var(--ds-neutral-50);
+    --card: var(--ds-neutral-900);
+    --card-foreground: var(--ds-neutral-50);
+    --popover: var(--ds-neutral-900);
+    --popover-foreground: var(--ds-neutral-50);
+    --primary: var(--ds-neutral-200);
+    --primary-foreground: var(--ds-neutral-900);
+    --secondary: var(--ds-neutral-800);
+    --secondary-foreground: var(--ds-neutral-50);
+    --muted: var(--ds-neutral-800);
+    --muted-foreground: var(--ds-neutral-400);
+    --accent: var(--ds-neutral-800);
+    --accent-foreground: var(--ds-neutral-50);
+    --destructive: var(--ds-red-400);
+    --border: oklch(1 0 0 / 10%);
+    --input: oklch(1 0 0 / 15%);
+    --ring: var(--ds-neutral-500);
+    --chart-1: var(--ds-blue-400);
+    --chart-2: var(--ds-teal-400);
+    --chart-3: var(--ds-violet-400);
+    --chart-4: var(--ds-amber-400);
+    --chart-5: var(--ds-rose-400);
+    --sidebar: var(--ds-neutral-900);
+    --sidebar-foreground: var(--ds-neutral-50);
+    --sidebar-primary: var(--primary);
+    --sidebar-primary-foreground: var(--ds-neutral-50);
+    --sidebar-accent: var(--ds-neutral-800);
+    --sidebar-accent-foreground: var(--ds-neutral-50);
+    --sidebar-border: oklch(1 0 0 / 10%);
+    --sidebar-ring: var(--ds-neutral-500);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    }
+  body {
+    @apply bg-background text-foreground;
+    }
+  html {
+    @apply font-sans;
+    }
+}
+@layer base {
+  html { color-scheme: light; -webkit-font-smoothing: antialiased; }
+  html.dark { color-scheme: dark; }
+  body { margin: 0; font-family: var(--ds-font-body); font-size: var(--ds-text-body); line-height: var(--ds-line-height-body); }
+  h1, h2, h3 { font-family: var(--ds-font-heading); text-wrap: balance; }
+  p { text-wrap: pretty; }
+  button:not(:disabled), a, input[type=range] { cursor: pointer; }
+  ::selection { background: var(--primary); color: var(--primary-foreground); }
+  input, textarea { caret-color: var(--foreground); }
+  * { scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+  :focus-visible { outline: 2px solid var(--ring); outline-offset: 3px; }
+}

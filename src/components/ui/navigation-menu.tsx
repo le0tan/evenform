@@ -1,5 +1,5 @@
 import { NavigationMenu as NavigationMenuPrimitive } from "@base-ui/react/navigation-menu"
-import { cn } from "cn"
+import { cn } from "@/lib/utils"
 const NavigationMenu = NavigationMenuPrimitive.Root
 const NavigationMenuItem = NavigationMenuPrimitive.Item
 const NavigationMenuIcon = NavigationMenuPrimitive.Icon

@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef, useState, type ComponentProps } from "react"
-import { cn } from "cn"
+import { cn } from "@/lib/utils"
 
 type WatermarkProps = ComponentProps<"div"> &
   ({ text: string | string[]; image?: never } | { image: string; text?: never })

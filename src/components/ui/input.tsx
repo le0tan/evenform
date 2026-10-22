@@ -2,7 +2,7 @@
 // See THIRD_PARTY_NOTICES.md and licenses/shadcn-ui.txt for the full license.
 import * as React from "react"
 import { Input as InputPrimitive } from "@base-ui/react/input"
-import { cn } from "cn"
+import { cn } from "@/lib/utils"
 
 function Input({ className, type, ...props }: React.ComponentProps<"input">) {
   return (

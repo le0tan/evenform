@@ -1,5 +1,5 @@
 import { ScrollArea as ScrollAreaPrimitive } from "@base-ui/react/scroll-area"
-import { cn } from "cn"
+import { cn } from "@/lib/utils"
 function ScrollAreaRoot({ className, ...props }: ScrollAreaPrimitive.Root.Props) {
   return <ScrollAreaPrimitive.Root data-slot="ScrollAreaRoot" className={(state) => cn("evenform-scroll-area", typeof className === "function" ? className(state) : className)} {...props} />
 }

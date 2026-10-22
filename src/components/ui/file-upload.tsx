@@ -1,6 +1,6 @@
 import { useRef, useState, type ComponentProps, type ReactNode } from "react"
 import { File, Upload, X } from "lucide-react"
-import { cn } from "cn"
+import { cn } from "@/lib/utils"
 import { Button } from "./button"
 import { Progress } from "./progress"
 

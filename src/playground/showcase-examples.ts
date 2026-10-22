@@ -136,6 +136,7 @@ export const showcaseExamples: Record<string, readonly ShowcaseExample[]> = {
   "components/overrides": [
     example("override-cascade", "Token & utility overrides"),
   ],
+  "patterns/records": [example("record-browser", "Documents & reports")],
   "patterns/layouts": [
     example("content-layout", "Content layout", "reading"),
     example("split-layout", "Split layout", "inbox"),

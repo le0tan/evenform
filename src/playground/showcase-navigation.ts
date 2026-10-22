@@ -21,6 +21,7 @@ export const componentEntries: ShowcaseEntry[] = [
   { id: "overrides", title: "Local overrides", description: "Component sizing examples.", keywords: "css tokens cascade utility inline configuration override" },
 ].map(entry => ({ ...entry, examples: showcaseExamples[`components/${entry.id}`] ?? [] }))
 export const patternEntries: ShowcaseEntry[] = [
+  { id: "records", title: "Record browser", description: "Browse illustrative documents and read their full reports.", keywords: "sheet actions long title report accordion tabs toolbar grid list filters" },
   { id: "workspace", title: "Data workspace", description: "Search projects, filter results and act on a selection.", keywords: "table filter selection pagination dashboard metrics" },
   { id: "detail", title: "Record detail", description: "Review a record, understand its history and edit its configuration.", keywords: "description list timeline steps form detail" },
   { id: "access", title: "Account access", description: "Sign-in and account access.", keywords: "auth login sign up password form" },

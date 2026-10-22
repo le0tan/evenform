@@ -1,5 +1,5 @@
 import type { ComponentProps, ReactNode } from "react"
-import { cn } from "cn"
+import { cn } from "@/lib/utils"
 
 /** Pass Badge as badge, and a native anchor as action when the group links onward. */
 function BadgeGroup({

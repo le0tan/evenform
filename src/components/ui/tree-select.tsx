@@ -6,7 +6,7 @@ import {
   type ReactNode,
 } from "react"
 import { ChevronDown } from "lucide-react"
-import { cn } from "cn"
+import { cn } from "@/lib/utils"
 import type { Key } from "react-aria-components"
 import { Button } from "./button"
 import { Popover, PopoverTrigger, PopoverContent } from "./popover"

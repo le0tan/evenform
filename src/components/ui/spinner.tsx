@@ -1,6 +1,6 @@
 import type { ComponentProps, ReactNode } from "react"
 import { LoaderCircleIcon } from "lucide-react"
-import { cn } from "cn"
+import { cn } from "@/lib/utils"
 
 type SpinnerProps = ComponentProps<typeof LoaderCircleIcon> & { label?: string }
 

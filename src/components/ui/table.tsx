@@ -1,7 +1,7 @@
 // Adapted from shadcn/ui (MIT), Copyright (c) 2023 shadcn.
 // See THIRD_PARTY_NOTICES.md and licenses/shadcn-ui.txt for the full license.
 import * as React from "react"
-import { cn } from "cn"
+import { cn } from "@/lib/utils"
 
 function Table({ className, ...props }: React.ComponentProps<"table">) {
   return (

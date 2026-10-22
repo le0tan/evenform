@@ -148,7 +148,7 @@ Components 的 **Local overrides** 页提供上述实际组件，可以切换密
 | Card / Header / Content / Footer | `--ds-card-inset` → card padding；`--ds-card-stack-gap` → card gap |
 | Dialog | `--ds-dialog-inset` → dialog padding；`--ds-dialog-max-width` → dialog width |
 | Sheet / Header / Body / Footer | `--ds-sheet-inset` → sheet padding；`--ds-sheet-max-width` → sheet width；分组间距跟随 overlay gap |
-| Tabs | `--ds-tabs-inset`、`--ds-tabs-item-gap`、`--ds-tabs-trigger-height` → tabs padding/gap/control height |
+| Tabs | `--ds-tabs-inset`、`--ds-tabs-item-gap`、`--ds-tabs-trigger-height`；默认导航 trigger 跟随 control height；`TabsList size="control"` 的水平外框跟随 `--ds-tabs-control-height` → control height，内部减去双侧 inset；触摸目标仍至少 44px，可撑大外框 |
 | Table | `--ds-table-height`、`--ds-table-padding-x/y` → row height/cell padding；`--ds-table-divider-width` 当前回退值为 0，按表格的阅读需求选择 |
 | DescriptionList / DescriptionItem | `--ds-description-padding-y` → description item padding；`--ds-description-term-width` → description label width；`--ds-description-column-gap` → panel gap；`--ds-description-content-gap` → control gap（窄容器为 form field gap） |
 | Sidebar | width 语义；`--ds-sidebar-inset`、`--ds-sidebar-menu-gap`、`--ds-sidebar-button-height` |
@@ -241,6 +241,10 @@ Playground → Components → In context 展示真实运行信息、长结果与
 - Showcase 目录：Components / Patterns / Charts 的分类、具体组件和示例共用一条可折叠侧栏；正文直接展示当前页面，不叠加第二条分类导航。保留同一任务内的局部 Tabs。当前页使用原生链接与 `aria-current`，hash 路由支持分享、刷新和浏览器历史；移动端复用目录到 Sidebar Sheet。目录搜索优先匹配具体组件，结果与目录共用 `src/playground/showcase-examples.ts` 的真实示例索引。`?anchor=example-…` 定位并聚焦示例；存在局部 Tabs 时由 `?preview=…` 同步打开对应面板。原有分类链接继续可用。只有可见目标且浮层已关闭时才移交焦点，避免定位到未挂载或隐藏的面板；应用层注册 ⌘ / Ctrl + K，并避开输入编辑焦点。Workspace / Settings 归入 Application examples，Token Inspector 默认关闭、按需打开。导航尺寸和颜色复用现有语义参数，元数据只在 Playground，不进入共享组件或 Starter。
 - App Starter：`starter.html` → `src/starter/main.tsx` → `src/starter/App.tsx`，只包含可替换的应用壳与 Home 内容，不导入 Showcase 页面、图表 Demo、模拟数据或编辑器。独立构建不包含 VChart 运行包；共享 `EvenformChart` 组件保留在 components 层，业务可按需采用。
 - `npm run build` 构建两个入口；`npm run build:starter` 只构建业务入口并在 dist-starter 输出 index.html。两个构建没有复制设计系统。源码中保留 Showcase 作为参考，未来开发直接编辑 src/starter/App.tsx 即可，无需先删演示文件。
+
+Accordion 正文默认继承内容色；内容是否为辅助说明由调用方决定，可在 `AccordionContent` 上显式使用 `text-muted-foreground`。带主报告的组合见 [Compositions](docs/compositions.md)。
+
+所有组件通过 `@/lib/utils` 合并类名。`lib/cn-tables.ts` 从 CSS `@theme` 自动生成；修改 theme scales 后重新生成，不手工维护一份字号表。基础接入可用 `src/core.css`，全库入口 `src/index.css` 复用它再补充扩展组件样式。
 
 Sheet 正文优先组合 `SheetBody`，与 Header / Footer 使用同一 inset，并负责内部滚动。全出血区域可用 `className="p-0"` 明确覆盖 Body；例如移动端 TokenPanel 自己管理开发工具内边距。Dialog / Sheet 的 Comfortable inset 为 32px，Compact 为 24px；SelectItem 同步调整高度和 padding。触摸目标、表格自然撑高和正文可读性优先于强制固定尺寸。
 

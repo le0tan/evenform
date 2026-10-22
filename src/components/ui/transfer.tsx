@@ -1,6 +1,6 @@
 import { useId, useState, type ComponentProps, type ReactNode } from "react"
 import { ArrowLeft, ArrowRight } from "lucide-react"
-import { cn } from "cn"
+import { cn } from "@/lib/utils"
 import { Button } from "./button"
 import { Input } from "./input"
 

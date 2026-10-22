@@ -1,5 +1,5 @@
 import { Toolbar as ToolbarPrimitive } from "@base-ui/react/toolbar"
-import { cn } from "cn"
+import { cn } from "@/lib/utils"
 /* Roving focus belongs to this toolbar; the layout-only Toolbar pattern remains
    suitable for ordinary groups of independent page actions. Compose Toggle into
    EditorToolbarButton via render for pressed state without nested buttons. */

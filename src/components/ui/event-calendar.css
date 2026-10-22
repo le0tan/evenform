@@ -1,0 +1,2 @@
+@import "@fullcalendar/react/skeleton.css" layer(components);
+@import "@fullcalendar/react/themes/classic/theme.css" layer(components);

@@ -39,7 +39,7 @@
   }
   .evenform-accordion-body {
     padding-block-end: var(--ds-space-4);
-    color: var(--muted-foreground);
+    color: inherit;
     font-size: var(--ds-text-body);
     line-height: var(--ds-leading-normal);
   }

@@ -45,14 +45,25 @@ editor, and the VChart runtime. Add `EvenformChart` from
 ## Adopt into an existing React application
 
 Keep your application architecture. Copy the needed components and patterns,
-their transitive local imports, `theme-provider.tsx`, `hooks/use-mobile.ts`, and
-`lib/utils.ts`. Install the dependencies required by those modules; use the
+their transitive local imports, `theme-provider.tsx`, `hooks/use-mobile.ts`, plus
+`lib/utils.ts` and its generated `lib/cn-tables.ts`. Install the dependencies
+required by those modules; use the
 [dependency guide](dependencies.md) to determine the set.
 
-Merge `src/index.css`, the required shared styles, font imports, light/dark
-mapping, `@theme inline`, and base rules into your host. Copying TSX alone leaves
-out styling and preference restoration. Components such as EventCalendar have
-package CSS imports that must be updated together if removing a dependency.
+For base controls, overlays and layout patterns, copy `src/core.css` and every
+local stylesheet it imports. It includes fonts, light/dark mappings, `@theme`,
+base rules and motion, without optional package CSS. Import it in the host entry.
+For the complete library use `src/index.css`; add the other CSS modules as needed
+for selected components. See the [adoption map](dependencies.md#base-entry-and-common-adoption-map).
+Copying TSX alone leaves out styling and preference restoration. EventCalendar
+imports its adjacent `event-calendar.css`; copy both when adding the calendar.
+
+All components import the shared `@/lib/utils` merger. Keep the generated
+`cn-tables.ts` alongside it; no `cn` package alias is needed. If you change CSS
+`@theme` scales, run `npm run generate:cn` or adopt `scripts/build-cn.mjs` with
+its CSS entry changed to your host stylesheet. The Vite plugin in this repository
+regenerates tables during development; both builds regenerate before TypeScript.
+These tables are generated utility-conflict metadata, not a second token source.
 
 Configure `@/` to resolve to your source directory. For shadcn updates, keep
 `components.json` on the official `base-nova` style with `cssVariables: true`.

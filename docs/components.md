@@ -66,7 +66,7 @@
 
 | 模块 | 主要导出与配置 | 责任边界 |
 | --- | --- | --- |
-| `tabs` | Tabs/List/Trigger/Content | Base UI value、orientation 与按需 keepMounted；四个包装保留字符串或原始 primitive state 回调形式的 className，并与 Evenform 默认类合并；挂载保留不等于持久化 |
+| `tabs` | Tabs/List/Trigger/Content | `TabsList size="control"` 用于混合控件工具栏，水平外框跟随 control height（触摸目标可撑高）；默认导航尺寸不变。Base UI value、orientation 与按需 keepMounted；四个包装保留字符串或原始 primitive state 回调形式的 className，并与 Evenform 默认类合并；挂载保留不等于持久化 |
 | `sidebar` | SidebarProvider/useSidebar；Sidebar/Header/Content/Footer/Group/Menu 等部件、Trigger/Rail/Inset；mobileFinalFocus/onMobileOpenChangeComplete | 桌面导航与移动 Sheet、side/variant/collapsible；mobileFinalFocus 与 onMobileOpenChangeComplete 透传移动浮层的焦点和关闭生命周期，路由与示例定位仍由应用负责；SidebarInset 是 main，已有 shell 中避免重复 main；Provider 不注册全局快捷键，应用自行处理并避开编辑焦点 |
 | `breadcrumb` | Breadcrumb/List/Item/Link/Page/Separator/Ellipsis；BreadcrumbPath/items | 原生路径链接，最后项 aria-current=page；路由由应用提供 |
 | `pagination` | Pagination/Content/Item/Link/Ellipsis；PaginationControls/page/pageCount/onPageChange/disabled | Controls 从 1 开始；URL 分页用链接 parts；数据与页数归应用 |
@@ -74,14 +74,14 @@
 | `dropdown-menu` | DropdownMenu/Trigger/Content/Item/Group/Label/Separator、CheckboxItem/RadioGroup/RadioItem、Sub/SubTrigger/SubContent、Shortcut | Base UI 菜单/子菜单；Content 的 side/align/offset 可配；Shortcut 只显示文字 |
 | `context-menu` | ContextMenu/Trigger/Content/LinkItem；Item/Group/Label/Separator/Checkbox/Radio/Sub/Shortcut parts | Base UI 右键入口，Evenform 在 Trigger 桥接 ContextMenu 键与 Shift+F10；复用菜单 parts；触发区域需可聚焦并有可访问名称 |
 | `menubar` | Menubar/Trigger 与 Menu/Content/Item/Checkbox/Radio/Sub 等 parts | Base UI 横向命令与焦点导航；不是页面链接导航 |
-| `dialog`、`sheet` | Dialog/Trigger/Content/Header/Title/Description/Footer/Close/Portal/Overlay；Sheet/Trigger/Content/Header/Title/Description/Footer/Close/Body | Base UI 焦点、Escape、modal/恢复；SheetContent 支持四边，Body 提供正文滚动/inset；应用提供标题和真实提交状态 |
+| `dialog`、`sheet` | Dialog/Trigger/Content/Header/Title/Description/Footer/Close/Portal/Overlay；Sheet/Trigger/Content/Header/Title/Description/Footer/Close/Body | Base UI 焦点、Escape、modal/恢复；SheetContent 支持四边，Body 提供正文滚动/inset；自定义 header actions 用 `showCloseButton={false}` + 同排 SheetClose，见 [组合示例](compositions.md)；应用提供标题和真实提交状态 |
 | `alert-dialog` | AlertDialog/Trigger/Content/Header/Title/Description/Footer/Cancel/Action/Close | Action 为同步 Close 组合；异步确认用普通 Button，在请求成功后受控关闭 |
 | `popover` | Popover/Trigger/Content/Title/Description/Close | 定位浮层与焦点；保存/业务内容由应用控制 |
 | `tooltip` | TooltipProvider、Tooltip/Trigger/Content | delay/定位可配；不是唯一控件名称或必要信息的唯一入口 |
 | `preview-card` | PreviewCard/Trigger/Content/Viewport；createPreviewCardHandle | Base UI 链接预览与 handle；保留真正链接和加载边界 |
 | `command` | Command/Dialog/Input/List/Empty/Group/Item/Separator/Loading/Shortcut；useCommandState | cmdk 搜索、过滤、键盘命令；CommandDialog 使用 Evenform Dialog，title/description/commandProps 可配；快捷键和动作归应用；CommandDialog.finalFocus 透传底层 DialogContent 的关闭焦点契约，用于应用导航后移交焦点 |
 | `editor-toolbar` | EditorToolbar/Group/Button/Link/Input/Separator | Base UI roving focus；render 可组合 Toggle；patterns/layouts 的 Toolbar 只是普通排版 |
-| `accordion`、`collapsible` | Accordion/Item/Trigger/Content；Collapsible/Trigger/Content | Base UI 展开/收起、受控状态与键盘契约 |
+| `accordion`、`collapsible` | Accordion/Item/Trigger/Content；Collapsible/Trigger/Content | Base UI 展开/收起、受控状态与键盘契约；Accordion 正文默认继承文字色，辅助内容在 Content 上显式 `text-muted-foreground` |
 
 ## 数据、内容和媒体
 

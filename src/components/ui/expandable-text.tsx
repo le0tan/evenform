@@ -6,7 +6,7 @@ import {
   type ComponentProps,
   type CSSProperties,
 } from "react"
-import { cn } from "cn"
+import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 
 type ExpandableTextProps = Omit<ComponentProps<"div">, "children"> & {
