@@ -137,3 +137,23 @@ Use intentional className utility overrides for an embedded Card, preserve its
 header/content primitives, and let the outer workspace clip the shared contour.
 Check anchor and disclosure focus feedback after introducing clipping. This
 requires no global change to Card rounding.
+
+## Linking a composition to an existing selection
+
+A consumer can reuse its existing selection identity across a diagram, a
+composition bar and exact-value rows. Resolve the relationship from the same
+normalized contributions used to draw the bar: a selected item may contribute
+directly or be context included in a parent contribution. Show that distinction
+instead of attributing the entire parent value to the selected child.
+
+This recipe composes EvenformChart, Stat, Badge and Table. A noninteractive,
+token-colored outline can mark the true proportional segment while the exact
+list provides full names, values and selection text. Do not inflate tiny values
+into click targets or invent a segment for unknown/zero shares. Existing tokens
+are sufficient; this does not establish a need for a generic linked-chart API.
+
+Preserve the user's reading position and focus. An outer disclosure can retain
+its state while its summary identifies the relationship. Reveal the selected
+child's context when that relationship changes, and respect a manual close on
+data refresh. Recompute ownership when data availability changes or the user
+switches pipelines. Keep business identities and screenshots in the consumer.
