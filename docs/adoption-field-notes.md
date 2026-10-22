@@ -174,3 +174,21 @@ or pseudo-element can preserve chart highlighting. Match the primitive's exact
 active modifier when intentionally removing its press translation from a chart
 hit area. These were consumer composition fixes; the existing Button contract
 did not require a library change.
+
+## Separating a workspace from its inspector
+
+One consumer's shared outer frame produced repeated horizontal bands meeting a
+continuous inspector divider. A better fit for these independent reading tasks
+was two Card surfaces separated by the existing panel-gap token. Keep a single
+outline per surface, and let the common heading and tabs establish their shared
+context. The diagram and its analysis stay together inside one surface; they do
+not each need another Card. Remove repeated selection rows when an existing
+summary already identifies the same selection, retaining a reachable detail link
+in the toolbar.
+
+Internal boundaries follow reading needs: spacing can separate an inspector's
+heading and summary metrics, while trend or table separators still help compare
+values. Native disclosure focus outlines need a local inset treatment when a Card
+clips overflow. An anchor-focus wrapper can share the Card radius without adding
+another visible border. Existing Card, spacing and radius tokens covered this
+case; no generic workspace API or global Card styling change was necessary.
