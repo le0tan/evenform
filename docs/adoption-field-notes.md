@@ -78,3 +78,21 @@ The exporter is an adoption aid, not an installable package or automatic upgrade
 system. SSR, arbitrary bundlers and every chart animation mode remain outside
 this field test. The new chart media-query path has build/static coverage here;
 the dashboard deliberately disables chart animation even without that preference.
+
+## Contribution comparison follow-up
+
+A collapsed analysis can still be unreadable when expanded. One consumer's
+horizontal strip assigned equal weight to counted contributions and excluded
+context, truncated identities, and repeated the same inclusion caveat per item.
+The private replacement composes Stat, Badge and Table into contribution rows:
+full identities, aligned values, a common percentage scale, and owner-specific
+context behind native disclosures. A single largest-contribution cue is enough;
+more colors or another chart library were unnecessary.
+
+Token configuration controls scale and density, while the consumer must establish
+which observations contribute and which are context. Distinguish unknown values
+from measured zero; hide unknown tracks and retain explicit numeric values for
+tiny contributions. Label a sum of stage quantiles accurately rather than implying
+it is a measured end-to-end quantile. Consider documenting this comparison recipe
+before proposing a universal component API. Business data, sources and screenshots
+remain in the consuming repository.
