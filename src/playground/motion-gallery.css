@@ -1,0 +1,5 @@
+@layer components {
+  .motion-gallery legend { margin-block-end: var(--ds-space-4); font-size: var(--ds-text-label); font-weight: var(--ds-weight-medium); }
+  .motion-gallery [data-slot="tabs-content"] { color: var(--muted-foreground); font-size: var(--ds-text-body); }
+  .motion-sheet-content { display: grid; gap: var(--ds-overlay-gap); padding-inline: var(--ds-sheet-inset, var(--ds-sheet-padding)); }
+}

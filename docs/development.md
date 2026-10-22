@@ -99,3 +99,12 @@ The Evenform rename changes project-specific classes, storage keys, custom
 events, and the chart adapter to `evenform-*` / `EvenformChart`. Earlier local
 Nova Showcase preferences are not migrated. The Starter's separate `app-*`
 keys are unchanged. Historical evidence retains the name used when recorded.
+
+## Motion verification
+
+With `npm run dev -- --host 127.0.0.1` running, use `npm run verify:motion`.
+Set `EVENFORM_URL` for a different local port. The targeted check launches an
+isolated Playwright Chromium context, exercises animations and interruption,
+and records JSON, screenshots and video in ignored `evidence/motion/`. It does
+not use a personal browser profile. See [Motion](motion.md#verification) for
+coverage and boundaries. Screenshot captures alone are not motion validation.

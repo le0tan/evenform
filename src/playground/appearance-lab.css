@@ -62,6 +62,9 @@
     min-height: 0;
     overflow-y: auto;
   }
+  .appearance-settings-tabs > .appearance-token-content {
+    padding-inline-end: var(--ds-space-2);
+  }
   .appearance-settings-content {
     display: grid;
     gap: var(--ds-space-4);

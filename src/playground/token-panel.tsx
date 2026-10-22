@@ -38,7 +38,7 @@ export function TokenPanel({
             tokens.setDensity(value as "compact" | "comfortable")
           }
         >
-          <TabsList aria-label="UI density" className="density-tabs w-full">
+          <TabsList motion="slide" aria-label="UI density" className="density-tabs w-full">
             <TabsTrigger
               className="text-[length:var(--pg-font-size)]"
               value="compact"

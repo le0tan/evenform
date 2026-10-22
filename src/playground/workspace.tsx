@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
 import { Checkbox } from "@/components/ui/checkbox"
+import { SortableList } from "@/components/patterns/sortable-list"
 import { DescriptionItem, DescriptionList } from "@/components/patterns/description-list"
 import { DataListLayout, FormField, PageHeader, PageSection } from "@/components/patterns/layouts"
 
@@ -30,7 +31,11 @@ export function Workspace() {
   const [filter, setFilter] = useState("All projects")
   const [createOpen, setCreateOpen] = useState(false)
   const [selected, setSelected] = useState<Project | null>(null)
-  const [completed, setCompleted] = useState([true, true, false])
+  const [checklist, setChecklist] = useState([
+    { id: "workspace", textValue: "Create your workspace", completed: true },
+    { id: "invite", textValue: "Invite your teammates", completed: true },
+    { id: "project", textValue: "Set up your first project", completed: false },
+  ])
   const [notice, setNotice] = useState("")
   const visible = projects.filter((project) => project.name.toLowerCase().includes(query.toLowerCase()) && (filter === "All projects" || project.status === filter))
   function createProject(event: React.FormEvent<HTMLFormElement>) {
@@ -44,7 +49,7 @@ export function Workspace() {
   return <>
     <PageHeader title="Workspace" actions={<Button onClick={() => setCreateOpen(true)}><Plus data-icon="inline-start" />New project</Button>} />
     <Tabs value={activeTab} onValueChange={(value) => setActiveTab(String(value))}>
-      <div className="workspace-tabs"><TabsList variant="line" aria-label="Workspace views"><TabsTrigger value="overview">Overview</TabsTrigger><TabsTrigger value="activity">Activity</TabsTrigger></TabsList><span className="quiet-meta">Tuesday, October 20</span></div>
+      <div className="workspace-tabs"><TabsList motion="slide" variant="line" aria-label="Workspace views"><TabsTrigger value="overview">Overview</TabsTrigger><TabsTrigger value="activity">Activity</TabsTrigger></TabsList><span className="quiet-meta">Tuesday, October 20</span></div>
       <TabsContent value="overview" className="preview-stack">
         <div className="metrics-grid">
           {[{ title: "Active projects", value: String(projects.length + 8), change: "2 started this week", icon: Folder }, { title: "Tasks completed", value: "148", change: "+12% from last week", icon: CircleCheck }, { title: "Team capacity", value: "84%", change: "A healthy balance", icon: Circle }].map(({ title, value, change, icon: Icon }) => <Card key={title} data-testid={`metric-${title.toLowerCase().replaceAll(" ", "-")}`}><CardHeader><div className="metric-label"><CardTitle className="text-label font-medium">{title}</CardTitle><Icon size={16} /></div></CardHeader><CardContent><div className="metric-value">{value}</div><div className="metric-note">{title === "Tasks completed" && <ArrowUpRight size={13} />}{change}</div></CardContent></Card>)}
@@ -56,7 +61,15 @@ export function Workspace() {
         </PageSection>
         <div className="workspace-bottom">
           <PageSection title="Recent activity" actions={<Button variant="ghost" size="sm" onClick={() => setActiveTab("activity")}>View all<ArrowRight /></Button>}><Activity /></PageSection>
-          <PageSection title="Workspace checklist"><div className="checklist">{["Create your workspace", "Invite your teammates", "Set up your first project"].map((text, index) => <label key={text} className={completed[index] ? "checklist-row is-complete" : "checklist-row"}><Checkbox checked={completed[index]} onCheckedChange={(checked) => setCompleted((current) => current.map((value, position) => position === index ? checked : value))} /><span>{text}</span></label>)}</div><p className="quiet-meta">{completed.filter(Boolean).length} of 3 completed</p></PageSection>
+          <PageSection title="Workspace checklist">
+            <SortableList motion label="Workspace checklist order" items={checklist} onReorder={setChecklist}>
+              {(item) => <label className={item.completed ? "checklist-row is-complete" : "checklist-row"}>
+                <Checkbox checked={item.completed} onCheckedChange={(completed) => setChecklist(current => current.map(row => row.id === item.id ? { ...row, completed } : row))} />
+                <span>{item.textValue}</span>
+              </label>}
+            </SortableList>
+            <p className="quiet-meta">{checklist.filter(item => item.completed).length} of 3 completed</p>
+          </PageSection>
         </div>
       </TabsContent>
       <TabsContent value="activity"><PageSection title="Workspace activity"><Activity /></PageSection></TabsContent>

@@ -55,6 +55,22 @@ before reuse. MIT on a different repository does not cover it.
 
 ## Other dependencies and assets
 
+### Motion review (2026-10-22)
+
+The motion extension uses existing Base UI/React Aria and native CSS/Web
+Animations. No new npm dependencies, vendored components, fonts or assets were
+added. interior.dev (MIT), Motion Primitives (MIT), FormKit AutoAnimate (MIT) and
+GodUI motion guidelines were studied as behavior/architecture references;
+implementation is Evenform's own primitive composition, CSS and optional list
+adapter. Animate UI's [reviewed license](https://github.com/imskyleen/animate-ui/blob/e6cea6b5ae5a4985d3bf3cc0ebea173555eafd72/LICENSE.md)
+adds a Commons Clause restriction to MIT. Its component source is neither copied
+nor bulk-installed into this MIT design system. Reference links and exact scope
+are recorded in [Motion](motion.md#references-and-licensing). Reference-only study
+is distinct from source redistribution; existing shadcn/Base UI and dependency
+notices remain applicable.
+
+### Existing dependencies and assets
+
 The Modules logo is owned by its creator, Tan Yuanhong, who confirmed on
 2026-10-21 that the original artwork and project variants are MIT licensed.
 See [brand assets](brand.md) for provenance and variants. The artwork license

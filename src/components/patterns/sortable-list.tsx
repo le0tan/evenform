@@ -7,7 +7,8 @@ import {
   type Key,
 } from "react-aria-components"
 import { ArrowDown, ArrowUp, GripVertical } from "lucide-react"
-import type { ReactNode } from "react"
+import { useRef, type ReactNode } from "react"
+import { useListMotion } from "@/hooks/use-list-motion"
 import { Button } from "@/components/ui/button"
 export interface SortableItem {
   id: Key
@@ -22,6 +23,8 @@ export interface SortableListProps<T extends SortableItem> {
   empty?: ReactNode
   className?: string
   moveButtons?: boolean
+  /** Optional layout continuity for this non-virtual list, after a reorder. */
+  motion?: boolean
 }
 /** React Aria owns pointer/touch/keyboard drag behavior. The caller owns item order. */
 export function SortableList<T extends SortableItem>({
@@ -33,7 +36,10 @@ export function SortableList<T extends SortableItem>({
   empty = "No items to reorder.",
   className,
   moveButtons = true,
+  motion = false,
 }: SortableListProps<T>) {
+  const list = useRef<HTMLDivElement>(null)
+  useListMotion(list, motion)
   function move(
     keys: Set<Key>,
     target: Key,
@@ -62,6 +68,7 @@ export function SortableList<T extends SortableItem>({
   })
   return (
     <GridList
+      ref={list}
       data-slot="sortable-list"
       className={
         className ? `evenform-sortable-list ${className}` : "evenform-sortable-list"

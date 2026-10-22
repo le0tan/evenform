@@ -447,3 +447,23 @@ Showcase 的目录、表格、日期/层级/文件、媒体、产品 Patterns、
 [Arco 官方组件导出目录](https://raw.githubusercontent.com/arco-design/arco-design/main/components/index.tsx) 用于检查通用产品控件覆盖；[Untitled UI 组件目录](https://www.untitledui.com/react/components) 用于辨认 Base、Application UI 与页面组合层次。[Filter bars](https://www.untitledui.com/react/components/filter-bars) 和 [Progress steps](https://www.untitledui.com/react/components/progress-steps) 帮助区分筛选组合和进度展示的职责。
 
 这些是范围与任务参考，没有引入 Arco/Untitled 运行库，也不承诺它们的 props/API 兼容。视觉、状态、依赖与交互以 Evenform/Base UI 和本页对应源码为准；剩余范围、等价组合与取舍保持在 [reference-audit.md](reference-audit.md)，可复现检查入口保持在 [development.md](development.md)；`evidence/` 仅存放本地生成的检查结果，不随仓库发布。
+
+## Motion additions
+
+- `TabsList motion="slide"` uses Base UI's indicator; both variants/orientations,
+  existing selection APIs and keyboard semantics remain available. Default is none.
+- `FeedbackButton` (`ui/feedback-button`) composes Button with controlled
+  idle/loading/success/error state and stable label space; business async work stays
+  with the caller. CopyButton reuses the presentation.
+- `SortableList motion` enables layout continuity for non-virtual lists; React
+  Aria still owns DnD and focus.
+- `LoadingSwap` (`patterns/loading-swap`) overlaps a placeholder with content,
+  preserves its footprint and keeps hidden content inert.
+
+- `MorphingPopoverContent` (`patterns/morphing-popover`) is an optional Popover
+  surface transition; share `anchorRef` with `PopoverTrigger`. Text stays at its
+  normal size. Narrow viewports and Reduced Motion use a fade. See [Motion](motion.md).
+- `ResetButton` (`ui/reset-button`) adds a finite, interruptible icon turn and
+  accessible reset confirmation to the existing Button.
+
+Configuration, local overrides, reduced motion and examples: [Motion](motion.md).

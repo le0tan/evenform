@@ -1,0 +1,169 @@
+/* State continuity only. Base UI owns presence, focus and interaction. */
+@layer components {
+  :is(.evenform-floating-panel, [data-slot="select-content"], [data-slot="tooltip-content"]) {
+    transform-origin: var(--transform-origin);
+    transition-property: opacity, transform;
+    transition-duration: var(--ds-popup-duration, var(--ds-duration-fast));
+    transition-timing-function: var(--ds-ease-out);
+  }
+  :is(.evenform-floating-panel, [data-slot="select-content"]):is([data-starting-style], [data-ending-style]) {
+    opacity: 0;
+    transform: scale(var(--ds-popup-enter-scale, var(--ds-motion-enter-scale)));
+  }
+  /* Item-aligned Select positioning must stay anchored to the selected row. */
+  [data-slot="select-content"][data-align-trigger="true"] { transform: none; }
+  [data-slot="tooltip-content"][data-instant] { transition-duration: 0s; }
+  .evenform-menu-bar-trigger, .evenform-navigation-link, .evenform-radio {
+    transition: color var(--ds-duration-fast) var(--ds-ease-out), background-color var(--ds-duration-fast) var(--ds-ease-out), border-color var(--ds-duration-fast) var(--ds-ease-out);
+  }
+  .evenform-navigation-popup {
+    width: var(--popup-width, auto);
+    height: var(--popup-height, auto);
+    transition: opacity var(--ds-duration-fast) var(--ds-ease-out), transform var(--ds-duration-fast) var(--ds-ease-out), width var(--ds-duration-standard) var(--ds-ease-out), height var(--ds-duration-standard) var(--ds-ease-out);
+  }
+  .evenform-navigation-content { opacity: 1; transition: opacity var(--ds-duration-fast) var(--ds-ease-out); }
+  .evenform-navigation-content:is([data-starting-style], [data-ending-style]) { opacity: 0; }
+  [data-slot="tooltip-content"] { --_tooltip-y: var(--ds-motion-enter-distance); --_tooltip-x: 0px; }
+  [data-slot="tooltip-content"][data-side="bottom"] { --_tooltip-y: calc(-1 * var(--ds-motion-enter-distance)); }
+  [data-slot="tooltip-content"][data-side="left"] { --_tooltip-x: var(--ds-motion-enter-distance); --_tooltip-y: 0px; }
+  [data-slot="tooltip-content"][data-side="right"] { --_tooltip-x: calc(-1 * var(--ds-motion-enter-distance)); --_tooltip-y: 0px; }
+  [data-slot="tooltip-content"]:is([data-starting-style], [data-ending-style]) {
+    opacity: 0;
+    transform: translate(var(--_tooltip-x), var(--_tooltip-y));
+  }
+  :is([data-slot="dialog-overlay"], [data-slot="sheet-overlay"], [data-slot="alert-dialog-overlay"]) {
+    transition: opacity var(--ds-duration-fast) var(--ds-ease-out);
+  }
+  :is([data-slot="dialog-overlay"], [data-slot="sheet-overlay"], [data-slot="alert-dialog-overlay"]):is([data-starting-style], [data-ending-style]) { opacity: 0; }
+  :is([data-slot="dialog-content"], [data-slot="sheet-content"], [data-slot="alert-dialog-content"]) {
+    transition-property: opacity, transform;
+    transition-duration: var(--ds-dialog-duration, var(--ds-duration-standard));
+    transition-timing-function: var(--ds-ease-out);
+  }
+  [data-slot="dialog-content"]:is([data-starting-style], [data-ending-style]) {
+    opacity: 0;
+    transform: translateY(var(--ds-motion-enter-distance)) scale(var(--ds-motion-enter-scale));
+  }
+  /* AlertDialog already uses transform for its viewport centering. */
+  [data-slot="alert-dialog-content"]:is([data-starting-style], [data-ending-style]) {
+    opacity: 0;
+    transform: translate(-50%, calc(-50% + var(--ds-motion-enter-distance))) scale(var(--ds-motion-enter-scale));
+  }
+  [data-slot="sheet-content"] { transition-duration: var(--ds-sheet-duration, var(--ds-duration-standard)); --_sheet-x: 0px; --_sheet-y: 0px; }
+  [data-slot="sheet-content"][data-side="left"] { --_sheet-x: calc(-3 * var(--ds-motion-enter-distance)); }
+  [data-slot="sheet-content"][data-side="right"] { --_sheet-x: calc(3 * var(--ds-motion-enter-distance)); }
+  [data-slot="sheet-content"][data-side="top"] { --_sheet-y: calc(-3 * var(--ds-motion-enter-distance)); }
+  [data-slot="sheet-content"][data-side="bottom"] { --_sheet-y: calc(3 * var(--ds-motion-enter-distance)); }
+  [data-slot="sheet-content"]:is([data-starting-style], [data-ending-style]) { opacity: 0; transform: translate(var(--_sheet-x), var(--_sheet-y)); }
+  /* A quicker exit still reverses from the current interpolated appearance. */
+  :is([data-slot="dialog-content"], [data-slot="alert-dialog-content"], [data-slot="sheet-content"])[data-ending-style] { transition-duration: var(--ds-duration-fast); }
+
+  [data-slot="tabs-list"] { position: relative; isolation: isolate; }
+  [data-slot="tabs-trigger"] { z-index: 1; border-color: transparent; }
+  [data-slot="tabs-list"][data-variant="default"][data-motion="none"] > [data-slot="tabs-trigger"][data-active],
+  [data-slot="tabs-list"][data-variant="default"] > [data-slot="tabs-indicator"] {
+    background: var(--background);
+    border: var(--ds-border-width) solid transparent;
+    box-shadow: var(--ds-tabs-shadow, var(--ds-elevation-control));
+  }
+  .dark [data-slot="tabs-list"][data-variant="default"][data-motion="none"] > [data-slot="tabs-trigger"][data-active],
+  .dark [data-slot="tabs-list"][data-variant="default"] > [data-slot="tabs-indicator"] { background: color-mix(in srgb, var(--input) 30%, transparent); border-color: var(--input); }
+  [data-slot="tabs-indicator"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    width: var(--active-tab-width);
+    height: var(--active-tab-height);
+    transform: translate(var(--active-tab-left), var(--active-tab-top));
+    border-radius: var(--radius-md);
+    transition-property: transform, width, height;
+    transition-duration: var(--ds-tabs-duration, var(--ds-duration-standard));
+    transition-timing-function: var(--ds-ease-out);
+  }
+  [data-slot="tabs-list"][data-variant="line"] > [data-slot="tabs-indicator"] {
+    height: 2px;
+    border-radius: 0;
+    background: var(--primary);
+    transform: translate(var(--active-tab-left), calc(var(--active-tab-top) + var(--active-tab-height) + 3px));
+  }
+  [data-slot="tabs-list"][data-variant="line"][data-orientation="vertical"] > [data-slot="tabs-indicator"] {
+    width: 2px;
+    height: var(--active-tab-height);
+    transform: translate(calc(var(--active-tab-left) + var(--active-tab-width) + 3px), var(--active-tab-top));
+  }
+  [data-slot="tabs-list"][data-variant="line"][data-motion="none"] > [data-slot="tabs-trigger"][data-active]::after {
+    content: ""; position: absolute; background: var(--primary); inset-inline: 0; bottom: -5px; height: 2px;
+  }
+  [data-slot="tabs-list"][data-variant="line"][data-motion="none"][data-orientation="vertical"] > [data-slot="tabs-trigger"][data-active]::after { inset: 0 -4px 0 auto; width: 2px; height: auto; }
+
+  .evenform-feedback-faces { display: inline-grid; align-items: center; justify-items: center; }
+  .evenform-feedback-face { grid-area: 1 / 1; display: inline-flex; align-items: center; gap: var(--ds-control-gap); opacity: 0; visibility: hidden; transition: opacity var(--ds-duration-fast) var(--ds-ease-out); pointer-events: none; }
+  /* Hide the outgoing face immediately: fading two labels in one cell makes
+     overlapping glyphs. Hidden faces still reserve the maximum button width. */
+  .evenform-feedback-face[data-visible] { opacity: 1; visibility: visible; }
+  .evenform-feedback-faces[data-loading] > [data-face="idle"] { opacity: 1; visibility: visible; animation: evenform-feedback-wait 0s var(--_feedback-delay) forwards; }
+  .evenform-feedback-faces[data-loading] > [data-face="loading"] { transition-delay: var(--_feedback-delay); }
+  .evenform-reset-icon { rotate: var(--_reset-turn, 0deg); transition: rotate var(--ds-duration-standard) var(--ds-ease-out); }
+
+  .evenform-morphing-popover {
+    position: relative;
+    isolation: isolate;
+    background: transparent;
+    box-shadow: none;
+    overflow: visible;
+    transform: none;
+    transition: opacity var(--ds-morph-duration, var(--ds-duration-standard)) var(--ds-ease-out);
+  }
+  .evenform-morphing-popover:is([data-starting-style], [data-ending-style]) { transform: none; }
+  .evenform-morphing-popover::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    border-radius: inherit;
+    background: var(--popover);
+    box-shadow: var(--ds-shadow-overlay);
+    transform-origin: top left;
+    transform: translate(0, 0) scale(1, 1);
+    transition: transform var(--ds-morph-duration, var(--ds-duration-standard)) var(--ds-ease-out);
+  }
+  :root[data-elevation="flat"] .evenform-morphing-popover { outline: none; }
+  :root[data-elevation="flat"] .evenform-morphing-popover::before { outline: 1px solid var(--border); outline-offset: -1px; }
+  .evenform-morphing-popover:is([data-starting-style], [data-ending-style], [data-morph-origin])::before {
+    transform: translate(var(--_morph-x, 0px), var(--_morph-y, 0px)) scale(var(--_morph-scale-x, 1), var(--_morph-scale-y, 1));
+  }
+  .evenform-morphing-popover[data-morph-origin]::before { transition: none; }
+  .evenform-morphing-content {
+    display: grid;
+    gap: var(--ds-overlay-gap);
+    max-height: calc(var(--available-height, 100dvh) - 2 * var(--ds-overlay-gap));
+    overflow: auto;
+    opacity: 1;
+    transition: opacity var(--ds-duration-fast) var(--ds-ease-out);
+  }
+  .evenform-morphing-popover:is([data-starting-style], [data-ending-style]) > .evenform-morphing-content { opacity: 0; }
+  /* Small screens use the ordinary fade, avoiding a long surface sweep. */
+  @media (max-width: 40rem) {
+    .evenform-morphing-popover::before { transform: none !important; }
+  }
+  [data-motion="reduce"] .evenform-morphing-popover::before { transform: none !important; }
+  .evenform-loading-swap { display: grid; min-width: 0; }
+  .evenform-loading-swap > [data-slot="loading-placeholder"],
+  .evenform-loading-swap > [data-slot="loading-content"] { grid-area: 1 / 1; min-width: 0; transition: opacity var(--ds-duration-standard) var(--ds-ease-out); }
+  .evenform-loading-swap > [data-slot="loading-placeholder"] { pointer-events: none; }
+  .evenform-loading-swap[data-ready] > [data-slot="loading-placeholder"] * { animation-play-state: paused !important; }
+  .evenform-loading-swap[data-ready] > [data-slot="loading-placeholder"],
+  .evenform-loading-swap:not([data-ready]) > [data-slot="loading-content"] { opacity: 0; }
+
+  /* Local reduced-motion preview uses the same CSS path as the system preference. */
+  [data-motion="reduce"], [data-motion="reduce"] *, [data-motion="reduce"] *::before, [data-motion="reduce"] *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-delay: 0s !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
+@keyframes evenform-feedback-wait { to { opacity: 0; visibility: hidden; } }
+@media (prefers-reduced-motion: reduce) {
+  .evenform-morphing-popover::before { transform: none !important; }
+  *, *::before, *::after { animation-iteration-count: 1 !important; transition-delay: 0s !important; }
+  :is(.evenform-floating-panel, [data-slot="select-content"], [data-slot="tooltip-content"], [data-slot="dialog-content"], [data-slot="sheet-content"]):is([data-starting-style], [data-ending-style]) { transform: none; }
+  [data-slot="alert-dialog-content"]:is([data-starting-style], [data-ending-style]) { transform: translate(-50%, -50%); }
+}

@@ -24,6 +24,7 @@
 @import "./styles/period-controls.css";
 @import "./styles/list-input-aids.css";
 @import "./styles/content-aids.css";
+@import "./styles/motion.css";
 
 /* Verification fixtures and recorded DOM are not application utility sources. */
 @source not "../evidence";
@@ -31,6 +32,8 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+    --default-transition-duration: var(--ds-duration-fast);
+    --default-transition-timing-function: var(--ds-ease-out);
     --font-heading: var(--ds-font-heading);
     --font-sans: var(--ds-font-body);
     --color-sidebar-ring: var(--sidebar-ring);

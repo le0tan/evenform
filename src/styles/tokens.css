@@ -65,6 +65,8 @@
   --ds-duration-fast: 140ms;
   --ds-duration-standard: 200ms;
   --ds-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ds-motion-enter-distance: 6px;
+  --ds-motion-enter-scale: 0.98;
 }
 
 /* Layer 2 · Semantic. Compact is the default; no global --spacing changes. */
@@ -236,8 +238,8 @@
   height: var(--ds-button-height, var(--_button-height, var(--ds-button-height-md)));
   padding-inline: var(--ds-button-padding-x, var(--ds-control-padding-x));
   gap: var(--ds-button-gap, var(--ds-control-gap));
-  transition-property: color, background-color, border-color, box-shadow, transform;
-  transition-duration: var(--ds-duration-fast);
+  transition-property: color, background-color, border-color, box-shadow, transform, translate;
+  transition-duration: var(--ds-button-duration, var(--ds-duration-fast));
   transition-timing-function: var(--ds-ease-out);
 }
 [data-ds-component='button'][data-ds-size='xs'], [data-ds-component='button'][data-ds-size='icon-xs'] { --_button-height: var(--ds-button-height-xs); --_button-radius: var(--radius-md); }

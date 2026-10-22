@@ -12,6 +12,17 @@ export type Palette = typeof palettes[number]
 export type Elevation = typeof elevations[number]
 type Config = { customColor: string; controlSize: ControlSize; palette: Palette; elevation: Elevation; density: Density; overrides: Partial<Record<TokenName, number>> }
 const storageKey = "evenform-tokens-v1"
+// Editor scope policy, not visual defaults. Explicit control size is independent
+// of density; CSS still owns the value and dependency chain of every token.
+const controlSizeTokens = new Set([
+  "--ds-control-height", "--ds-input-height", "--ds-button-height-xs",
+  "--ds-button-height-sm", "--ds-button-height-md", "--ds-button-height-lg",
+  "--ds-control-padding-x", "--ds-select-item-height", "--ds-textarea-min-height",
+])
+function dependsOnDensity(name: string, controlSize: ControlSize) {
+  const scope = allTokenControls.find(control => control.name === name)?.density
+  return scope === "layout" || (scope === "control" && controlSize === "auto")
+}
 const cssValue = (name: TokenName, value: number) => `${value}${allTokenControls.find(control => control.name === name)?.unit ?? "px"}`
 function loadConfig(): Config {
   try {
@@ -19,7 +30,8 @@ function loadConfig(): Config {
     const overrides: Config["overrides"] = {}
     for (const control of allTokenControls) {
       const raw = saved?.overrides?.[control.name]
-      const value = typeof raw === "number" ? raw : typeof raw === "string" && /^\d+(\.\d+)?(px)?$/.test(raw) ? Number.parseFloat(raw) : undefined
+      const match = typeof raw === "string" ? /^(\d+(?:\.\d+)?)(px|ms)?$/.exec(raw) : null
+      const value = typeof raw === "number" ? raw : match && ((match[2] ?? "") === (control.unit ?? "px") || (!match[2] && control.unit !== "ms")) ? Number(match[1]) : undefined
       if (value !== undefined && Number.isFinite(value) && value >= control.min && value <= control.max) overrides[control.name] = value
     }
     return { customColor: normalizeHex(saved?.customColor) ?? readPaletteSurfaces().seed, controlSize: controlSizes.includes(saved?.controlSize) ? saved.controlSize : "auto", palette: palettes.includes(saved?.palette) ? saved.palette : "neutral", elevation: elevations.includes(saved?.elevation) ? saved.elevation : "soft", density: saved?.density === "comfortable" ? "comfortable" : "compact", overrides }
@@ -32,10 +44,12 @@ function readValues(controls = allTokenControls) {
   document.body.append(probe)
   const values: Config["overrides"] = {}
   for (const { name, unit } of controls) {
-    probe.style.width = unit === "" ? "0" : `var(${name})`
+    probe.style.width = unit === "" || unit === "ms" ? "0" : `var(${name})`
     probe.style.lineHeight = unit === "" ? `var(${name})` : "normal"
+    // Read the token, not ThemeProvider’s temporary transition blocker or reduced-motion override.
+    probe.style.setProperty("transition-duration", unit === "ms" ? `var(${name})` : "0s", "important")
     const style = getComputedStyle(probe)
-    values[name] = Number.parseFloat(unit === "" ? style.lineHeight : style.width)
+    values[name] = unit === "ms" ? Number.parseFloat(style.transitionDuration) * 1000 : Number.parseFloat(unit === "" ? style.lineHeight : style.width)
   }
   probe.remove()
   return values
@@ -87,15 +101,28 @@ export function useTokens() {
     })
     return () => cancelAnimationFrame(frame)
   }, [config, customPalette])
-  const setDensity = (density: Density) => setConfig(current => ({ ...current, density, overrides: {} }))
+  const setDensity = (density: Density) => setConfig(current => current.density === density ? current : ({
+    ...current, density,
+    overrides: Object.fromEntries(Object.entries(current.overrides).filter(([name]) => !dependsOnDensity(name, current.controlSize))),
+  }))
   const setToken = (name: TokenName, value: number) => {
     const control = allTokenControls.find(entry => entry.name === name)
     if (!control || !Number.isFinite(value)) return
     setConfig(current => ({ ...current, overrides: { ...current.overrides, [name]: Math.min(control.max, Math.max(control.min, value)) } }))
   }
   const customCss = config.palette === "custom" ? `\n:root[data-palette="custom"] {\n${Object.entries(customPalette.variables).map(([name, color]) => `  ${name}: ${color};`).join("\n")}\n}\n` : ""
-  const css = `/* Include src/styles/appearance.css and control-sizing.css after the base theme.\n   Set data-density="${config.density}" data-control-size="${config.controlSize}" data-palette="${config.palette}" data-elevation="${config.elevation}" on <html>. */\n:root[data-density="${config.density}"] {\n${Object.entries(config.overrides).map(([name, value]) => `  ${name}: ${cssValue(name as TokenName, value!)};`).join("\n") || "  /* Density defaults; no custom overrides. */"}\n}${customCss}`
-  const setControlSize = (controlSize: ControlSize) => setConfig(current => ({ ...current, controlSize, overrides: Object.fromEntries(Object.entries(current.overrides).filter(([name]) => !["--ds-control-height", "--ds-input-height", "--ds-button-height-xs", "--ds-button-height-sm", "--ds-button-height-md", "--ds-button-height-lg", "--ds-control-padding-x", "--ds-select-item-height", "--ds-textarea-min-height"].includes(name))) }))
+  const entries = Object.entries(config.overrides)
+  const declarations = (items: typeof entries) => items.map(([name, value]) => `  ${name}: ${cssValue(name as TokenName, value!)};`).join("\n")
+  const globalEntries = entries.filter(([name]) => !dependsOnDensity(name, config.controlSize) && !controlSizeTokens.has(name))
+  const densityEntries = entries.filter(([name]) => dependsOnDensity(name, config.controlSize))
+  const sizeEntries = entries.filter(([name]) => !dependsOnDensity(name, config.controlSize) && controlSizeTokens.has(name))
+  const blocks = [
+    globalEntries.length && `:root {\n${declarations(globalEntries)}\n}`,
+    densityEntries.length && `:root[data-density="${config.density}"] {\n${declarations(densityEntries)}\n}`,
+    sizeEntries.length && `:root[data-control-size="${config.controlSize}"] {\n${declarations(sizeEntries)}\n}`,
+  ].filter(Boolean)
+  const css = `/* Include src/styles/appearance.css, control-sizing.css and motion.css after the base theme.\n   Set data-density="${config.density}" data-control-size="${config.controlSize}" data-palette="${config.palette}" data-elevation="${config.elevation}" on <html>. */\n${blocks.join("\n\n") || ":root {\n  /* Preset defaults; no custom overrides. */\n}"}${customCss}`
+  const setControlSize = (controlSize: ControlSize) => setConfig(current => ({ ...current, controlSize, overrides: Object.fromEntries(Object.entries(current.overrides).filter(([name]) => !controlSizeTokens.has(name))) }))
   return { customColor: config.customColor, customPalette, setCustomColor: (color: string) => { const customColor = normalizeHex(color); if (customColor) setConfig(current => ({ ...current, customColor, palette: "custom" })) }, controlSize: config.controlSize, setControlSize, palette: config.palette, elevation: config.elevation, setPalette: (palette: Palette) => setConfig(current => ({ ...current, palette })), setElevation: (elevation: Elevation) => setConfig(current => ({ ...current, elevation })), density: config.density, values, overrides: config.overrides, setToken, setDensity, css, reset: () => setConfig({ customColor: surfaces.seed, controlSize: "auto", palette: "neutral", elevation: "soft", density: "compact", overrides: {} }) }
 }
 export type TokenPlayground = ReturnType<typeof useTokens>

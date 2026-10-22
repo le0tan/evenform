@@ -1,5 +1,13 @@
 # Third-party notices
 
+Motion behavior references reviewed on 2026-10-22 include interior.dev, Motion
+Primitives, FormKit AutoAnimate, GodUI guidelines and Animate UI documentation.
+No source/assets from these references are redistributed, and no new animation
+dependency was installed. Animate UI has an additional Commons Clause restriction;
+its components are not part of Evenform. See [motion provenance](docs/motion.md#references-and-licensing)
+and [license review](docs/license-audit.md). This reference note does not replace
+the source/dependency notices below.
+
 Evenform's original code is licensed under [MIT](LICENSE). Third-party code,
 fonts, and icons retain their respective copyright and license terms.
 

@@ -22,6 +22,7 @@ import { useShowcaseSection } from "./use-showcase-section"
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group"
 
 const AdvancedControlsGallery = lazy(() => import("./advanced-controls-gallery").then(m => ({ default: m.AdvancedControlsGallery })))
+const MotionGallery = lazy(() => import("./motion-gallery").then(m => ({ default: m.MotionGallery })))
 const StructuredDataGallery = lazy(() => import("./structured-data-gallery").then(m => ({ default: m.StructuredDataGallery })))
 const DateChoiceGallery = lazy(() => import("./date-choice-gallery").then(m => ({ default: m.DateChoiceGallery })))
 const PeriodPickerGallery = lazy(() => import("./period-picker-gallery").then(m => ({ default: m.PeriodPickerGallery })))
@@ -47,6 +48,7 @@ export function Gallery() {
   const [inviteEmailInvalid, setInviteEmailInvalid] = useState(true)
   return <><PageHeader title={current.title} description={current.description} />
     <div className="component-browser">
+      <ShowcasePagePanel active={section === "motion"}><Suspense fallback={<p role="status">Loading motion examples…</p>}><MotionGallery /></Suspense></ShowcasePagePanel>
       <ShowcasePagePanel active={section === "catalog"}><ComponentCatalog /></ShowcasePagePanel>
       <ShowcasePagePanel active={section === "advanced"}><Suspense fallback={<p role="status">Loading controls…</p>}><AdvancedControlsGallery /></Suspense></ShowcasePagePanel>
       <ShowcasePagePanel active={section === "structured"}><Suspense fallback={<p role="status">Loading data controls…</p>}><StructuredDataGallery /></Suspense></ShowcasePagePanel>

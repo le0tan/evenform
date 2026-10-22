@@ -16,7 +16,8 @@ from other pages.
 | Elevation | Flat, Soft, Layered | Soft |
 
 **General** contains these choices. **Tokens** contains seven primary sliders
-and six advanced groups for layout, controls, forms, data, overlays and typography.
+plus a Motion group (Fast/Standard duration, enter distance/scale) and six advanced
+groups for layout, controls, forms, data, overlays and typography.
 **Export** provides CSS inspection, copying and reset. On wide screens, the
 settings pane scrolls independently while the preview stays available; narrow
 screens stack settings above the preview.
@@ -102,11 +103,22 @@ Body text, headings and small indicators are not scaled as page zoom.
 Supported controls retain their 44px minimum target on coarse-pointer devices;
 Small/Medium may share the same outer height while padding and text differ.
 
-Changing density clears numeric overrides and preserves explicit control size,
-palette and elevation. Changing control size clears only dependent geometry
+Changing density clears only density-dependent layout overrides (and control
+geometry when Control size is Auto). Independent Motion, typography, radius and
+fixed layout settings remain unchanged, as do explicit control size, palette and
+elevation. Changing control size clears only dependent geometry
 overrides. Moving a slider back to its current CSS-derived value removes the
 redundant override, its dot and its exported entry. CSS remains the source of
 preset values; editor metadata does not duplicate their defaults.
+
+Motion parameters use the same overrides, persistence, redundant-value removal,
+reset and export paths. Durations are read through computed CSS time properties
+and exported as `ms`; scale is unitless. Independent overrides are emitted under
+`:root`, density-dependent layout under its `data-density` selector, and explicit
+control geometry under its `data-control-size` selector. Motion therefore applies
+to both Compact and Comfortable. Editor scope metadata records dependency policy,
+without duplicating any CSS defaults. See [Motion](motion.md) for component
+semantics, local overrides and reduced-motion behavior.
 
 ## Preferences and adoption
 

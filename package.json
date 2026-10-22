@@ -17,6 +17,7 @@
     "preview:starter": "vite preview --outDir dist-starter",
     "verify:details": "node scripts/verify-description-list.mjs",
     "verify:navigation": "node scripts/verify-showcase-index.mjs",
+    "verify:motion": "node scripts/verify-motion.mjs",
     "verify:palette": "node --experimental-strip-types scripts/verify-theme-palette.mjs"
   },
   "dependencies": {

@@ -32,6 +32,9 @@ Explore the application examples: [Data dashboard](https://le0tan.github.io/even
   Soft / Layered elevation, and control sizing independent of density.
   [Appearance lab](https://le0tan.github.io/evenform/#appearance) combines live
   preview, numeric tokens and CSS export; see the [appearance guide](docs/appearance.md).
+- **Purposeful motion.** Shared timing, interruptible overlays, opt-in sliding
+  Tabs and list updates, stable action/loading feedback and reduced-motion support.
+  [Motion examples](https://le0tan.github.io/evenform/#components/motion) · [Guide](docs/motion.md).
 - **Composable components and patterns.** shadcn/ui's Base UI Nova style is the
   foundation; React Aria, TanStack, Tiptap, and other focused libraries support
   dates, data, editing, and interaction.
@@ -93,6 +96,7 @@ npm run typecheck
 npm run lint
 npm run verify:navigation
 npm run verify:palette
+npm run verify:motion # local dev server required
 npm run build
 npm run build:starter
 ```
