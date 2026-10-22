@@ -96,3 +96,21 @@ tiny contributions. Label a sum of stage quantiles accurately rather than implyi
 it is a measured end-to-end quantile. Consider documenting this comparison recipe
 before proposing a universal component API. Business data, sources and screenshots
 remain in the consuming repository.
+
+## Whole-page review: overlooked data and validation states
+
+A second pass found consumer issues beyond visual hierarchy. Formatting timestamps
+to hours/minutes before assigning chart coordinates loses identity for sub-minute
+or multi-day samples. A consumer recipe should preserve raw time coordinates,
+format sparse ticks with units, retain exact dated table values, distinguish no
+samples from measured zero, and show a point for one observation. These needs fit
+EvenformChart plus a Table and a small availability Badge; no new chart primitive
+was required.
+
+The existing DateRangePicker `isInvalid`/`errorMessage` contract was sufficient for
+invalid query windows. Keep field validation distinct from network failure/retry.
+Similarly, metadata and prominent health badges must share one consumer-owned
+state calculation. Local layout of existing Stat definitions can align values
+beneath wrapped labels without fixing label heights or replacing the component.
+These are adoption recipes and consumer responsibilities, not defects attributed
+to the underlying primitives.
