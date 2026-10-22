@@ -460,4 +460,10 @@ Showcase 的目录、表格、日期/层级/文件、媒体、产品 Patterns、
 - `LoadingSwap` (`patterns/loading-swap`) overlaps a placeholder with content,
   preserves its footprint and keeps hidden content inert.
 
+- `MorphingPopoverContent` (`patterns/morphing-popover`) is an optional Popover
+  surface transition; share `anchorRef` with `PopoverTrigger`. Text stays at its
+  normal size. Narrow viewports and Reduced Motion use a fade. See [Motion](motion.md).
+- `ResetButton` (`ui/reset-button`) adds a finite, interruptible icon turn and
+  accessible reset confirmation to the existing Button.
+
 Configuration, local overrides, reduced motion and examples: [Motion](motion.md).

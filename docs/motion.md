@@ -127,7 +127,7 @@ outside interaction, Escape, controlled state, ARIA and scroll locking.
 `FeedbackButton` composes Button with `state="idle" | "loading" | "success" |
 "error"`, optional loading/success/error labels, icon and status message. All
 faces occupy the same grid cell and reserve the widest label's footprint;
-opacity transitions crossfade without changing button width. Choose concise
+Inactive faces are hidden immediately and the incoming face fades in without changing button width. Labels never paint on top of each other, including when a copy finishes before the loading delay. Choose concise
 labels appropriate to the available space. Explicit button size/variant/render
 props remain available. A loading state is immediately `aria-busy` /
 `aria-disabled`, while its visual face appears after `loadingDelay` (150ms by
@@ -187,9 +187,48 @@ remaining non-virtual list needs a small native animation adapter. Starter does
 not import FeedbackButton, list motion or the lazy Motion gallery unless a
 consumer chooses them. Shared CSS is still part of the full stylesheet.
 
-Morphing Popover is deferred. Scaling a trigger into a positioned Portal adds
-clipping, text distortion and focus/presence coordination without a necessary
-product task here. Ordinary Popover behavior remains the default.
+### Morphing Popover (opt-in)
+
+`MorphingPopoverContent` in `components/patterns/morphing-popover` composes the
+ordinary `PopoverContent`. Pass a ref shared with its `PopoverTrigger`:
+
+```tsx
+const trigger = useRef<HTMLButtonElement>(null)
+
+<Popover>
+  <PopoverTrigger ref={trigger} render={<Button variant="outline" />}>
+    Edit project
+  </PopoverTrigger>
+  <MorphingPopoverContent anchorRef={trigger} align="start">
+    <PopoverTitle>Edit project</PopoverTitle>
+    <Input aria-label="Project name" />
+    <PopoverClose render={<Button />}>Save project</PopoverClose>
+  </MorphingPopoverContent>
+</Popover>
+```
+
+A decorative surface transitions from the measured trigger rectangle to the
+positioned popup. The popup and its text never scale. CSS transitions reverse
+from their current visual state when interrupted; Base UI still owns presence,
+Portal, collision positioning, controlled state, Escape, outside dismissal and
+focus restoration. Its opacity transition also keeps the popup mounted through
+exit. Geometry observers disconnect on unmount; a single style read establishes the measured origin before expansion, with no per-frame measurement loop. The scrollable content retains
+the available viewport height.
+
+`--ds-morph-duration` falls back to `--ds-duration-standard`; surface color,
+radius and elevation use the ordinary Popover tokens. At widths up to 40rem,
+and with Reduced Motion, the surface remains unscaled and uses the normal fade.
+The ordinary Popover has no morph by default. The optional component accepts
+ordinary content props except `render` and function children, because its own
+content wrapper keeps text separate from the animated surface.
+
+### Reset acknowledgement
+
+`ResetButton` composes the existing Button and Lucide reset icon. Each successful
+click advances a finite icon rotation using Standard duration and the shared
+curve. Repeated clicks retarget the current rotation. It announces completion
+in a live region, including with Reduced Motion. Appearance lab and the token
+export panel use the same control; neither simulates an asynchronous task.
 
 ## References and licensing
 

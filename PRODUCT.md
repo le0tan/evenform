@@ -74,7 +74,8 @@ scope, contrast checks, preference handling and adoption.
 
 Motion uses shared CSS timing and entrance parameters, interruptible popup
 transitions, opt-in sliding Tabs and sortable-list continuity, controlled button
-feedback and stable loading replacement. Appearance lab edits and exports these
+feedback, stable loading replacement and an optional Morphing Popover with
+unscaled content. Appearance lab edits and exports these
 parameters through the same preference pipeline. The [motion guide](docs/motion.md)
 records behavior, reduced-motion handling, adoption and verification scope.
 

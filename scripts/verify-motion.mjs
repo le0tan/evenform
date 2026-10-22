@@ -112,6 +112,51 @@ try {
   await page.getByRole('button', {name:'Saved', exact:true}).waitFor()
   check('Quick operation avoids loading flash', await page.locator('.evenform-feedback-face[data-visible]').filter({hasText:'Saving…'}).count() === 0)
 
+  // Sample actual frames, not only the final label: inactive grid faces must
+  // reserve width without ever painting overlapping text.
+  await context.grantPermissions(['clipboard-read','clipboard-write'])
+  const copy = page.locator('#example-motion-feedback .evenform-copy-button button')
+  await copy.scrollIntoViewIfNeeded()
+  const copyWidth = (await copy.boundingBox()).width
+  const sampling = copy.evaluate(button => new Promise(resolve => {
+    const frames = []; const start = performance.now()
+    function sample() {
+      const faces = [...button.querySelectorAll('.evenform-feedback-face')]
+      frames.push(faces.filter(face => getComputedStyle(face).visibility === 'visible' && Number(getComputedStyle(face).opacity) > 0.01).map(face => face.dataset.face))
+      if (performance.now() - start < 450) requestAnimationFrame(sample)
+      else resolve(frames)
+    }
+    sample()
+  }))
+  await copy.click()
+  const copyFrames = await sampling
+  report.measurements.copyFrames = copyFrames
+  check('Copy transition never paints two labels in the same frame', copyFrames.every(frame => frame.length <= 1))
+  await page.getByRole('button', {name:'Copied',exact:true}).waitFor()
+  check('Copy success remains visible with stable width', Math.abs((await copy.boundingBox()).width - copyWidth) < 1)
+
+  const morphTrigger = page.getByRole('button', {name:'Edit project',exact:true})
+  await morphTrigger.click()
+  const morph = page.locator('.evenform-morphing-popover')
+  await settle()
+  await page.waitForFunction(()=>document.querySelector('.evenform-morphing-popover')?.getAnimations({subtree:true}).some(a=>a.effect.getKeyframes().some(f=>f.transform) && a.effect.getComputedTiming().progress>0 && a.effect.getComputedTiming().progress<1))
+  const morphState = await morph.evaluate(e => {
+    const a = document.querySelector('#example-motion-morph button').getBoundingClientRect()
+    const b = e.getBoundingClientRect()
+    return {x:Number.parseFloat(e.style.getPropertyValue('--_morph-x')),y:Number.parseFloat(e.style.getPropertyValue('--_morph-y')),expectedX:a.x-b.x,expectedY:a.y-b.y,content:getComputedStyle(e.firstElementChild).transform,root:getComputedStyle(e).transform,surface:getComputedStyle(e,'::before').transform,animations:e.getAnimations({subtree:true}).map(a=>({progress:a.effect.getComputedTiming().progress,frames:a.effect.getKeyframes()}))}
+  })
+  report.measurements.morph = morphState
+  check('Morph surface is measured from the actual positioned trigger', Math.abs(morphState.x-morphState.expectedX)<1 && Math.abs(morphState.y-morphState.expectedY)<1)
+  check('Morph surface animates without scaling text', morphState.root==='none' && morphState.content==='none' && morphState.animations.some(a=>a.progress>0 && a.progress<1 && a.frames.some(f=>f.transform)))
+  check('Morph retains initial input focus', await morph.getByRole('textbox',{name:'Project name'}).evaluate(e=>document.activeElement===e))
+  await page.keyboard.press('Escape')
+  await morph.waitFor({state:'detached'})
+  await popupRound('Edit project','popover-content','Cancel')
+  await morphTrigger.click()
+  await page.getByRole('heading',{name:'Selection',exact:true}).click()
+  await morph.waitFor({state:'detached'})
+  check('Morph retains outside dismissal', await morphTrigger.getAttribute('aria-expanded')==='false')
+
   const list = page.getByRole('grid', {name:'Project stages', exact:true})
   await list.scrollIntoViewIfNeeded()
   await page.getByRole('button', {name:'Reverse', exact:true}).click()
@@ -185,6 +230,11 @@ try {
   report.measurements.propagation=propagation
   check('CSS time tokens propagate to Button/Popover/Tabs', propagation.popup==='0.4s' && propagation.button==='0.4s' && propagation.tabs==='0.6s' && propagation.scale==='0.94')
   await page.keyboard.press('Escape')
+  await page.locator('[data-slot="popover-content"]').waitFor({state:'detached'})
+  await page.getByRole('button',{name:'Edit project',exact:true}).click()
+  check('Standard token propagates to the optional morph surface',await page.locator('.evenform-morphing-popover').evaluate(e=>getComputedStyle(e,'::before').transitionDuration==='0.6s'))
+  await page.keyboard.press('Escape')
+  await page.locator('.evenform-morphing-popover').waitFor({state:'detached'})
   await page.getByRole('button',{name:'Bold',exact:true}).hover()
   await page.locator('[data-slot="tooltip-content"][data-open]').waitFor({state:'visible'})
   check('Fast token also propagates to initial Tooltip fade',await page.locator('[data-slot="tooltip-content"][data-open]').evaluate(e=>getComputedStyle(e).transitionDuration==='0.4s'))
@@ -198,6 +248,8 @@ try {
   check('Returning to CSS default removes redundant override', await page.evaluate(()=>JSON.parse(localStorage.getItem('evenform-tokens-v1')).overrides['--ds-duration-fast']===undefined))
   await page.getByRole('button', {name:'Reset appearance',exact:true}).click()
   await settle()
+  check('Reset acknowledges with an active icon rotation', await page.getByRole('button',{name:'Reset appearance',exact:true}).locator('svg').evaluate(e=>e.getAnimations().some(a=>a.effect.getComputedTiming().progress<1)))
+  check('Reset announces completion', await page.getByRole('status').filter({hasText:'Appearance reset to defaults.'}).count()===1)
   check('Reset clears all motion overrides', await page.evaluate(()=>Object.keys(JSON.parse(localStorage.getItem('evenform-tokens-v1')).overrides).length===0))
 
   const alias = await page.addStyleTag({content:':root { --ds-duration-fast: calc(var(--ds-duration-standard) / 2); --ds-motion-enter-scale: calc(1 - 0.03); }'})
@@ -232,6 +284,15 @@ try {
     await gallery(); await page.reload(); await page.getByRole('heading',{name:'Selection',exact:true}).waitFor(); await settle()
     check(`${theme}/${density}/${size}/${viewport.width}: no page overflow`,await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth))
     await page.screenshot({path:new URL(`${theme}-${density}-${size}-${viewport.width}.png`,output).pathname,fullPage:true})
+    await page.getByRole('button',{name:'Edit project',exact:true}).click()
+    const panel = page.locator('.evenform-morphing-popover')
+    await panel.getByRole('textbox',{name:'Project name'}).waitFor()
+    await page.waitForTimeout(250)
+    check(`${theme}/${viewport.width}: morph remains inside viewport`, await panel.evaluate(e=>{const r=e.getBoundingClientRect();return r.x>=0 && r.right<=innerWidth && r.y>=0 && r.bottom<=innerHeight}))
+    if(viewport.width<640) check('Narrow morph uses unscaled fade fallback',await panel.evaluate(e=>getComputedStyle(e,'::before').transform==='none'))
+    await page.screenshot({path:new URL(`morph-${theme}-${viewport.width}.png`,output).pathname})
+    await page.keyboard.press('Escape')
+    await panel.waitFor({state:'detached'})
   }
   await page.setViewportSize({width:1440,height:1000})
   await page.emulateMedia({reducedMotion:'reduce'})
@@ -245,6 +306,14 @@ try {
   check('Reduced motion skips JavaScript list animations',await page.locator('[data-slot="sortable-list"]').evaluate(e=>[...e.querySelectorAll('[data-slot="sortable-item"]')].every(row=>row.getAnimations().length===0)))
   await popupRound('Review changes','dialog-content','Confirm')
   await popupRound('Quick edit','popover-content','Done')
+  await page.getByRole('button',{name:'Edit project',exact:true}).click()
+  check('Reduced motion morph retains content without spatial animation',await page.locator('.evenform-morphing-popover').evaluate(e=>getComputedStyle(e,'::before').transform==='none' && e.getAnimations({subtree:true}).every(a=>a.effect.getTiming().duration<1)))
+  await page.keyboard.press('Escape')
+  await page.locator('.evenform-morphing-popover').waitFor({state:'detached'})
+  await page.goto(`${url}/#appearance`)
+  await page.getByRole('button',{name:'Reset appearance',exact:true}).click()
+  check('Reduced motion reset keeps live completion feedback',await page.getByRole('status').filter({hasText:'Appearance reset to defaults.'}).count()===1)
+  await gallery()
   await page.screenshot({path:new URL('reduced-motion.png',output).pathname,fullPage:true})
   check('No runtime or console errors',report.errors.length===0)
   report.result = 'pass'

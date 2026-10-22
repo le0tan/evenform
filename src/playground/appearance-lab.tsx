@@ -1,13 +1,8 @@
 import { useRef, useState } from "react"
-import {
-  Check,
-  ChevronDown,
-  RotateCcw,
-  Pencil,
-  ClipboardCheck,
-} from "lucide-react"
+import { Check, ChevronDown, Pencil, ClipboardCheck } from "lucide-react"
 import { PageHeader, FormField } from "@/components/patterns/layouts"
 import { Button } from "@/components/ui/button"
+import { ResetButton } from "@/components/ui/reset-button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -72,15 +67,14 @@ export function AppearanceLab({ tokens }: { tokens: TokenPlayground }) {
         >
           <div className="appearance-pane-heading">
             <h2>Settings</h2>
-            <Button
+            <ResetButton
               variant="ghost"
               size="icon-sm"
               aria-label="Reset appearance"
+              statusMessage="Appearance reset to defaults."
               title="Reset appearance"
               onClick={() => tokens.reset()}
-            >
-              <RotateCcw />
-            </Button>
+            />
           </div>
           <Tabs defaultValue="appearance" className="appearance-settings-tabs">
             <TabsList
@@ -105,7 +99,11 @@ export function AppearanceLab({ tokens }: { tokens: TokenPlayground }) {
                     setTheme(value as "light" | "dark" | "system")
                   }
                 >
-                  <TabsList motion="slide" className="w-full" aria-label="Color mode">
+                  <TabsList
+                    motion="slide"
+                    className="w-full"
+                    aria-label="Color mode"
+                  >
                     <TabsTrigger value="light">Light</TabsTrigger>
                     <TabsTrigger value="dark">Dark</TabsTrigger>
                     <TabsTrigger value="system">System</TabsTrigger>
@@ -120,7 +118,11 @@ export function AppearanceLab({ tokens }: { tokens: TokenPlayground }) {
                     tokens.setDensity(value as "compact" | "comfortable")
                   }
                 >
-                  <TabsList motion="slide" className="w-full" aria-label="Preview density">
+                  <TabsList
+                    motion="slide"
+                    className="w-full"
+                    aria-label="Preview density"
+                  >
                     <TabsTrigger value="compact">Compact</TabsTrigger>
                     <TabsTrigger value="comfortable">Comfortable</TabsTrigger>
                   </TabsList>

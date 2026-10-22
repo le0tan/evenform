@@ -1,6 +1,7 @@
 import { useId, useState } from "react"
-import { Check, Copy, RotateCcw } from "lucide-react"
+import { Check, Copy } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { ResetButton } from "@/components/ui/reset-button"
 import type { TokenPlayground } from "./use-tokens"
 import {
   tokenControls,
@@ -18,25 +19,42 @@ export function TokenAdjustments({ tokens }: { tokens: TokenPlayground }) {
       </div>
       <details className="advanced-tokens">
         <summary>Motion</summary>
-        <div className="token-controls">{advancedTokenGroups.find(group => group.label === "Motion")?.controls.map(control => <TokenEditor key={control.name} control={control} tokens={tokens} />)}</div>
-        <a href="#components/motion" className="text-primary underline underline-offset-4">Try motion examples</a>
+        <div className="token-controls">
+          {advancedTokenGroups
+            .find((group) => group.label === "Motion")
+            ?.controls.map((control) => (
+              <TokenEditor
+                key={control.name}
+                control={control}
+                tokens={tokens}
+              />
+            ))}
+        </div>
+        <a
+          href="#components/motion"
+          className="text-primary underline underline-offset-4"
+        >
+          Try motion examples
+        </a>
       </details>
       <details className="advanced-tokens">
         <summary>Advanced tokens</summary>
-        {advancedTokenGroups.filter(group => group.label !== "Motion").map((group) => (
-          <details className="advanced-token-group" key={group.label}>
-            <summary>{group.label}</summary>
-            <div className="token-controls">
-              {group.controls.map((control) => (
-                <TokenEditor
-                  key={control.name}
-                  control={control}
-                  tokens={tokens}
-                />
-              ))}
-            </div>
-          </details>
-        ))}
+        {advancedTokenGroups
+          .filter((group) => group.label !== "Motion")
+          .map((group) => (
+            <details className="advanced-token-group" key={group.label}>
+              <summary>{group.label}</summary>
+              <div className="token-controls">
+                {group.controls.map((control) => (
+                  <TokenEditor
+                    key={control.name}
+                    control={control}
+                    tokens={tokens}
+                  />
+                ))}
+              </div>
+            </details>
+          ))}
       </details>
     </>
   )
@@ -63,7 +81,8 @@ export function TokenExport({ tokens }: { tokens: TokenPlayground }) {
         {copied ? <Check /> : <Copy />}
         {copied ? "Copied CSS" : "Copy token overrides"}
       </Button>
-      <Button
+      <ResetButton
+        statusMessage="Appearance reset to defaults."
         className="w-full"
         variant="ghost"
         onClick={() => {
@@ -72,9 +91,8 @@ export function TokenExport({ tokens }: { tokens: TokenPlayground }) {
           setError("")
         }}
       >
-        <RotateCcw />
         Reset to Evenform defaults
-      </Button>
+      </ResetButton>
       <details
         className="css-details"
         open={showCss}

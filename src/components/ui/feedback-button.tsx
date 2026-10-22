@@ -52,6 +52,10 @@ export function FeedbackButton({
     <span data-slot="feedback-button" className="inline-flex">
       <Button
         {...props}
+        aria-label={
+          props["aria-label"] ??
+          (typeof labels[state] === "string" ? labels[state] : undefined)
+        }
         aria-busy={state === "loading" || undefined}
         aria-disabled={state === "loading" || props["aria-disabled"]}
         onClick={(event) => {

@@ -3,6 +3,8 @@ import { Bold, Copy, Italic, Plus } from "lucide-react"
 import { PageSection } from "@/components/patterns/layouts"
 import { SortableList } from "@/components/patterns/sortable-list"
 import { LoadingSwap } from "@/components/patterns/loading-swap"
+import { MorphingPopoverContent } from "@/components/patterns/morphing-popover"
+import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import {
   FeedbackButton,
@@ -83,6 +85,7 @@ function SampleTabs({
 }
 
 export function MotionGallery() {
+  const morphTrigger = useRef<HTMLButtonElement>(null)
   const [tab, setTab] = useState("all")
   const [feedback, setFeedback] = useState<FeedbackState>("idle")
   const [fail, setFail] = useState(false)
@@ -256,6 +259,35 @@ export function MotionGallery() {
               </div>
             </SheetContent>
           </Sheet>
+        </div>
+      </PageSection>
+      <PageSection id="example-motion-morph" title="Morphing popover">
+        <div className="toolbar">
+          <Popover>
+            <PopoverTrigger
+              ref={morphTrigger}
+              render={<Button variant="outline" />}
+            >
+              Edit project
+            </PopoverTrigger>
+            <MorphingPopoverContent
+              anchorRef={morphTrigger}
+              align="start"
+              sideOffset={8}
+            >
+              <PopoverTitle>Edit project</PopoverTitle>
+              <label className="form-stack">
+                Project name
+                <Input defaultValue="Design system" />
+              </label>
+              <div className="toolbar">
+                <PopoverClose render={<Button />}>Save project</PopoverClose>
+                <PopoverClose render={<Button variant="ghost" />}>
+                  Cancel
+                </PopoverClose>
+              </div>
+            </MorphingPopoverContent>
+          </Popover>
         </div>
       </PageSection>
       <PageSection

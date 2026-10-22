@@ -88,9 +88,57 @@
   [data-slot="tabs-list"][data-variant="line"][data-motion="none"][data-orientation="vertical"] > [data-slot="tabs-trigger"][data-active]::after { inset: 0 -4px 0 auto; width: 2px; height: auto; }
 
   .evenform-feedback-faces { display: inline-grid; align-items: center; justify-items: center; }
-  .evenform-feedback-face { grid-area: 1 / 1; display: inline-flex; align-items: center; gap: var(--ds-control-gap); opacity: 0; transition: opacity var(--ds-duration-fast) var(--ds-ease-out); pointer-events: none; }
-  .evenform-feedback-face[data-visible] { opacity: 1; }
-  .evenform-feedback-faces[data-loading] > :is([data-face="idle"], [data-face="loading"]) { transition-delay: var(--_feedback-delay); }
+  .evenform-feedback-face { grid-area: 1 / 1; display: inline-flex; align-items: center; gap: var(--ds-control-gap); opacity: 0; visibility: hidden; transition: opacity var(--ds-duration-fast) var(--ds-ease-out); pointer-events: none; }
+  /* Hide the outgoing face immediately: fading two labels in one cell makes
+     overlapping glyphs. Hidden faces still reserve the maximum button width. */
+  .evenform-feedback-face[data-visible] { opacity: 1; visibility: visible; }
+  .evenform-feedback-faces[data-loading] > [data-face="idle"] { opacity: 1; visibility: visible; animation: evenform-feedback-wait 0s var(--_feedback-delay) forwards; }
+  .evenform-feedback-faces[data-loading] > [data-face="loading"] { transition-delay: var(--_feedback-delay); }
+  .evenform-reset-icon { rotate: var(--_reset-turn, 0deg); transition: rotate var(--ds-duration-standard) var(--ds-ease-out); }
+
+  .evenform-morphing-popover {
+    position: relative;
+    isolation: isolate;
+    background: transparent;
+    box-shadow: none;
+    overflow: visible;
+    transform: none;
+    transition: opacity var(--ds-morph-duration, var(--ds-duration-standard)) var(--ds-ease-out);
+  }
+  .evenform-morphing-popover:is([data-starting-style], [data-ending-style]) { transform: none; }
+  .evenform-morphing-popover::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    border-radius: inherit;
+    background: var(--popover);
+    box-shadow: var(--ds-shadow-overlay);
+    transform-origin: top left;
+    transform: translate(0, 0) scale(1, 1);
+    transition: transform var(--ds-morph-duration, var(--ds-duration-standard)) var(--ds-ease-out);
+  }
+  :root[data-elevation="flat"] .evenform-morphing-popover { outline: none; }
+  :root[data-elevation="flat"] .evenform-morphing-popover::before { outline: 1px solid var(--border); outline-offset: -1px; }
+  .evenform-morphing-popover:is([data-starting-style], [data-ending-style], [data-morph-origin])::before {
+    transform: translate(var(--_morph-x, 0px), var(--_morph-y, 0px)) scale(var(--_morph-scale-x, 1), var(--_morph-scale-y, 1));
+  }
+  .evenform-morphing-popover[data-morph-origin]::before { transition: none; }
+  .evenform-morphing-content {
+    display: grid;
+    gap: var(--ds-overlay-gap);
+    max-height: calc(var(--available-height, 100dvh) - 2 * var(--ds-overlay-gap));
+    overflow: auto;
+    opacity: 1;
+    transition: opacity var(--ds-duration-fast) var(--ds-ease-out);
+  }
+  .evenform-morphing-popover:is([data-starting-style], [data-ending-style]) > .evenform-morphing-content { opacity: 0; }
+  /* Small screens use the ordinary fade, avoiding a long surface sweep. */
+  @media (max-width: 40rem) {
+    .evenform-morphing-popover::before { transform: none !important; }
+  }
+  [data-motion="reduce"] .evenform-morphing-popover::before { transform: none !important; }
   .evenform-loading-swap { display: grid; min-width: 0; }
   .evenform-loading-swap > [data-slot="loading-placeholder"],
   .evenform-loading-swap > [data-slot="loading-content"] { grid-area: 1 / 1; min-width: 0; transition: opacity var(--ds-duration-standard) var(--ds-ease-out); }
@@ -102,7 +150,9 @@
   /* Local reduced-motion preview uses the same CSS path as the system preference. */
   [data-motion="reduce"], [data-motion="reduce"] *, [data-motion="reduce"] *::before, [data-motion="reduce"] *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-delay: 0s !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
 }
+@keyframes evenform-feedback-wait { to { opacity: 0; visibility: hidden; } }
 @media (prefers-reduced-motion: reduce) {
+  .evenform-morphing-popover::before { transform: none !important; }
   *, *::before, *::after { animation-iteration-count: 1 !important; transition-delay: 0s !important; }
   :is(.evenform-floating-panel, [data-slot="select-content"], [data-slot="tooltip-content"], [data-slot="dialog-content"], [data-slot="sheet-content"]):is([data-starting-style], [data-ending-style]) { transform: none; }
   [data-slot="alert-dialog-content"]:is([data-starting-style], [data-ending-style]) { transform: translate(-50%, -50%); }
