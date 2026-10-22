@@ -74,8 +74,9 @@ details and screenshots in the consuming repository, not this public library.
 
 Existing hosts still need to align aliases, Tailwind v4/PostCSS, preference keys,
 head/static asset handling, their own distribution notices and optional CSS.
-The exporter is an adoption aid, not an installable package or automatic upgrade
-system. SSR, arbitrary bundlers and every chart animation mode remain outside
+The exporter remains an adoption aid, with a versioned hash manifest and
+read-only integrity check; see the [upgrade workflow](getting-started.md#reproduce-and-review-a-source-upgrade).
+It is not an installable package or an automatic merge system. SSR, arbitrary bundlers and every chart animation mode remain outside
 this field test. The new chart media-query path has build/static coverage here;
 the dashboard deliberately disables chart animation even without that preference.
 
@@ -157,3 +158,19 @@ its state while its summary identifies the relationship. Reveal the selected
 child's context when that relationship changes, and respect a manual close on
 data refresh. Recompute ownership when data availability changes or the user
 switches pipelines. Keep business identities and screenshots in the consumer.
+
+A follow-up required selection in both directions. The consumer reused Button
+for proportional segment hit areas, complete contribution rows, and disclosed
+child controls, all calling the same application selection callback. Keep the
+exact list as the larger alternative for tiny segments; never expand the data
+geometry. A segment selects its contributing owner, while a child control selects
+the child. Related-owner highlighting is distinct from `aria-pressed` selection.
+
+Do not wrap Stat's definition-list structure in a button: an empty positioned
+Button with a complete accessible name can be a sibling of the visible content.
+Keep nested disclosures outside that hit area. Button's utility `outline-none`
+overrides component-layer outlines, so a separate noninteractive selection marker
+or pseudo-element can preserve chart highlighting. Match the primitive's exact
+active modifier when intentionally removing its press translation from a chart
+hit area. These were consumer composition fixes; the existing Button contract
+did not require a library change.
