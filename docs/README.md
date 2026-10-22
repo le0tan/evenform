@@ -7,6 +7,7 @@
 | Configure motion and adopt selection, feedback and list transitions | [Motion](motion.md) |
 | Choose tokens, layouts, and override rules | [Design contract](../DESIGN.md) (中文) |
 | Find component APIs and responsibilities | [Component catalog](components.md) (中文) |
+| Compose mixed filters, action headers and long reports | [Compositions](compositions.md) |
 | Choose runtime dependencies and shared CSS | [Dependency boundaries](dependencies.md) (中文) |
 | Integrate charts and accessible data alternatives | [Charts](charts.md) (中文) |
 | Understand capability coverage and intentional gaps | [Reference audit](reference-audit.md) (中文) |

@@ -2,7 +2,7 @@
 // See THIRD_PARTY_NOTICES.md and licenses/shadcn-ui.txt for the full license.
 import * as React from "react"
 import { Avatar as AvatarPrimitive } from "@base-ui/react/avatar"
-import { cn } from "cn"
+import { cn } from "@/lib/utils"
 
 function Avatar({
   className,

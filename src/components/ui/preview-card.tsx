@@ -1,5 +1,5 @@
 import { PreviewCard as PreviewCardPrimitive } from "@base-ui/react/preview-card"
-import { cn } from "cn"
+import { cn } from "@/lib/utils"
 const PreviewCard = PreviewCardPrimitive.Root
 const PreviewCardTrigger = PreviewCardPrimitive.Trigger
 const PreviewCardViewport = PreviewCardPrimitive.Viewport

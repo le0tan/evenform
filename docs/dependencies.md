@@ -31,10 +31,11 @@ Evenform 复用成熟交互模型，CSS 继续是外观参数的唯一来源。�
 
 ## 样式与复制边界
 
-完整复用时以 `src/index.css` 为合并入口，包含以下全部共享 CSS。不能沿用早期只复制五个 CSS 的清单；新增组件也依赖这些基础规则。`design-tools.css` 内还导入 FullCalendar v7 skeleton 与 classic theme，并放在 components layer。
+完整复用时以 `src/index.css` 为合并入口，包含以下全部共享 CSS。不能沿用早期只复制五个 CSS 的清单；新增组件也依赖这些基础规则。FullCalendar v7 skeleton 与 classic theme 由 `ui/event-calendar.tsx` 的相邻 `event-calendar.css` 导入（components layer），基础样式入口不再隐式引入日历包。
 
 ```text
-src/index.css
+src/index.css（完整入口）
+src/core.css（基础入口，index.css 也复用它）
 src/styles/tokens.css
 src/styles/appearance.css
 src/styles/control-sizing.css
@@ -60,11 +61,36 @@ src/styles/content-aids.css
 src/styles/motion.css
 ```
 
-`ui/evenform-chart.tsx` 自行导入同目录的 evenform-chart.css，按需采用图表时也要复制该文件和 vchart-runtime.ts。不要只复制 JSX 不带相邻的 CSS。ThemeProvider、hooks/use-mobile.ts、lib/utils.ts、alias 配置和 public/evenform-init.js 也随共享入口一起采用。产品覆盖文件最后导入，普通组件属性留在 components layer，让 utilities 可有意覆盖。
+`ui/evenform-chart.tsx` 自行导入同目录的 evenform-chart.css，按需采用图表时也要复制该文件和 vchart-runtime.ts。不要只复制 JSX 不带相邻的 CSS。ThemeProvider、hooks/use-mobile.ts、lib/utils.ts 与生成的 lib/cn-tables.ts、alias 配置和 public/evenform-init.js 也随共享入口一起采用。产品覆盖文件最后导入，普通组件属性留在 components layer，让 utilities 可有意覆盖。
 
-完整 Starter 保留 package.json/lockfile 与上面 imports。仅按需采用部分模块时，可裁剪未使用模块及其依赖/样式，但要先追踪 transitive imports：例如 DatePicker 依赖 Calendar/DateField，TreeSelect 依赖 Tree/Button/Popover，ImageEditor 依赖 Image/FileUpload/Slider/RadioGroup，EventCalendar CSS 依赖 FullCalendar。单独不用 EventCalendar 的轻量项目可不接入它的包与专属样式；完整 index.css 仍含它的 CSS imports，必须同步调整，不能仅删除 npm 包。
+完整 Starter 保留 package.json/lockfile 与上面 imports。仅按需采用部分模块时，可裁剪未使用模块及其依赖/样式，但要先追踪 transitive imports：例如 DatePicker 依赖 Calendar/DateField，TreeSelect 依赖 Tree/Button/Popover，ImageEditor 依赖 Image/FileUpload/Slider/RadioGroup，EventCalendar 会导入相邻 CSS，依赖 FullCalendar。单独不用 EventCalendar 的轻量项目可不接入它的包与专属样式；完整 index.css 不再隐式导入它的包 CSS；删除日历 TSX 使用后，日历包与相邻 CSS 可一起移除。
 
 不复制 `src/playground/` 的页面状态、图表数据、Token 控制器或演示 CSS 作为业务 API。Showcase 的开发样式和部分 gallery 排版即使与组件 CSS 同文件，也不代表业务入口需要导入 gallery。新页面使用 src/starter/App.tsx，并保留与 ThemeProvider 对齐的 head 初始化参数。
+
+## Base entry and common adoption map
+
+基础接入导入 `src/core.css`，沿其 `@import` 复制本地 CSS。它包含 Tailwind、
+字体、主题、tokens、appearance、control-sizing、patterns、extended-controls、
+extended-patterns 与 motion。它不等于所有组件的样式入口。
+
+| 采用内容 | 基础入口之外的本地依赖 / CSS | npm 包 |
+| --- | --- | --- |
+| Button、Badge、Input、Select、Tabs、Accordion、Sheet、Table | `lib/utils.ts` + `lib/cn-tables.ts`；Sheet 还组合 Button | `react`、`react-dom`、`@base-ui/react`、`cn`、`class-variance-authority`、`lucide-react`（按实际 imports） |
+| DescriptionList、EmptyState、FilterBar | FilterBar 组合 Button；基础入口已包含样式 | 同上，按传递 imports |
+| HeaderShell | `styles/workflow-aids.css` | 无额外运行包 |
+| CopyButton | FeedbackButton、Button、Spinner；`styles/utility-aids.css`（motion 已在基础入口） | 同基础控件 |
+| EventCalendar | `event-calendar.tsx` + 相邻 `event-calendar.css`；`styles/design-tools.css` | `@fullcalendar/react` v7，同一包的插件子路径 |
+| EvenformChart | 相邻 `evenform-chart.css`、`vchart-runtime.ts`，详见 [Charts](charts.md) | `@visactor/vchart` |
+
+基础 CSS 的构建依赖仍包括 Tailwind v4、对应构建插件、`shadcn`、
+`tw-animate-css` 和 `@fontsource-variable/geist`。以实际源码 imports 为准；
+这张表列常见组合，不替代全部模块的传递依赖追踪。全库导入继续用 `src/index.css`。
+
+`npm run verify:adoption` 在临时目录建立只链接上述基础包的源码宿主，构建时拒绝
+FullCalendar 解析；再加入日历源码、CSS 和包，检查产物与许可 metadata。
+它不发起 npm 安装，也不证明任意宿主/SSR 构建链兼容。
+复制源码须保留 `LICENSE`、`THIRD_PARTY_NOTICES.md` 与适用的 `licenses/`；
+发布时按宿主实际 bundle 生成完整依赖许可，不能把此最小 fixture 当作发布模板。
 
 ## 浏览器与服务端边界
 

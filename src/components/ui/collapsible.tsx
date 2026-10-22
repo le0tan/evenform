@@ -1,5 +1,5 @@
 import { Collapsible as CollapsiblePrimitive } from "@base-ui/react/collapsible"
-import { cn } from "cn"
+import { cn } from "@/lib/utils"
 
 const Collapsible = CollapsiblePrimitive.Root
 const CollapsibleTrigger = CollapsiblePrimitive.Trigger

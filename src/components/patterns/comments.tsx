@@ -1,5 +1,5 @@
 import { useId, type ComponentProps, type ReactNode } from "react"
-import { cn } from "cn"
+import { cn } from "@/lib/utils"
 
 export function Comments({ className, ...props }: ComponentProps<"ol">) {
   return (

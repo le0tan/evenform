@@ -1,6 +1,6 @@
 import { Autocomplete as AutocompletePrimitive } from "@base-ui/react/autocomplete"
 import { ChevronDownIcon, XIcon } from "lucide-react"
-import { cn } from "cn"
+import { cn } from "@/lib/utils"
 
 // Suggestions complete free text; Base UI owns filtering, keyboard and form semantics.
 const Autocomplete = AutocompletePrimitive.Root

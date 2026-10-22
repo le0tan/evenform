@@ -1,6 +1,6 @@
 import { useState, type ComponentProps, type ReactNode } from "react"
 import { ImageOffIcon } from "lucide-react"
-import { cn } from "cn"
+import { cn } from "@/lib/utils"
 
 type ImageProps = ComponentProps<"img"> & {
   alt: string

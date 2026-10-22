@@ -1,6 +1,6 @@
 import { Menubar as MenubarPrimitive } from "@base-ui/react/menubar"
 import { Menu as MenuPrimitive } from "@base-ui/react/menu"
-import { cn } from "cn"
+import { cn } from "@/lib/utils"
 export {
   DropdownMenu as MenubarMenu, DropdownMenuContent as MenubarContent,
   DropdownMenuItem as MenubarItem, DropdownMenuGroup as MenubarGroup,

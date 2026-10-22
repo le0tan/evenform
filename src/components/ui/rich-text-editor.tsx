@@ -26,7 +26,7 @@ import {
   Redo2,
   Unlink,
 } from "lucide-react"
-import { cn } from "cn"
+import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 

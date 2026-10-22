@@ -8,6 +8,8 @@ CSS is the only source of design parameters.
 
 ```bash
 npm run typecheck
+npm run verify:classes
+npm run verify:adoption
 npm run lint
 npm run verify:navigation
 npm run verify:palette
@@ -61,6 +63,13 @@ Scripts write screenshots and results under `evidence/`. Keep results tied to
 their actual checkout and run; do not interpret historical screenshots as a
 current passing test. These scripts exercise representative flows, not every
 upstream component option.
+
+`npm run verify:feedback` targets the source dev server (default port 4173). It
+generates an isolated fixture under ignored `evidence/field-feedback/`, checks
+font/color composition, both densities/themes and four control sizes with fine
+and emulated coarse pointers, then exercises the Record browser at
+320/390/768/1381px. `verify:classes` and `verify:adoption` need no browser server.
+The latter retains its temporary host path in stdout for inspection.
 
 Set `EVENFORM_EVIDENCE_DIR` to an absolute directory path ending in `/` to save a
 new run separately without overwriting older results.

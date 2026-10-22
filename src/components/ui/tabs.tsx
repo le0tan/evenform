@@ -4,7 +4,7 @@
 
 import { Tabs as TabsPrimitive } from "@base-ui/react/tabs"
 import { cva, type VariantProps } from "class-variance-authority"
-import { cn } from "cn"
+import { cn } from "@/lib/utils"
 
 function Tabs({
   className,
@@ -44,17 +44,22 @@ function TabsList({
   className,
   variant = "default",
   motion = "none",
+  size = "default",
   children,
   ...props
 }: TabsPrimitive.List.Props & VariantProps<typeof tabsListVariants> & {
   /** An interruptible indicator; Base UI still owns selection and geometry. */
   motion?: "none" | "slide"
+  /** Control fits the outer horizontal list to the shared control height.
+   * Touch targets and tall content may expand it. Default keeps navigation spacing. */
+  size?: "default" | "control"
 }) {
   return (
     <TabsPrimitive.List
       data-slot="tabs-list"
       data-variant={variant}
       data-motion={motion}
+      data-size={size}
       className={(state) => cn(tabsListVariants({ variant }), typeof className === "function" ? className(state) : className)}
       {...props}
     >

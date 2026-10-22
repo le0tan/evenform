@@ -142,6 +142,8 @@ function AccountAccess() {
   </div>
 }
 
+const RecordBrowser = lazy(() => import("./record-browser").then(m => ({ default: m.RecordBrowser })))
+
 const LayoutAidsGallery = lazy(() => import("./layout-aids-gallery").then(m => ({default: m.LayoutAidsGallery})))
 
 const ProductPatternsGallery = lazy(() => import("./product-patterns-gallery").then(m => ({default: m.ProductPatternsGallery})))
@@ -155,6 +157,7 @@ export function PatternGallery() {
   return <div className="pattern-gallery">
     <PageHeader title={current.title} description={current.description} />
     <div>
+      <ShowcasePagePanel active={tab === "records"}><Suspense fallback={<p role="status">Loading documents…</p>}><RecordBrowser /></Suspense></ShowcasePagePanel>
       <ShowcasePagePanel active={tab === "workspace"} keepMounted><DataWorkspace onInspect={(next) => { setProject(next); setTab("detail") }} /></ShowcasePagePanel>
       <ShowcasePagePanel active={tab === "detail"} keepMounted><RecordDetail key={project.id} project={project} /></ShowcasePagePanel>
       <ShowcasePagePanel active={tab === "access"} keepMounted><AccountAccess /></ShowcasePagePanel><ShowcasePagePanel active={tab === "product"}><Suspense fallback={<p role="status">Loading patterns…</p>}><ProductPatternsGallery /></Suspense></ShowcasePagePanel><ShowcasePagePanel active={tab === "workflow"}><Suspense fallback={<p role="status">Loading workflows…</p>}><WorkflowAidsGallery /></Suspense></ShowcasePagePanel><ShowcasePagePanel active={tab === "layouts"}><Suspense fallback={<p role="status">Loading layout patterns…</p>}><LayoutAidsGallery /></Suspense></ShowcasePagePanel>

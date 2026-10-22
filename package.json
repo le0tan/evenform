@@ -4,6 +4,13 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
+    "verify:feedback": "node scripts/verify-field-feedback.mjs",
+    "verify:adoption": "node scripts/verify-adoption.mjs",
+    "verify:classes": "npm run generate:cn && node --experimental-strip-types scripts/verify-class-merging.mjs",
+    "generate:cn": "node scripts/build-cn.mjs",
+    "prebuild": "npm run generate:cn",
+    "prebuild:starter": "npm run generate:cn",
+    "pretypecheck": "npm run generate:cn",
     "dev": "vite",
     "build": "tsc -b && vite build && node scripts/write-distribution-notices.mjs dist",
     "lint": "eslint .",

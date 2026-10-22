@@ -10,7 +10,7 @@ import {
   type PointerEvent,
   type Ref,
 } from "react"
-import { cn } from "cn"
+import { cn } from "@/lib/utils"
 
 type ResizeBoxSize = { width: number; height: number }
 type ResizeBoxEdge = "top" | "right" | "bottom" | "left"

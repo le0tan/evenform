@@ -284,6 +284,10 @@
 [data-slot='select-item'][data-highlighted] { background: var(--accent); color: var(--accent-foreground); }
 [data-slot='tabs-list'] { height: auto; gap: var(--ds-tabs-item-gap, var(--ds-tabs-gap)); padding: var(--ds-tabs-inset, var(--ds-tabs-padding)); }
 [data-slot='tabs-trigger'] { min-height: var(--ds-tabs-trigger-height, var(--ds-control-height)); padding-inline: var(--ds-control-padding-x); font-size: var(--ds-text-control-small, var(--ds-text-label)); }
+/* Only horizontal toolbar-sized lists subtract inset from the outer height.
+   Navigation/vertical lists keep the original trigger-size contract. */
+[data-slot='tabs-list']:where([data-size='control'][data-orientation='horizontal']) { padding: var(--ds-tabs-inset, calc(var(--ds-tabs-padding) / 2)); }
+:where([data-slot='tabs-list'][data-size='control'][data-orientation='horizontal']) > [data-slot='tabs-trigger'] { min-height: var(--ds-tabs-trigger-height, calc(var(--ds-tabs-control-height, var(--ds-control-height)) - 2 * var(--ds-tabs-inset, calc(var(--ds-tabs-padding) / 2)))); }
 [data-slot='tabs'] { gap: var(--ds-panel-gap); }
 [data-slot='table-row'] { height: var(--ds-table-height, var(--ds-table-row-height)); border-bottom-width: var(--ds-table-divider-width, 0px); }
 [data-slot='table-cell'], [data-slot='table-head'] { padding: var(--ds-table-padding-y, var(--ds-table-cell-padding-y)) var(--ds-table-padding-x, var(--ds-table-cell-padding-x)); }

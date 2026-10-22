@@ -1,6 +1,6 @@
 import { NumberField as NumberFieldPrimitive } from "@base-ui/react/number-field"
 import { MinusIcon, PlusIcon } from "lucide-react"
-import { cn } from "cn"
+import { cn } from "@/lib/utils"
 
 function NumberField({ className, ...props }: NumberFieldPrimitive.Root.Props) {
   return (

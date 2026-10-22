@@ -12,7 +12,7 @@ import {
   type CheckboxProps,
 } from "react-aria-components"
 import { Check, ChevronRight } from "lucide-react"
-import { cn } from "cn"
+import { cn } from "@/lib/utils"
 
 export function Tree<T extends object>({
   className,

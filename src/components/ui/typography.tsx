@@ -5,7 +5,7 @@ import {
   type ElementType,
   type ReactNode,
 } from "react"
-import { cn } from "cn"
+import { cn } from "@/lib/utils"
 
 type PolymorphicProps<Element extends ElementType, Props> = Props & {
   as?: Element

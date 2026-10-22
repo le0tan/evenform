@@ -1,6 +1,6 @@
 import { ToggleGroup as ToggleGroupPrimitive } from "@base-ui/react/toggle-group"
 import { Toggle as TogglePrimitive } from "@base-ui/react/toggle"
-import { cn } from "cn"
+import { cn } from "@/lib/utils"
 
 function ToggleGroup<Value extends string = string>({
   className,

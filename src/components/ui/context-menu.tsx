@@ -1,5 +1,5 @@
 import { ContextMenu as ContextMenuPrimitive } from "@base-ui/react/context-menu"
-import { cn } from "cn"
+import { cn } from "@/lib/utils"
 export {
   DropdownMenuItem as ContextMenuItem, DropdownMenuGroup as ContextMenuGroup,
   DropdownMenuLabel as ContextMenuLabel, DropdownMenuSeparator as ContextMenuSeparator,

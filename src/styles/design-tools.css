@@ -1,6 +1,3 @@
-@import "@fullcalendar/react/skeleton.css" layer(components);
-@import "@fullcalendar/react/themes/classic/theme.css" layer(components);
-
 @layer components {
   [data-slot="gradient-picker"],
   [data-slot="image-editor"] {
