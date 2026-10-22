@@ -111,3 +111,22 @@ VChart 在 `EvenformChart` 挂载时异步加载，Showcase 首页不请求图�
 主题。不要在该图的 `bar.style` 再覆盖 stroke/lineWidth，否则显式 spec 会优先。
 这个配置不改变数据色板。静态构成条可隐藏坐标轴、Legend 和 Tooltip，但应保留
 精确数值的 HTML 列表或表格，并明确其表达的是构成而非执行时间线。
+
+## Lifecycle and bar-boundary regression
+
+`npm run verify:chart-contracts` uses real VChart instances and rendered marks.
+It covers initial reduced motion, restoring the caller's animation preference,
+interrupting a running appear animation, and unmount cleanup followed by media,
+resize and root-theme changes. Explicit caller `animation: false` stays false.
+The test fixture instruments the runtime; no instance/debug API is added to the
+shared component.
+
+Bar coverage is bounded to a horizontal stacked bar with adjacent same-color
+segments and a subpixel contribution. It checks default zero separator,
+instance-local width, Light/Dark stroke conversion, unchanged data geometry,
+and coexisting explicit-color line marks. Automatic palette marks are checked
+against the CSS series colors in both themes too. The token reader connects a
+fully styled probe per color, avoiding inherited text colors from a repeatedly
+mutated probe during initialization/update. Other bar-derived chart families are
+not implied by this result. A zero-width default preserves prior visuals;
+`--ds-chart-bar-separator-color` falls back to `--card` at the chart instance.

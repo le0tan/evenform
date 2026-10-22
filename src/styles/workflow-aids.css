@@ -159,6 +159,29 @@
   [data-slot="header-shell-footer"] > div {
     padding-block: var(--ds-card-padding);
   }
+  /* A bounded workspace delegates scrolling to its panels. Utilities can override. */
+  [data-slot="header-shell"][data-variant="workspace"] {
+    height: var(--ds-header-shell-height, 100svh);
+    min-height: 0;
+    overflow: hidden;
+  }
+  [data-slot="header-shell"][data-variant="workspace"] > :is(header, nav, footer) {
+    flex-shrink: 0;
+  }
+  [data-slot="header-shell"][data-variant="workspace"] :is(
+    [data-slot="header-shell-header-content"],
+    [data-slot="header-shell-secondary-navigation"] > div,
+    [data-slot="header-shell-content"],
+    [data-slot="header-shell-footer"] > div
+  ) { max-width: none; }
+  [data-slot="header-shell"][data-variant="workspace"] > [data-slot="header-shell-content"] {
+    min-height: 0;
+    overflow: hidden;
+    padding: 0;
+  }
+  [data-slot="header-shell"][data-variant="workspace"] [data-slot="header-shell-footer"] > div {
+    padding-block: var(--ds-control-gap);
+  }
   .workflow-aids-gallery,
   .workflow-aids-example {
     display: flex;

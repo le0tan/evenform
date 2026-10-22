@@ -16,6 +16,7 @@ function example(id: string, title: string, preview?: string): ShowcaseExample {
   }
 }
 export const showcaseExamples: Record<string, readonly ShowcaseExample[]> = {
+  "patterns/operations": [example("operational-review", "Operational review")],
   "components/motion": [
     example("motion-tabs", "Selection"),
     example("motion-tooltips", "Tooltips"),
@@ -152,6 +153,7 @@ export const showcaseExamples: Record<string, readonly ShowcaseExample[]> = {
     example("plan-picker", "Plan picker", "plans"),
   ],
   "patterns/workflow": [
+    example("scrolling-workspace", "Scrolling workspace", "workspace"),
     example("calendar-agenda", "Calendar agenda", "agenda"),
     example("step-form", "Step form", "form"),
     example("header-layout", "Header layout", "header"),

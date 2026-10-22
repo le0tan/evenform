@@ -49,15 +49,22 @@ For a source-first export, select the modules used by the host:
 ```bash
 node scripts/adopt-source.mjs --to /path/to/host \
   --entry src/components/ui/button.tsx \
-  --entry src/components/patterns/header-layout.tsx \
-  --style src/styles/workflow-aids.css
+  --entry src/components/patterns/header-layout.tsx
 ```
 
 The helper follows local imports, includes core CSS, the preference bootstrap,
 generated class metadata and license notices, and writes `evenform-adoption.json`
-with the package requirements. It does not install packages or edit host config.
+with schema version 1, the source revision, selected entries, SHA-256 hashes of
+exported source/notices, the source lockfile hash and exact direct package versions
+from that lockfile. Hashes identify the exported bytes even for a modified checkout;
+the revision alone does not identify uncommitted changes. It does not install
+packages or edit host config.
 Choose additional styles from the [adoption map](dependencies.md#base-entry-and-common-adoption-map);
-not every pattern imports its own stylesheet. Existing differing source files
+not every pattern imports its own stylesheet. The exporter automatically includes
+HeaderShell, CopyButton and EventCalendar companion styles and records
+`styleEntries` for the host to import. Adjacent TSX-imported CSS follows its
+component automatically. Other additional styles remain an explicit `--style`
+selection documented in the adoption map. Existing differing source files
 stop the export; review them before explicitly using `--overwrite`.
 For a host that must retain TypeScript's legacy `moduleResolution: node`, add
 `--legacy-node-resolution` to export an extensionless class-table import and a
@@ -103,3 +110,39 @@ Electron/Tauri products can use the components in their renderer/webview. Their
 host must own native menus, window controls, resource paths, and CSP. SSR hosts
 need appropriate client boundaries, stable locale/timezone, and hydration checks;
 this Starter does not establish an SSR compatibility guarantee.
+
+## Reproduce and review a source upgrade
+
+Commit `evenform-adoption.json` with the adopted files. In CI, verify the snapshot
+without modifying the host (run the helper from your pinned Evenform checkout):
+
+```bash
+node /path/to/evenform/scripts/adopt-source.mjs --to /path/to/host --check
+```
+
+This compares source and notice bytes to the recorded SHA-256 values; it does not
+certify the host's installed dependency graph. Use the host's committed lockfile
+and `npm ci` for transitive reproducibility. Regenerating cn metadata after a host
+CSS change intentionally changes the snapshot: review that diff explicitly.
+
+For upgrades, keep the old manifest and source in Git, check out the desired
+upstream commit, then export the **same recorded entries/styles and compatibility
+mode** into a fresh temporary directory. Diff the two source trees and manifests,
+including CSS, bootstrap, notices and dependencies. Merge reviewed changes into
+the host, update its manifest and lockfile, and run its build and affected browser
+checks. `--overwrite` is an explicit replacement, not a three-way merge; never
+use it to skip reviewing consumer edits. An unchanged checkout and entry set
+produces the same manifest, without timestamps or machine-specific paths.
+
+[Source adoption contracts](source-adoption-contracts.md) covers restored Select
+labels, workspace scrolling, grouped menus, feed sizing and surface presets.
+
+The manifest's `transformations` identifies the legacy extensionless import
+(with the upstream source hash) and generated upstream type bridge. An empty
+map means copied files retain their upstream bytes. Hashes describe exported
+bytes after those transformations. Product-private components are not claimed
+by the manifest or its checker; keep them outside the adopted file list. Source
+and notice conflicts are preflighted before writing any selected source files.
+The default dependency list includes the Vite Tailwind adapter; a PostCSS host
+should use its own aligned adapter and validate that build rather than install
+a second pipeline.

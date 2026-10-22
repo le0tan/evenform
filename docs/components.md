@@ -28,7 +28,7 @@
 | 数字 `number-field` | NumberField/Group/Input/Increment/Decrement/ScrubArea | Base UI 数字解析、格式、步长、上下界和键盘操作 |
 | 连续/范围值 `slider` | Slider；SliderRoot/Control/Track/Range/Thumb/Label/Value | number 或 readonly number[] 决定 thumb 数；getAriaLabel 为每个 thumb 命名；自定义结构用 parts |
 | 按下状态 `toggle`、`toggle-group` | Toggle；泛型 ToggleGroup、ToggleGroupItem | pressed 与分组单/多选、roving focus；与表单 RadioGroup 分别使用 |
-| 已知选项 `select` | Select/Trigger/Value/Content/Item、Group/Label/Separator/滚动部件 | Base UI 泛型选择与浮层定位；默认从触发器下方按起始边展开，弹层有独立内边距；可显式传 alignItemWithTrigger=true 恢复选项与触发器对齐；搜索型任务用 Combobox |
+| 已知选项 `select` / `option-select` | Select/Trigger/Value/Content/Item、Group/Label/Separator/滚动部件；OptionSelect/options/triggerProps/contentProps | Base UI 泛型选择与浮层定位；默认从触发器下方按起始边展开，弹层有独立内边距；可显式传 alignItemWithTrigger=true 恢复选项与触发器对齐；搜索型任务用 Combobox |
 | 搜索选择 `combobox` | Combobox/InputGroup/Input/Trigger/Content/List/Item/Empty；Value/Chips/Chip/ChipRemove/Clear；Collection/Group/Label/GroupLabel；useComboboxFilter | 泛型、multiple、过滤、表单与 render props；chips 从 Value 当前值渲染；异步源和错误归应用 |
 | 自由标签 `input-tag` | InputTag/value/onValueChange；inputValue/defaultInputValue/onInputValueChange；delimiters/normalize/validate/maxTags/allowDuplicates/onReject；InputTagProps/InputTagRejection | 任意文本建值，Enter/分隔符/粘贴提交，独立移除按钮与键盘标签导航；value 必须受控，draft 可控；name 每个已提交值输出 hidden input；原生 disabled/readOnly/ref 指向输入；提供外部 label |
 | 自由建议 `autocomplete` | Autocomplete/InputGroup/Input/Trigger/Clear/Content/List/Item/Empty；Collection/Group/GroupLabel/Value/Status；useAutocompleteFilter | 可输入不在候选中的自由文本，候选不是必须选择的身份值 |
@@ -71,7 +71,7 @@
 | `breadcrumb` | Breadcrumb/List/Item/Link/Page/Separator/Ellipsis；BreadcrumbPath/items | 原生路径链接，最后项 aria-current=page；路由由应用提供 |
 | `pagination` | Pagination/Content/Item/Link/Ellipsis；PaginationControls/page/pageCount/onPageChange/disabled | Controls 从 1 开始；URL 分页用链接 parts；数据与页数归应用 |
 | `navigation-menu` | NavigationMenu/Item/List/Trigger/Content/Link/Icon；Overlay/Popup/Viewport/Portal/Positioner | 站内导航链接；Overlay 组合 Portal/Positioner/Popup，默认 Viewport；操作命令用菜单 |
-| `dropdown-menu` | DropdownMenu/Trigger/Content/Item/Group/Label/Separator、CheckboxItem/RadioGroup/RadioItem、Sub/SubTrigger/SubContent、Shortcut | Base UI 菜单/子菜单；Content 的 side/align/offset 可配；Shortcut 只显示文字 |
+| `dropdown-menu` | DropdownMenu/Trigger/Content/Item/Group/GroupLabel（兼容 Label）/Separator、CheckboxItem/RadioGroup/RadioItem、Sub/SubTrigger/SubContent、Shortcut | Base UI 菜单/子菜单；Content 的 side/align/offset 可配；Shortcut 只显示文字 |
 | `context-menu` | ContextMenu/Trigger/Content/LinkItem；Item/Group/Label/Separator/Checkbox/Radio/Sub/Shortcut parts | Base UI 右键入口，Evenform 在 Trigger 桥接 ContextMenu 键与 Shift+F10；复用菜单 parts；触发区域需可聚焦并有可访问名称 |
 | `menubar` | Menubar/Trigger 与 Menu/Content/Item/Checkbox/Radio/Sub 等 parts | Base UI 横向命令与焦点导航；不是页面链接导航 |
 | `dialog`、`sheet` | Dialog/Trigger/Content/Header/Title/Description/Footer/Close/Portal/Overlay；Sheet/Trigger/Content/Header/Title/Description/Footer/Close/Body | Base UI 焦点、Escape、modal/恢复；SheetContent 支持四边，Body 提供正文滚动/inset；自定义 header actions 用 `showCloseButton={false}` + 同排 SheetClose，见 [组合示例](compositions.md)；应用提供标题和真实提交状态 |
@@ -131,7 +131,7 @@ DataTable 的 columns/data 引用应稳定；跨服务端分页选择时传 getR
 | 模块 | 主要导出 / 组合点 | 结构与边界 |
 | --- | --- | --- |
 | `layouts` | AppShell/sidebar/header/aside；PageHeader、PageSection | AppShell 含 SidebarProvider、Skip link 和 main；PageHeader 生成 h1，命名 Section 生成 h2；避免嵌套 shell/main |
-| `header-layout` | HeaderShell/header/secondaryNavigation/footer/mainId/contentAs/contentClassName | 无持久 Sidebar 的壳；默认 main+Skip link，嵌入已有 main 时 contentAs=div；次级导航名称可配 |
+| `header-layout` | HeaderShell/variant/header/secondaryNavigation/footer/mainId/contentAs/contentClassName/headerClassName/footerClassName | 无持久 Sidebar 的壳；默认 main+Skip link，嵌入已有 main 时 contentAs=div；次级导航名称可配 |
 | `layouts` | SettingsLayout/SettingsGroup；Toolbar；FormField；DataListLayout | 设置导航、字段节奏与普通工具栏；DataListLayout 接收 toolbar/isEmpty/empty/footer，只排版和选择内容；请求状态归应用 |
 | `content-layout`、`page-navigation` | ContentLayout/navigation/aside；PageNavigation/items/activeId | 正文 article、可读宽度、支持栏；原生锚点，activeId 来自路由/observer；不生成第二个 main |
 | `detail-layout`、`description-list` | DetailLayout/header/aside/footer；DescriptionList/DescriptionItem | 单条记录详情；dl/dt/dd、columns=1/2、divided，按容器宽度换行；二维对照用 Table |
@@ -467,3 +467,6 @@ Showcase 的目录、表格、日期/层级/文件、媒体、产品 Patterns、
   accessible reset confirmation to the existing Button.
 
 Configuration, local overrides, reduced motion and examples: [Motion](motion.md).
+
+Restored Select labels, asynchronous options, workspace scrolling, named menu groups,
+Card feed sizing and surface tokens: [source adoption contracts](source-adoption-contracts.md).

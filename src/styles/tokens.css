@@ -102,6 +102,9 @@
   --ds-dialog-width: 480px;
   --ds-sheet-width: 400px;
   --ds-sheet-padding: var(--ds-dialog-padding);
+  --ds-backdrop-color: #000;
+  --ds-backdrop-opacity: 10%;
+  --ds-backdrop-blur: 4px;
   --ds-overlay-gap: var(--ds-panel-gap);
   --ds-sidebar-item-height: 34px;
   --ds-sidebar-item-gap: var(--ds-space-1);
@@ -220,16 +223,30 @@
    overrides inherit correctly; public component tokens can override them. */
 @layer components {
 [data-slot='card'] {
+  flex-shrink: var(--ds-card-shrink, 0);
+  border-radius: var(--ds-card-radius, var(--radius-xl));
+  --tw-ring-color: var(--ds-card-boundary-color, color-mix(in oklab, var(--foreground) 10%, transparent));
+  --tw-ring-shadow: 0 0 0 var(--ds-card-boundary-width, 1px) var(--tw-ring-color);
+  box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+
   --_card-padding: var(--ds-card-inset, var(--ds-card-padding));
   --_card-gap: var(--ds-card-stack-gap, var(--ds-card-gap));
   padding-block: var(--_card-padding);
   gap: var(--_card-gap);
 }
+[data-slot='card-footer'], [data-slot='card'] > img:last-child { border-end-start-radius: var(--ds-card-radius, var(--radius-xl)); border-end-end-radius: var(--ds-card-radius, var(--radius-xl)); }
+[data-slot='card'][data-size='sm'] > img:first-child { border-start-start-radius: var(--ds-card-radius, var(--radius-xl)); border-start-end-radius: var(--ds-card-radius, var(--radius-xl)); }
+:is([data-slot='dialog-overlay'], [data-slot='sheet-overlay'], [data-slot='alert-dialog-overlay']) {
+  background: color-mix(in srgb, var(--ds-backdrop-color) var(--ds-backdrop-opacity), transparent);
+}
+@supports (backdrop-filter: blur(1px)) {
+  :is([data-slot='dialog-overlay'], [data-slot='sheet-overlay'], [data-slot='alert-dialog-overlay']) { backdrop-filter: blur(var(--ds-backdrop-blur)); }
+}
 [data-slot='card'][data-size='sm'] { padding-block: var(--_card-padding); gap: var(--_card-gap); }
 [data-slot='card-header'], [data-slot='card-content'], [data-slot='card-footer'] {
   padding-inline: var(--_card-padding);
 }
-[data-slot='card-header'] { row-gap: var(--ds-space-1); }
+[data-slot='card-header'] { border-start-start-radius: var(--ds-card-radius, var(--radius-xl)); border-start-end-radius: var(--ds-card-radius, var(--radius-xl)); row-gap: var(--ds-space-1); }
 [data-slot='card-footer'] { padding-bottom: 0; }
 [data-slot='card-header'].border-b { padding-bottom: var(--_card-padding); }
 [data-slot='card-footer'].border-t { padding-top: var(--_card-padding); }

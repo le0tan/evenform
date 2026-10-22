@@ -142,6 +142,8 @@ function AccountAccess() {
   </div>
 }
 
+const OperationsExample = lazy(() => import("./operations-example").then(m => ({ default: m.OperationsExample })))
+
 const RecordBrowser = lazy(() => import("./record-browser").then(m => ({ default: m.RecordBrowser })))
 
 const LayoutAidsGallery = lazy(() => import("./layout-aids-gallery").then(m => ({default: m.LayoutAidsGallery})))
@@ -157,6 +159,7 @@ export function PatternGallery() {
   return <div className="pattern-gallery">
     <PageHeader title={current.title} description={current.description} />
     <div>
+      <ShowcasePagePanel active={tab === "operations"}><Suspense fallback={<p role="status">Loading review…</p>}><OperationsExample /></Suspense></ShowcasePagePanel>
       <ShowcasePagePanel active={tab === "records"}><Suspense fallback={<p role="status">Loading documents…</p>}><RecordBrowser /></Suspense></ShowcasePagePanel>
       <ShowcasePagePanel active={tab === "workspace"} keepMounted><DataWorkspace onInspect={(next) => { setProject(next); setTab("detail") }} /></ShowcasePagePanel>
       <ShowcasePagePanel active={tab === "detail"} keepMounted><RecordDetail key={project.id} project={project} /></ShowcasePagePanel>

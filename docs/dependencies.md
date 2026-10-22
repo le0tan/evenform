@@ -77,9 +77,9 @@ extended-patterns 与 motion。它不等于所有组件的样式入口。
 | --- | --- | --- |
 | Button、Badge、Input、Select、Tabs、Accordion、Sheet、Table | `lib/utils.ts` + `lib/cn-tables.ts`；Sheet 还组合 Button | `react`、`react-dom`、`@base-ui/react`、`cn`、`class-variance-authority`、`lucide-react`（按实际 imports） |
 | DescriptionList、EmptyState、FilterBar | FilterBar 组合 Button；基础入口已包含样式 | 同上，按传递 imports |
-| HeaderShell | `styles/workflow-aids.css` | 无额外运行包 |
-| CopyButton | FeedbackButton、Button、Spinner；`styles/utility-aids.css`（motion 已在基础入口） | 同基础控件 |
-| EventCalendar | `event-calendar.tsx` + 相邻 `event-calendar.css`；`styles/design-tools.css` | `@fullcalendar/react` v7，同一包的插件子路径 |
+| HeaderShell | `styles/workflow-aids.css`（exporter 自动收集并列入 styleEntries） | 无额外运行包 |
+| CopyButton | FeedbackButton、Button、Spinner；`styles/utility-aids.css`（exporter 自动收集；motion 已在基础入口） | 同基础控件 |
+| EventCalendar | `event-calendar.tsx` + 相邻 `event-calendar.css`；`styles/design-tools.css`（exporter 自动收集） | `@fullcalendar/react` v7，同一包的插件子路径 |
 | EvenformChart | 相邻 `evenform-chart.css`、`vchart-runtime.ts`，详见 [Charts](charts.md) | `@visactor/vchart` |
 
 基础 CSS 的构建依赖仍包括 Tailwind v4、对应构建插件、`shadcn`、

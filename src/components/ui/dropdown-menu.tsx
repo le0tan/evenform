@@ -197,6 +197,7 @@ export {
   DropdownMenuItem,
   DropdownMenuGroup,
   DropdownMenuLabel,
+  DropdownMenuLabel as DropdownMenuGroupLabel,
   DropdownMenuSeparator,
   DropdownMenuCheckboxItem,
   DropdownMenuRadioGroup,

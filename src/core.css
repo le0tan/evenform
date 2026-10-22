@@ -74,6 +74,7 @@
     --secondary-foreground: var(--ds-neutral-900);
     --muted: var(--ds-neutral-100);
     --muted-foreground: var(--ds-neutral-500);
+    --ds-reading-muted-foreground: var(--ds-neutral-600);
     --accent: var(--ds-neutral-100);
     --accent-foreground: var(--ds-neutral-900);
     --destructive: var(--ds-red-600);
@@ -109,6 +110,7 @@
     --secondary-foreground: var(--ds-neutral-50);
     --muted: var(--ds-neutral-800);
     --muted-foreground: var(--ds-neutral-400);
+    --ds-reading-muted-foreground: var(--ds-neutral-400);
     --accent: var(--ds-neutral-800);
     --accent-foreground: var(--ds-neutral-50);
     --destructive: var(--ds-red-400);

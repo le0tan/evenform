@@ -196,3 +196,30 @@ values. Native disclosure focus outlines need a local inset treatment when a Car
 clips overflow. An anchor-focus wrapper can share the Card radius without adding
 another visible border. Existing Card, spacing and radius tokens covered this
 case; no generic workspace API or global Card styling change was necessary.
+
+## Implementer follow-up: executable contracts
+
+The follow-up retains the earlier compatibility, Stat, HeaderShell and chart
+changes. The current source exporter adds companion-style entry metadata,
+read-only hash checking, compatibility transformation provenance, and notice
+conflict preflight. Its isolated fixtures exercise the basic control/layout path,
+the optional calendar export, and legacy node-resolution typechecking. See
+[getting started](getting-started.md) for source/private ownership and upgrades.
+
+The [operational review composition](compositions.md#operational-review-one-selection-several-views)
+uses anonymous synthetic work units, one selection source, independent panels,
+responsive comparison, context disclosures and exact alternatives to tiny chart
+segments. It remains Showcase code; it is not a new shared business API.
+
+The chart follow-up now tests real mark geometry/colors, initial and dynamic
+reduced motion, running-animation interruption and release/listener cleanup.
+It also fixed a color-probe issue that could resolve chart palette/boundary
+colors to inherited text. The targeted chart coverage is horizontal stacked
+bars plus a coexisting line and automatic categorical palette; no other chart
+family is implied. See [chart regression](charts.md#lifecycle-and-bar-boundary-regression).
+
+A separate actual-CSS contrast matrix records the insufficient existing
+muted-foreground/muted baseline. The opt-in reading role fixes that pair locally,
+with selected text using its paired foreground. It does not change all palettes
+or certify arbitrary host overrides. Commands and evidence boundaries are in
+[development](development.md#implementer-feedback-regression).

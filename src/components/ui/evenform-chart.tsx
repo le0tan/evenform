@@ -20,9 +20,17 @@ function readTheme(element: HTMLElement, mode: ChartPalette): ITheme {
   canvas.width = canvas.height = 1
   const ctx = canvas.getContext("2d", { willReadFrequently: true })!
   const color = (token: string) => {
-    probe.style.color = token.startsWith("--") ? `var(${token})` : token
+    // Connect a fully styled probe for each color. Reusing a mutated probe can
+    // return a stale inherited color during chart initialization/theme updates.
+    const colorProbe = document.createElement("span")
+    colorProbe.style.position = "absolute"
+    colorProbe.style.visibility = "hidden"
+    colorProbe.style.color = token.startsWith("--") ? `var(${token})` : token
+    element.append(colorProbe)
+    const resolvedColor = getComputedStyle(colorProbe).color
+    colorProbe.remove()
     ctx.clearRect(0, 0, 1, 1)
-    ctx.fillStyle = getComputedStyle(probe).color
+    ctx.fillStyle = resolvedColor
     ctx.fillRect(0, 0, 1, 1)
     const [r, g, b, a] = ctx.getImageData(0, 0, 1, 1).data
     return `rgba(${r},${g},${b},${a / 255})`

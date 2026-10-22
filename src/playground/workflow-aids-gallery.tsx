@@ -1,3 +1,4 @@
+import { WorkspaceAdoptionExample } from "./workspace-adoption-example"
 import { useShowcasePreview } from "./use-showcase-preview"
 import { useState } from "react"
 import { CalendarDate } from "@internationalized/date"
@@ -420,7 +421,7 @@ function HeaderExample() {
   )
 }
 export function WorkflowAidsGallery() {
-  const [preview, setPreview] = useShowcasePreview("patterns", "workflow", ["agenda", "form", "header"], "agenda")
+  const [preview, setPreview] = useShowcasePreview("patterns", "workflow", ["agenda", "form", "header", "workspace"], "agenda")
   return (
     <div className="workflow-aids-gallery">
       <Tabs value={preview} onValueChange={setPreview}>
@@ -428,12 +429,16 @@ export function WorkflowAidsGallery() {
           <TabsTrigger value="agenda">Calendar agenda</TabsTrigger>
           <TabsTrigger value="form">Step form</TabsTrigger>
           <TabsTrigger value="header">Header layout</TabsTrigger>
+          <TabsTrigger value="workspace">Scrolling workspace</TabsTrigger>
         </TabsList>
         <TabsContent value="agenda">
           <div role="group" aria-label="Calendar agenda example" id="example-calendar-agenda" className="showcase-example"><AgendaExample /></div>
         </TabsContent>
         <TabsContent value="form">
           <div role="group" aria-label="Step form example" id="example-step-form" className="showcase-example"><StepFormExample /></div>
+        </TabsContent>
+        <TabsContent value="workspace">
+          <div role="group" aria-label="Scrolling workspace example" id="example-scrolling-workspace" className="showcase-example"><WorkspaceAdoptionExample /></div>
         </TabsContent>
         <TabsContent value="header">
           <div role="group" aria-label="Header layout example" id="example-header-layout" className="showcase-example"><HeaderExample /></div>

@@ -117,3 +117,32 @@ isolated Playwright Chromium context, exercises animations and interruption,
 and records JSON, screenshots and video in ignored `evidence/motion/`. It does
 not use a personal browser profile. See [Motion](motion.md#verification) for
 coverage and boundaries. Screenshot captures alone are not motion validation.
+
+## Source adoption contract verification
+
+With the source dev server running on port 4173, run
+`npm run verify:source-contracts` (or set `EVENFORM_URL`). It generates an ignored
+fixture, checks restored/controlled Select labels before popup mounting,
+asynchronous option labels, named menu groups and mouse/keyboard keep-open,
+Escape focus restoration, 18 mixed-height cards and independent workspace
+scrolling. The matrix covers desktop/narrow, light/dark and both densities.
+It also checks shared Dialog/Sheet/AlertDialog backdrop parameters under normal
+and reduced motion, plus Card token/utility precedence. Screenshots and JSON
+are saved in `evidence/source-contracts/`.
+
+`verify:adoption` checks deterministic versioned manifests, exact direct package
+versions, source/license integrity, consumer-edit protection and a copied Vite
+host using OptionSelect and HeaderShell (including its additional CSS).
+The fixture links installed packages rather than downloading them; use the real
+host lockfile and CI installation for transitive dependency reproducibility.
+
+## Implementer feedback regression
+
+With the source server running at port 4173, use `verify:chart-contracts`,
+`verify:operations` and `verify:reading-contrast` (all accept `EVENFORM_URL` and
+`PLAYWRIGHT_EXECUTABLE_PATH`). They save JSON and the applicable screenshots in
+ignored `evidence/chart-contracts/`, `evidence/operations/` and
+`evidence/reading-contrast/`. Chart lifecycle/mark tests use the real runtime;
+composition tests use synthetic records; contrast tests measure selected actual
+CSS pairs. Their evidence does not establish backend, SSO, every chart family,
+every custom theme or a complete accessibility audit.

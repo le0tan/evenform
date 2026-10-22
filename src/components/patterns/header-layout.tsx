@@ -15,6 +15,9 @@ export interface HeaderShellProps extends Omit<
   /** Use div only when embedding the shell inside an existing main landmark.
    * With the default main, children must be content rather than another main. */
   contentAs?: "main" | "div"
+  variant?: "page" | "workspace"
+  headerClassName?: string
+  footerClassName?: string
   contentClassName?: string
 }
 /** A page shell without persistent sidebar navigation. Owns one main landmark. */
@@ -27,6 +30,9 @@ export function HeaderShell({
   mainId,
   skipLabel = "Skip to content",
   contentAs: Content = "main",
+  variant = "page",
+  headerClassName,
+  footerClassName,
   contentClassName,
   className,
   ...props
@@ -36,6 +42,7 @@ export function HeaderShell({
   return (
     <div
       data-slot="header-shell"
+      data-variant={variant}
       className={cn("evenform-header-shell", className)}
       {...props}
     >
@@ -43,7 +50,12 @@ export function HeaderShell({
         {skipLabel}
       </a>
       <header data-slot="header-shell-header">
-        <div data-slot="header-shell-header-content">{header}</div>
+        <div
+          data-slot="header-shell-header-content"
+          className={headerClassName}
+        >
+          {header}
+        </div>
       </header>
       {secondaryNavigation && (
         <nav
@@ -63,7 +75,7 @@ export function HeaderShell({
       </Content>
       {footer && (
         <footer data-slot="header-shell-footer">
-          <div>{footer}</div>
+          <div className={footerClassName}>{footer}</div>
         </footer>
       )}
     </div>

@@ -280,3 +280,9 @@ Sheet 正文优先组合 `SheetBody`，与 Header / Footer 使用同一 inset，
 Button 的默认圆角与尺寸一起放在 components 层，ButtonGroup 的连接边角通过稳定的 data-ds-component 标记生效；调用方的 rounded-* utility 仍能有意覆盖。InputGroup 让内层输入去除重复轮廓，并从输入高度减去外层边框，保证单独输入与组合控件遵循同一高度；禁用附加操作不会把可用输入误显为禁用。
 
 Showcase 默认进入 Foundations。Components 默认展示 Core controls；In context 与既有验证例子继续保留。Patterns 为独立按需加载页面（`/#patterns`），提供数据工作台、记录详情和账号布局。它们的模拟数据、校验与审核状态均在 playground 页面，Starter 不导入这些内容。
+
+## Source adoption compositions
+
+Select 的 items 与延迟挂载标签、OptionSelect、HeaderShell workspace、菜单 GroupLabel、Card 滚动流与公共表面参数见 [Source adoption contracts](docs/source-adoption-contracts.md)。Card 默认不参与 flex 压缩；确需压缩的布局通过 shrink utility 或 --ds-card-shrink 显式选择并提供内容滚动边界。浮层 tint / opacity / blur 共享语义参数，继续保留原有 presence 与 reduced-motion。
+
+匿名运行概览、双向选择、响应式精确比较与 inspector 示例见 [Compositions](docs/compositions.md#operational-review-one-selection-several-views)。muted 阅读面的辅助文字使用 --ds-reading-muted-foreground，选中面使用配对 accent-foreground；该局部角色不更改全局 palette。
