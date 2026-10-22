@@ -1,5 +1,9 @@
 # Source adoption field notes
 
+For the consolidated implementer handoff, including committed-versus-in-progress
+status and follow-up acceptance criteria, see
+[Evenform 实测反馈与实现交接](IMPLEMENTER_FEEDBACK_2026-10-22.md).
+
 An existing React 19 dashboard was adopted into a non-Vite host with Tailwind v4,
 PostCSS and legacy TypeScript node resolution. Its business transport and data
 calculations remained application-owned. Browser validation used synthetic data;
