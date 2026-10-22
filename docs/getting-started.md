@@ -44,6 +44,26 @@ editor, and the VChart runtime. Add `EvenformChart` from
 
 ## Adopt into an existing React application
 
+For a source-first export, select the modules used by the host:
+
+```bash
+node scripts/adopt-source.mjs --to /path/to/host \
+  --entry src/components/ui/button.tsx \
+  --entry src/components/patterns/header-layout.tsx \
+  --style src/styles/workflow-aids.css
+```
+
+The helper follows local imports, includes core CSS, the preference bootstrap,
+generated class metadata and license notices, and writes `evenform-adoption.json`
+with the package requirements. It does not install packages or edit host config.
+Choose additional styles from the [adoption map](dependencies.md#base-entry-and-common-adoption-map);
+not every pattern imports its own stylesheet. Existing differing source files
+stop the export; review them before explicitly using `--overwrite`.
+For a host that must retain TypeScript's legacy `moduleResolution: node`, add
+`--legacy-node-resolution` to export an extensionless class-table import and a
+type bridge to the upstream `cn` definitions. Validate with the host's TypeScript
+and bundler. See [field notes](adoption-field-notes.md) for tested boundaries.
+
 Keep your application architecture. Copy the needed components and patterns,
 their transitive local imports, `theme-provider.tsx`, `hooks/use-mobile.ts`, plus
 `lib/utils.ts` and its generated `lib/cn-tables.ts`. Install the dependencies

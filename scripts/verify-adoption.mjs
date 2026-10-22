@@ -1,4 +1,5 @@
 import assert from "node:assert/strict"
+import { execFileSync } from "node:child_process"
 import { cp, mkdir, mkdtemp, readFile, symlink, writeFile } from "node:fs/promises"
 import { tmpdir } from "node:os"
 import { dirname, join, resolve } from "node:path"
@@ -21,10 +22,21 @@ for (const name of packages) {
 }
 await writeFile(join(host, "package.json"), JSON.stringify({ private: true, type: "module", dependencies }, null, 2))
 await mkdir(join(host, "src"), { recursive: true })
-await copy("src/core.css")
-const css = await readFile(join(host, "src/core.css"), "utf8")
-for (const [, path] of css.matchAll(/@import "\.\/(styles\/[^";]+)"/g)) await copy(`src/${path}`)
-for (const file of ["lib/utils.ts", "lib/cn-tables.ts", "components/ui/button.tsx", "components/ui/badge.tsx", "components/ui/input.tsx", "components/ui/tabs.tsx", "components/ui/accordion.tsx", "components/ui/select.tsx", "components/ui/sheet.tsx"]) await copy(`src/${file}`)
+const coreEntries = ["button", "badge", "input", "tabs", "accordion", "select", "sheet"]
+execFileSync(process.execPath, [join(source, "scripts/adopt-source.mjs"), "--to", host, ...coreEntries.flatMap(name => ["--entry", `src/components/ui/${name}.tsx`])], { stdio: "inherit" })
+const exported = JSON.parse(await readFile(join(host, "evenform-adoption.json"), "utf8"))
+assert(exported.files.includes("src/lib/cn-tables.ts"))
+assert(exported.files.includes("src/styles/motion.css"))
+assert(!exported.dependencies["@fullcalendar/react"])
+assert(await readFile(join(host, "licenses/evenform/LICENSE"), "utf8"))
+// A consumer-edited file must survive an accidental second export.
+const buttonPath = join(host, "src/components/ui/button.tsx")
+const originalButton = await readFile(buttonPath, "utf8")
+await writeFile(buttonPath, `${originalButton}\n// consumer customization\n`)
+assert.throws(() => execFileSync(process.execPath, [join(source, "scripts/adopt-source.mjs"), "--to", host, "--entry", "src/components/ui/button.tsx"], { stdio: "pipe" }))
+assert((await readFile(buttonPath, "utf8")).includes("consumer customization"))
+await writeFile(buttonPath, originalButton)
+console.log("PASS source exporter resolves imports, CSS and notices, and refuses overwriting consumer changes")
 await writeFile(join(host, "index.html"), '<!doctype html><html><body><div id="root"></div><script type="module" src="/src/main.tsx"></script></body></html>')
 const baseMain = `import React from 'react'; import {createRoot} from 'react-dom/client'; import './core.css';
 import {Button} from './components/ui/button'; import {Badge} from './components/ui/badge'; import {Input} from './components/ui/input';

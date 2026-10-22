@@ -287,7 +287,7 @@
 /* Only horizontal toolbar-sized lists subtract inset from the outer height.
    Navigation/vertical lists keep the original trigger-size contract. */
 [data-slot='tabs-list']:where([data-size='control'][data-orientation='horizontal']) { padding: var(--ds-tabs-inset, calc(var(--ds-tabs-padding) / 2)); }
-:where([data-slot='tabs-list'][data-size='control'][data-orientation='horizontal']) > [data-slot='tabs-trigger'] { min-height: var(--ds-tabs-trigger-height, calc(var(--ds-tabs-control-height, var(--ds-control-height)) - 2 * var(--ds-tabs-inset, calc(var(--ds-tabs-padding) / 2)))); }
+:where([data-slot='tabs-list'][data-size='control'][data-orientation='horizontal']) > [data-slot='tabs-trigger'] { --_tabs-control-inset: var(--ds-tabs-inset, calc(var(--ds-tabs-padding) / 2)); min-height: var(--ds-tabs-trigger-height, calc(var(--ds-tabs-control-height, var(--ds-control-height)) - 2 * var(--_tabs-control-inset))); }
 [data-slot='tabs'] { gap: var(--ds-panel-gap); }
 [data-slot='table-row'] { height: var(--ds-table-height, var(--ds-table-row-height)); border-bottom-width: var(--ds-table-divider-width, 0px); }
 [data-slot='table-cell'], [data-slot='table-head'] { padding: var(--ds-table-padding-y, var(--ds-table-cell-padding-y)) var(--ds-table-padding-x, var(--ds-table-cell-padding-x)); }

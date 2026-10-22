@@ -142,7 +142,7 @@ DataTable 的 columns/data 引用应稳定；跨服务端分页选择时传 getR
 | `filter-bar`、`selection-bar` | FilterBar/search/filters/actions；FilterChip/removeLabel/onRemove；SelectionBar/selectedCount/onClear | 条件展示与批量操作，selectedCount<=0 不渲染；应用明确当前页/跨页/全部筛选结果范围 |
 | `empty-state`、`result` | EmptyState/title/description/icon/actions/headingLevel；Result/status | 空内容与 success/error/forbidden/not-found 结果；产品提供准确文案/恢复动作，不自动重定向/重试 |
 | `status-message`、`banner` | StatusMessage/tone/title/icon/actions；Banner/tone/icon/actions/onDismiss | 局部反馈/页面公告，默认无 live role；按需显式 role=status/alert；Banner 移除由应用控制 |
-| `stat` | StatGroup；Stat/label/value/change/help/actions | dl 展示数值，change.tone=beneficial/adverse/neutral；应用提供方向/比较周期和计算，不从正负号推断利好 |
+| `stat` | StatGroup；Stat/label/value/change/help/actions | dl 展示数值；CSS `--ds-stat-group-columns` 配置分列、`--ds-stat-value-size` 配置数值字号；change.tone=beneficial/adverse/neutral；应用提供方向/比较周期和计算，不从正负号推断利好 |
 | `timeline`、`steps` | Timeline/TimelineItem；Steps/Step | 有序事件/步骤进度；time 可用原生 time；Step 状态显式给出；不自动排序/推进流程 |
 | `step-form` | StepForm/StepFormStep；steps/currentStep/onStepChange/onComplete、busy/disabled、children render prop | 从 0 开始；发出 next/previous 请求，应用验证并修改状态；默认步骤变化后聚焦标题；不自动提交 |
 | `calendar-agenda` | CalendarAgenda、AgendaDay/date/actions/empty、AgendaEvent/title/time/meta/actions | 按日事件列表，分组/顺序/时区归应用；empty 指定时替代当天列表 |

@@ -204,6 +204,14 @@
       grid-template-columns: auto minmax(0, 1fr);
     }
   }
+  @media (max-width: 37.5rem) {
+    [data-slot="header-shell-header-content"],
+    [data-slot="header-shell-secondary-navigation"] > div,
+    [data-slot="header-shell-content"],
+    [data-slot="header-shell-footer"] > div {
+      padding-inline: min(var(--ds-page-padding-x), var(--ds-space-4));
+    }
+  }
   @media (max-width: 30rem) {
     [data-slot="agenda-event"] {
       grid-template-columns: minmax(0, 1fr);

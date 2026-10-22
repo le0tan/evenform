@@ -52,6 +52,8 @@ function Sessions({ rows }: { rows: { date: string; value: number }[] }) {
 
 `spec` 使用 VChart 原生配置；调用方负责数据、业务筛选、图例和表格。保持 spec 引用稳定，避免无关 React 更新重建实例。`EvenformChart` 提供加载提示、失败后重试、ResizeObserver、自定义主题更新和卸载释放；它不会模拟数据或引入示例业务状态。
 
+组件读取并监听 `prefers-reduced-motion`；偏好减少动态效果时将 VChart `animation` 设为 `false`。无此偏好时仍使用调用方的 spec；按需运行包未注册的动画能力不会因此自动启用。
+
 Canvas 不提供逐点键盘阅读。必须提供可读的 `label` / `description`，并在业务层提供相应数据表；当前 Demo 的 **Data tables** 包含四张 Analytics 图的精确值，**Advanced charts** 的每张图下方提供 **View source data**。HTML 图例和摘要也保留文字标签，避免仅依赖颜色。
 
 ## 主题与参数

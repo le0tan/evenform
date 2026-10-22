@@ -99,11 +99,12 @@ export function EvenformChart({ spec, label, description, className, palette = "
     let disposed = false
     let chart: import("@visactor/vchart").default | undefined
     let frame = 0
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)")
     const root = document.documentElement
     const fail = () => { if (!disposed) setStatus("error") }
     const themedSpec = () => {
       const theme = readTheme(host, palette)
-      return { ...spec, theme, ...(spec.color && !Array.isArray(spec.color) ? { color: { ...spec.color, range: theme.colorScheme!.default as string[] } } : {}) }
+      return { ...spec, ...(reducedMotion.matches ? { animation: false } : {}), theme, ...(spec.color && !Array.isArray(spec.color) ? { color: { ...spec.color, range: theme.colorScheme!.default as string[] } } : {}) }
     }
     const sync = () => {
       cancelAnimationFrame(frame)
@@ -115,6 +116,7 @@ export function EvenformChart({ spec, label, description, className, palette = "
         } catch { fail() }
       })
     }
+    reducedMotion.addEventListener("change", sync)
     const resize = new ResizeObserver(sync)
     resize.observe(host)
     const preferences = new MutationObserver(sync)
@@ -134,6 +136,7 @@ export function EvenformChart({ spec, label, description, className, palette = "
     }).catch(fail)
     return () => {
       disposed = true
+      reducedMotion.removeEventListener("change", sync)
       resize.disconnect()
       preferences.disconnect()
       cancelAnimationFrame(frame)
@@ -143,7 +146,7 @@ export function EvenformChart({ spec, label, description, className, palette = "
 
   return <div className={cn("evenform-chart", className)}>
     <div ref={container} className="evenform-chart-canvas" role="img" aria-label={`${label}. ${description}`} aria-busy={status === "loading"} />
-    {status === "loading" && <div className="evenform-chart-message" role="status">Loading chart…</div>}
+    {status === "loading" && <output className="evenform-chart-message">Loading chart…</output>}
     {status === "error" && <div className="evenform-chart-message" role="alert"><p>Unable to render this chart.</p><Button variant="outline" size="sm" onClick={() => { setStatus("loading"); setAttempt((value) => value + 1) }}>Try again</Button></div>}
   </div>
 }
