@@ -22,6 +22,7 @@ does not grant trademark rights or imply project endorsement.
   query so it remains visible on light and dark browser chrome.
 
 The Showcase uses the root `.dark` class to select its logo, so manual theme
-selection and System Theme agree with the application. README uses a `picture`
-element to select the appropriate asset for the reader's color scheme.
+selection and System Theme agree with the application. README uses GitHub's `#gh-dark-mode-only` / `#gh-light-mode-only` image and link
+fragments to select the asset for the actual GitHub theme, including when that
+theme differs from the operating system. See [GitHub theme-specific images](https://github.blog/changelog/2021-11-24-specify-theme-context-for-images-in-markdown/).
 The wordmark is outlined SVG and does not depend on an installed font.

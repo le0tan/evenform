@@ -140,7 +140,6 @@ function MediaAidsGallery() {
     <div className="evenform-media-gallery">
       <PageSection id="example-image"
         title="Media review"
-        description="Inspect diagrams at full size, move between assets, and review loading or failure states."
       >
         <div className="evenform-media-grid">
           <div className="evenform-media-stack">
@@ -286,7 +285,6 @@ function MediaAidsGallery() {
       </PageSection>
       <PageSection id="example-qr-code"
         title="Share a reference"
-         description="Encode a link or text as a QR code."
       >
         <div className="evenform-media-share">
           <QRCode

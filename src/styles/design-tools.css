@@ -162,7 +162,7 @@
     box-shadow: var(--ds-calendar-popover-shadow, var(--ds-elevation-popup));
   }
   [data-slot="event-calendar"] > div {
-    min-width: 32rem;
+    min-width: 0;
     font-family: var(--ds-font-body);
     font-size: var(--ds-text-body);
     line-height: var(--ds-leading-normal);

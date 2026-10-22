@@ -10,9 +10,15 @@ npm run dev
 ```
 
 The Showcase starts at Foundations. Components and Patterns provide task-based
-examples; Workspace and Settings are illustrative applications. Use ⌘/Ctrl+K
-to search the library. The optional Design tokens panel lets you adjust density
-and CSS variables, copy CSS overrides, and reset the preview.
+examples; Data dashboard, Support inbox, Workspace and Settings are illustrative
+applications. Use ⌘/Ctrl+K to search the library.
+
+Open [Appearance lab](https://le0tan.github.io/evenform/#appearance) for side-by-side
+settings and preview. General includes theme mode, density, control size, theme
+color and elevation; Tokens exposes numeric overrides; Export copies the CSS.
+The global Design tokens panel shares these settings. Defaults are Neutral /
+Soft / Compact with Auto control size. See [Appearance](appearance.md) for
+custom colors, persistence and using the exported configuration in a product.
 
 Charts include seven advanced examples and four analytics examples, with source
 tables, theme-aware palettes, and locally held filters. All data is illustrative.

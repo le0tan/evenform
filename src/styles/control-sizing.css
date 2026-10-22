@@ -1,4 +1,4 @@
-/* Experimental, independent from layout density. Values stay in CSS. */
+/* Control sizing is independent from layout density. Values stay in CSS. */
 :root {
   --ds-text-control: var(--ds-text-body);
   --ds-text-control-small: var(--ds-text-label);

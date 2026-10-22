@@ -10,6 +10,7 @@ CSS is the only source of design parameters.
 npm run typecheck
 npm run lint
 npm run verify:navigation
+npm run verify:palette
 npm run build
 npm run build:starter
 ```
@@ -26,7 +27,7 @@ either deployment.
 GitHub CI runs only through **Actions → CI → Run workflow**. Pushes and pull
 requests do not trigger it. Pages deployment is a separate manual workflow;
 see [publishing and releases](releasing.md#manual-github-workflows) for its
-account-plan prerequisite and deployment steps.
+deployment steps.
 
 Dependency version updates are also maintainer-initiated; no scheduled
 Dependabot version-update configuration is installed.
@@ -69,6 +70,18 @@ state/keyboard checks; shared layout or token changes need representative uses,
 light/dark, compact/comfortable, and desktop/mobile screenshots. Documentation
 changes do not require browser runs. Do not copy third-party documentation
 screenshots into public assets without reviewing their reuse rights.
+
+## Appearance verification
+
+[Appearance lab](appearance.md) and the Design tokens panel use the same editors
+and preference state. For changes to shared appearance settings, check both
+surfaces, a portal overlay, light/dark, Compact/Comfortable, Auto/explicit control
+sizes, and a custom color. Verify Reset and CSS export, including restoring a
+slider to its inherited value without leaving an override marker.
+
+`verify:palette` checks 1,212 seeds in both themes against the generated semantic
+role pairs. It does not replace GUI checks or establish whole-page accessibility
+conformance. Keep screenshots and reports in the ignored `evidence/` directory.
 
 ## Updating dependencies
 

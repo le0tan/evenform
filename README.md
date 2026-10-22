@@ -1,8 +1,10 @@
 <h1>
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="public/brand/evenform-logo-dark.svg" />
-    <img src="public/brand/evenform-logo.svg" alt="Evenform" width="280" />
-  </picture>
+  <a href="https://github.com/le0tan/evenform#gh-dark-mode-only">
+    <img src="public/brand/evenform-logo-dark.svg#gh-dark-mode-only" alt="Evenform" width="280" />
+  </a>
+  <a href="https://github.com/le0tan/evenform#gh-light-mode-only">
+    <img src="public/brand/evenform-logo.svg#gh-light-mode-only" alt="Evenform" width="280" />
+  </a>
 </h1>
 
 An opinionated, token-driven React design system built on shadcn/ui.
@@ -11,7 +13,7 @@ Evenform brings shared CSS tokens, accessible component primitives, and reusable
 layouts to React applications. It includes a component Showcase for exploration
 and a separate Starter for building your own product.
 
-[Live demo](https://le0tan.github.io/evenform/) · [Get started](docs/getting-started.md) · [Components](docs/components.md) ·
+[Live demo](https://le0tan.github.io/evenform/) · [Appearance lab](https://le0tan.github.io/evenform/#appearance) · [Get started](docs/getting-started.md) · [Components](docs/components.md) ·
 [Design contract](DESIGN.md) · [Contributing](CONTRIBUTING.md)
 
 Explore the application examples: [Data dashboard](https://le0tan.github.io/evenform/#dashboard),
@@ -26,6 +28,10 @@ Explore the application examples: [Data dashboard](https://le0tan.github.io/even
   synchronized TypeScript or JSON token copy.
 - **Light, dark, and system themes**, with compact and comfortable density
   presets and preference restoration before React's first paint.
+- **Configurable appearance.** Choose a preset or custom theme color, Flat /
+  Soft / Layered elevation, and control sizing independent of density.
+  [Appearance lab](https://le0tan.github.io/evenform/#appearance) combines live
+  preview, numeric tokens and CSS export; see the [appearance guide](docs/appearance.md).
 - **Composable components and patterns.** shadcn/ui's Base UI Nova style is the
   foundation; React Aria, TanStack, Tiptap, and other focused libraries support
   dates, data, editing, and interaction.
@@ -86,6 +92,7 @@ guides are indexed in [docs/README.md](docs/README.md).
 npm run typecheck
 npm run lint
 npm run verify:navigation
+npm run verify:palette
 npm run build
 npm run build:starter
 ```

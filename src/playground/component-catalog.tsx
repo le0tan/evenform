@@ -37,7 +37,7 @@ export function ComponentCatalog() {
   const [page, setPage] = useState(1)
   const [notice, setNotice] = useState("")
   return <div className="preview-stack catalog" data-testid="component-catalog">
-    <PageSection title="Input & selection" description="Searchable choices, multiple values and precise numeric controls.">
+    <PageSection title="Input & selection">
       <div className="catalog-grid">
         <div className="catalog-example">
           <div role="group" aria-label="Combobox example" id="example-combobox" className="showcase-example"><FormField id="catalog-team" label="Team" description="Type to filter the available teams.">

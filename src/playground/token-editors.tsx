@@ -54,10 +54,6 @@ export function TokenExport({ tokens }: { tokens: TokenPlayground }) {
   }
   return (
     <div className="token-export">
-      <div className="inspector-label">
-        <span>Export</span>
-        <span className="css-label">CSS</span>
-      </div>
       <Button className="w-full" onClick={copy}>
         {copied ? <Check /> : <Copy />}
         {copied ? "Copied CSS" : "Copy token overrides"}
