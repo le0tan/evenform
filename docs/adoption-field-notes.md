@@ -38,6 +38,32 @@ are application state problems, not theme problems.
 
 ## Validation and remaining costs
 
+A follow-up task-oriented review found that successful token adoption and usable
+controls did not by themselves establish a readable dashboard. Six large,
+equal-weight statistic cards pushed the primary diagram below the fold; an
+expanded analysis competed with navigation and node details. The consumer fixed
+the hierarchy using private compositions of existing components:
+
+| Private composition | Reused building blocks | Candidate library follow-up |
+| --- | --- | --- |
+| Compact operational summary | One Card, StatGroup/Stat and contextual Hint; exceptional values lead, inventory detail is secondary. | A documented recipe may be enough. Distinguish an operational status strip from six equally prominent dashboard tiles. |
+| Selected-item inspector | Card header/body, Badge, Tabs, Stat and DescriptionList; an explicit selection link moves focus into the inspector. | Compare against DetailLayout in other consumers before introducing another general pattern. Selection identity, focus target and metadata grouping need an application-owned contract. |
+| Responsive interface comparison | Desktop Table; narrow screens render each method identity with its three associated Stat values from the same data. | Consider a responsive comparison recipe. Horizontal reachability alone is insufficient when scrolling hides the identity column. |
+| Progressive analysis disclosure | A native details/summary with Badge, retaining an estimated total and partial-data warning when collapsed. | Explain when analytical detail should follow the primary task. Accordion is appropriate when a coordinated collection is needed; a single disclosure does not require a new primitive. |
+
+The same review found that a successful collection status had been displayed as
+healthy even when the service error rate was critical. The consumer now derives
+health separately and prioritizes failed/missing metrics. Badge color cannot
+infer business health from a transport or collection status. These are consumer
+findings and recipes, not proposed universal topology or monitoring APIs.
+
+Surface changes also need a text-pair check: the consumer's new muted canvas
+exposed a light-theme muted-foreground/canvas contrast of about 4.34:1. A local
+mapping to the existing neutral-600 raised that pair to 7.15:1; the existing dark
+pair measured 5.83:1. Review this pairing when documenting muted reading surfaces.
+This consumer override does not change the shared palette or establish a full
+contrast audit.
+
 The adoption fixture checks a copied core host without optional calendar
 dependencies, source collision protection, then calendar CSS/package/license
 inclusion. The real host also passed its production build and TypeScript checks.
