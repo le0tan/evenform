@@ -19,7 +19,7 @@ applications can use the same system inside their renderer or webview.
 Provide a reusable foundation for consistent product interfaces, with design
 decisions coordinated through CSS tokens instead of repeated page-level fixes.
 Success means a consumer can compose an appropriate page, adjust shared design
-parameters, and retain coherent behavior across components, themes, and densities.
+parameters, and retain coherent behavior across components, themes, densities and control sizes.
 
 ## Positioning
 
@@ -43,7 +43,9 @@ lockfile, and the [development guide](docs/development.md).
 
 - **Explore:** the Showcase starts at Foundations and provides searchable
   Components, Patterns, Charts, and illustrative Data dashboard, Support inbox, Workspace and Settings pages.
-  Its token editor previews changes and exports CSS overrides.
+  Appearance lab places shared settings beside a live preview, with General,
+  Tokens and Export categories. The global Design tokens panel exposes the same
+  settings on other pages.
 - **Build:** new product pages start in `src/starter/App.tsx`, sharing components,
   styles, and theme support with the Showcase. An existing application can adopt
   selected modules and their required imports/styles.
@@ -59,8 +61,16 @@ purpose and scope rather than duplicating component APIs or visual parameters.
 
 The current system includes light, dark, and system themes; compact and
 comfortable density presets; responsive layouts; and preference restoration
-before React's first paint. CSS is the sole source of design parameters, organized
-as Primitive → Semantic → Component. Theme and density remain independent.
+before React's first paint. Theme colors include Neutral, Indigo, Teal, Rose and
+a custom color picker with generated light/dark roles. Flat / Soft / Layered
+elevation coordinates controls and overlays. Auto / Small / Medium / Large
+control sizing is independent of layout density. Neutral / Soft / Compact with
+Auto control size are the defaults; a fresh profile starts in Light mode.
+
+CSS is the sole source of preset design parameters, organized as Primitive →
+Semantic → Component. Custom color roles are calculated from a user seed against
+the CSS surfaces. The [appearance guide](docs/appearance.md) documents their
+scope, contrast checks, preference handling and adoption.
 
 Reusable controls and patterns cover forms, navigation, overlays, structured
 data, dates, media, editing, and workflows. Base UI provides the primary
@@ -102,14 +112,17 @@ are governed by DESIGN.md; this file does not define a competing visual system.
 
 - The runnable Showcase and Starter provide inspectable implementations and
   illustrative workflows, rather than customer case studies or production data.
-- [docs/assets/showcase.png](docs/assets/showcase.png) is a curated Showcase
-  capture; supplied logo originals are retained in [docs/assets/brand/](docs/assets/brand/).
+- The [live demo](https://le0tan.github.io/evenform/) includes Appearance lab and
+  application examples; supplied logo originals are retained in [docs/assets/brand/](docs/assets/brand/).
 - Verification scripts, local run records, and screenshots cover specific
   interactions, token propagation, themes, densities, and viewports. Their scope
   and freshness matter; historical `evidence/` records do not prove the current
   checkout passes every check.
-- CI configuration and local checks exist. Their presence alone does not prove
-  hosted CI has run, a release has been published, or downstream adoption.
+- Appearance settings shipped through [PR #1](https://github.com/le0tan/evenform/pull/1).
+  The [CI matrix](https://github.com/le0tan/evenform/actions/runs/39710576138) and
+  [Pages deployment](https://github.com/le0tan/evenform/actions/runs/39710578537)
+  passed for the merged commit. These dated runs do not establish future checkouts
+  or downstream adoption.
 
 ## Product Principles
 
@@ -121,7 +134,9 @@ are governed by DESIGN.md; this file does not define a competing visual system.
    keyboard, focus, state, and semantic behavior when adapting their appearance.
 4. **Keep ownership explicit.** Shared components provide reusable structure and
    interaction; applications own business data, services, and policies.
-5. **Make claims traceable.** Distinguish implemented capability, demonstrated
+5. **Let the layout explain.** Avoid unnecessary secondary labels and descriptions.
+   Keep labels, constraints, state feedback and recovery guidance that support the task.
+6. **Make claims traceable.** Distinguish implemented capability, demonstrated
    behavior, historical verification, and open integration work.
 
 ## Accessibility & Inclusion

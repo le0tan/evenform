@@ -31,7 +31,6 @@ export function TokenPanel({
       <div className="inspector-section">
         <div className="inspector-label">
           <span>Density</span>
-          <span className="css-label">Preset</span>
         </div>
         <Tabs
           value={tokens.density}
@@ -54,9 +53,9 @@ export function TokenPanel({
             </TabsTrigger>
           </TabsList>
         </Tabs>
-        <p className="inspector-help">
-          Changing density clears numeric overrides.
-        </p>
+        {Object.keys(tokens.overrides).length > 0 && (
+          <p className="inspector-help">Changing density clears numeric overrides.</p>
+        )}
       </div>
       <div className="inspector-section">
         <AppearanceControls tokens={tokens} />

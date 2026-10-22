@@ -36,6 +36,8 @@ Evenform 复用成熟交互模型，CSS 继续是外观参数的唯一来源。�
 ```text
 src/index.css
 src/styles/tokens.css
+src/styles/appearance.css
+src/styles/control-sizing.css
 src/styles/patterns.css
 src/styles/extended-controls.css
 src/styles/extended-patterns.css

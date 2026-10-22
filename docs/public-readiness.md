@@ -4,6 +4,10 @@ Reviewed on 2026-10-21. The maintainer subsequently authorized public visibility
 and GitHub Pages on the same date. This review covers the tracked source snapshot, rebuilt
 distributions, and the recreated GitHub repository.
 
+This is a historical review of the initial publication snapshot. Current
+capabilities and deployment status are documented in [Appearance](appearance.md)
+and [Releasing](releasing.md); later PRs and workflow runs are outside this audit.
+
 ## Source snapshot
 
 The publication candidate is a single root commit titled `Initial commit`,
@@ -68,7 +72,7 @@ internal refs.
 CI and the prepared Pages deployment workflow use only `workflow_dispatch`.
 Scheduled Dependabot version updates are absent. The repository is now public,
 and Pages is enabled with GitHub Actions as the build source. Deployment is
-started manually; pushing does not deploy. The dedicated CI matrix has not been
+started manually; pushing does not deploy. At the time of this review, the dedicated CI matrix had not been
 triggered. Results from the deleted repository do not provide a status check
 for this commit.
 

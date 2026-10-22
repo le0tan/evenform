@@ -1,4 +1,4 @@
-/* Exploration: opt-in palette and depth presets. CSS is the only value source.
+/* Palette and elevation presets. CSS is the only preset value source.
    Include this file after the base theme when adopting these data attributes. */
 :root {
   --ds-palette-indigo: #4f46e5;

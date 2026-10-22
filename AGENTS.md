@@ -1,5 +1,7 @@
 # UI development
 
+- Avoid unnecessary secondary labels and descriptions. Let the layout do the explaining.
+
 - 开始 UI 工作前阅读 DESIGN.md；区分工程契约、设计原则与当前实现，用户明确约束优先。
 - 先判断任务和内容结构，再复用适合的 Evenform 组件（基于 shadcn Nova）与 Layout Patterns；不适合时组合或扩展，不强套 AppShell。
 - 相同用途保持一致并优先复用 Tokens。现有语义不适用时可扩展；共享参数优先放在 Semantic 层，组件专属参数放在 Component 层，一次性细节保持局部。CSS 是参数单一来源，不维护需人工同步的 TS/JSON 副本。

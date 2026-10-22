@@ -99,7 +99,6 @@ export function ContentAidsGallery() {
       </PageSection>
       <PageSection id="example-editable-text"
         title="Editable text"
-        description="Edit a value in context. Saving commits the draft; cancelling restores the saved value and returns focus to Edit."
       >
         <div className="evenform-content-aids-examples">
           <div className="evenform-content-aids-example">

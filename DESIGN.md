@@ -23,6 +23,8 @@
 
 全局 Elevation 使用 control / surface / popup / modal 四级语义。Flat 清除可见立体阴影，Soft 保留轻微控件凸起和现有浮层深度，Layered 加强浮动布局与浮层层级；Tabs 等控件保持轻量。边界、状态隔离和焦点圈不属于立体装饰，不能随 Flat 一起删除。组件可通过专属 shadow token 或 utility 有意覆盖；普通 Card 不因选择 Layered 自动获得阴影。
 
+Avoid unnecessary secondary labels and descriptions. Let the layout do the explaining.
+
 Demo 的可见文案服务于操作和内容。设计理由、组件归属与实现契约放在文档或源码注释中，不写成页内解释；保留必要的使用帮助、状态反馈和本地预览边界。
 
 ## 分割线的使用判断
@@ -46,6 +48,12 @@ Tabs 的选中标记表达状态，整条轨道是否需要另行判断。Table 
 Component 层在组件所在元素解析变量，因此也支持局部 override，不依赖从祖先预先计算的 alias。以 `--_` 开头的变量是实现细节，不能作为公共 API。
 
 `@theme inline` 把需要 utility 的语义暴露为 `px-page-x`、`py-page-y`、`gap-section`、`gap-panel`、`p-card`、`gap-field`、`gap-toolbar`、`h-input` 等。共享布局和组件尺寸优先使用这些语义或已有 Pattern。确实只服务于单个场景的视觉细节可以按其用途局部表达，并检查受影响的主题、密度和响应式表现；不要把每个一次性数值都升级为共享 Token，也不要用散落的 utility 重新定义同一套共享尺度。
+
+## 外观配置
+
+主题色、Elevation、控件尺寸与 Appearance lab 已上线，使用说明见 [Appearance](docs/appearance.md)。默认 Neutral / Soft / Compact / Auto；mode 默认 Light，由 ThemeProvider 独立管理。`data-palette` 选择 Neutral / Indigo / Teal / Rose / Custom，`data-elevation` 选择 Flat / Soft / Layered，`data-control-size` 选择 Auto / Small / Medium / Large。密度与控件尺寸独立，显式组件覆盖继续优先。
+
+Appearance lab 的 General / Tokens / Export 与全局 Design tokens 面板共享状态、编辑器和 CSS 导出。预设值分别由 `src/styles/appearance.css`、`control-sizing.css` 和 `tokens.css` 管理；自定义颜色由用户种子计算 Light/Dark 角色，不维护 TS 预设副本。颜色检查范围与接入要求见使用指南。
 
 ## 常用参数
 
@@ -99,7 +107,7 @@ Playground 的修改施加在根节点，因此 Portal 中的 Dialog / Sheet / S
 
 `index.html`（Showcase）和 `starter.html`（干净 App）在 head 中、样式和 React 入口之前同步加载 `public/evenform-init.js`。不要给它添加 async / defer：它负责提前恢复主题、density 和已保存的 CSS overrides，没有另存设计默认值。ThemeProvider 和编辑器的 layout effect 负责运行时更新；存储不可用时使用 HTML/CSS 与 Provider 默认值。
 
-采用到其他项目时，把 bootstrap 脚本与 HTML 一起保留。`data-theme-key` 要与 ThemeProvider 的 `storageKey` 一致，`data-default-theme` 与 `defaultTheme` 一致；density key 用于 `{ density, overrides }` 偏好记录。Showcase 使用 `evenform-theme` / `evenform-tokens-v1`；Starter 使用 `app-theme` / `app-density`，避免演示偏好进入业务入口。脚本支持旧版数字 overrides，也支持带单位的 CSS 值字符串。
+采用到其他项目时，把 bootstrap 脚本与 HTML 一起保留。`data-theme-key` 要与 ThemeProvider 的 `storageKey` 一致，`data-default-theme` 与 `defaultTheme` 一致；density key 用于偏好记录，Showcase 还保存 control size、palette、custom color 和 elevation；Starter 的基础记录为 `{ density, overrides }`。Showcase 使用 `evenform-theme` / `evenform-tokens-v1`；Starter 使用 `app-theme` / `app-density`，避免演示偏好进入业务入口。脚本支持旧版数字 overrides，也支持带单位的 CSS 值字符串。
 
 `useTheme()` 保留 `theme` / `setTheme`，并提供响应式的 `resolvedTheme`。Theme 为 system 时，使用 resolvedTheme 渲染图标、按钮名称等；它通过系统媒体查询订阅更新。ThemeProvider 不注册应用快捷键。若产品需要快捷键，应在产品或 Playground 层定义、处理输入焦点，并明确呈现给用户。
 
@@ -123,7 +131,7 @@ Playground 的修改施加在根节点，因此 Portal 中的 Dialog / Sheet / S
 
 属性覆盖后，该属性不再跟随相关全局 Token，这是 CSS 的预期结果。触摸设备的 min-height 仍可能使 h-8 渲染到至少 44px；显式覆盖 min-height 前检查有效点击区域。自定义未分层 CSS、important 与外部主题可能改变上述契约，接入时需按真实级联检查。
 
-Components 的 **Override contract** 页提供上述实际组件，可以切换密度、调整参数并观察。`scripts/verify-refinements.mjs` 用 computed styles 验证优先级。
+Components 的 **Local overrides** 页提供上述实际组件，可以切换密度、调整参数并观察。`scripts/verify-refinements.mjs` 用 computed styles 验证优先级。
 
 ## Component 参数化契约
 

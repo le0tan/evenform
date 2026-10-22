@@ -107,7 +107,6 @@ export function DataDashboard() {
     <div className="application-example">
       <PageHeader
         title="Acquisition dashboard"
-        description="Understand where visitors come from and which channels lead to sign-ups."
         actions={
           <Button variant="outline" onClick={exportData}>
             <Download />
@@ -327,7 +326,6 @@ export function SupportInbox() {
     <div className="application-example">
       <PageHeader
         title="Support inbox"
-        description="Triage customer questions, reply in context and keep the queue moving."
       />
       <p className="quiet-meta">
         Demo workspace · Replies and status changes stay in this page. No

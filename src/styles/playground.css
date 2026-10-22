@@ -73,9 +73,6 @@
 .workspace-avatar { display: grid; place-items: center; width: var(--ds-space-12); height: var(--ds-space-12); background: var(--muted); border: 1px solid var(--border); border-radius: var(--radius-xl); font-size: var(--ds-text-section-title); font-weight: var(--ds-weight-medium); }
 .workspace-identity strong { font-size: var(--ds-text-label); font-weight: var(--ds-weight-medium); }
 .workspace-identity p { color: var(--muted-foreground); font-size: var(--ds-text-caption); margin-top: var(--ds-space-1); }
-.input-with-prefix { position: relative; }
-.input-with-prefix>span { position: absolute; top: 50%; left: var(--ds-control-padding-x); transform: translateY(-50%); color: var(--muted-foreground); pointer-events: none; }
-.input-with-prefix [data-slot='input'] { padding-left: calc(var(--ds-control-padding-x) + 4.6em); }
 .settings-save { display: flex; align-items: center; justify-content: space-between; gap: var(--ds-panel-gap); }
 .theme-choices { display: flex; gap: var(--ds-toolbar-gap); flex-wrap: wrap; }
 .feedback-example { display: flex; align-items: flex-start; gap: var(--ds-space-3); padding: var(--ds-space-4); border: 1px solid var(--destructive); border-radius: var(--radius); color: var(--destructive); }

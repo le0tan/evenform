@@ -107,7 +107,6 @@ export function StructuredDataGallery() {
     <div className="preview-stack" data-testid="structured-data-gallery">
       <PageSection
         title="Hierarchical choices"
-        description="Navigate nested content with arrow keys, typeahead and independent selection."
       >
         <div className="evenform-structured-grid">
           <div className="evenform-structured-example">
@@ -135,7 +134,6 @@ export function StructuredDataGallery() {
               selectedKeys={single}
               onSelectionChange={setSingle}
               defaultExpandedKeys={["design", "components"]}
-              description="Single choice. Selection closes the popup and returns focus."
             /></div>
             <TreeSelect
               label="Included folders"
@@ -144,7 +142,6 @@ export function StructuredDataGallery() {
               onSelectionChange={setMultiple}
               selectionMode="multiple"
               defaultExpandedKeys={["design", "foundations", "components"]}
-              description="Multiple choices remain open so you can select across branches."
             />
             <TreeSelect
               label="Locked folder"
@@ -159,7 +156,6 @@ export function StructuredDataGallery() {
       </PageSection>
       <PageSection
         title="Transfer between lists"
-         description="Search, select shown items, then move them."
       >
         <div role="group" aria-label="Transfer example" id="example-transfer" className="showcase-example"><Transfer
           items={permissions}
@@ -171,7 +167,7 @@ export function StructuredDataGallery() {
       </PageSection>
       <PageSection id="example-file-upload"
         title="File picker & drop target"
-        description="Real local files with type, size and count validation. No upload is started."
+        description="Files stay in this browser; nothing is uploaded."
       >
         <div className="evenform-structured-grid">
           <FileUpload

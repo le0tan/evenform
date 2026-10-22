@@ -15,7 +15,9 @@ repository and issue URLs. The local directory name does not affect the project 
 
 Before publishing or changing visibility, review the exact source diff and the Git history that
 will be published for credentials, internal URLs, personal paths, private data,
-and third-party materials. The current main history is maintained as a clean initial source snapshot.
+and third-party materials. The initial snapshot is the root of the public history;
+subsequent updates use feature/fix branches, pull requests and normal merges.
+Do not amend or force-push public main.
 Historical screenshots and run records remain local. `.gitignore` and
 `export-ignore` do not remove existing GitHub PR references or cached commits. In particular, keep external
 reference captures such as `reference-untitled.png` out of public source and
@@ -46,6 +48,7 @@ npm ci
 npm run typecheck
 npm run lint
 npm run verify:navigation
+npm run verify:palette
 npm run build
 npm run build:starter
 ```
@@ -70,9 +73,15 @@ In the repository's **Actions** tab, choose **CI** → **Run workflow** to run t
 Node.js 22/24 validation matrix. Both CI and **Deploy GitHub Pages** use only
 `workflow_dispatch`; pushing source or opening a pull request does not run them.
 
-**Pages status (2026-10-21):** The repository is public and Pages is enabled
+**Pages status (2026-10-22):** The repository is public and Pages is enabled
 with **GitHub Actions** as its build source. The site URL is
 [le0tan.github.io/evenform](https://le0tan.github.io/evenform/).
+
+Appearance lab, theme colors, elevation and independent control sizing shipped
+via [PR #1](https://github.com/le0tan/evenform/pull/1). The corresponding
+[CI run](https://github.com/le0tan/evenform/actions/runs/39710576138) and
+[Pages run](https://github.com/le0tan/evenform/actions/runs/39710578537) succeeded
+on commit `d488f1d`. See the [appearance guide](appearance.md) for current usage.
 
 To publish updates, manually run **Deploy GitHub Pages** on `main`. It builds the Showcase and Starter, preserves license notices,
 and deploys only `dist/`. Its base path comes from `configure-pages` metadata;
