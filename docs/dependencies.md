@@ -57,6 +57,7 @@ src/styles/specialized-aids.css
 src/styles/period-controls.css
 src/styles/list-input-aids.css
 src/styles/content-aids.css
+src/styles/motion.css
 ```
 
 `ui/evenform-chart.tsx` 自行导入同目录的 evenform-chart.css，按需采用图表时也要复制该文件和 vchart-runtime.ts。不要只复制 JSX 不带相邻的 CSS。ThemeProvider、hooks/use-mobile.ts、lib/utils.ts、alias 配置和 public/evenform-init.js 也随共享入口一起采用。产品覆盖文件最后导入，普通组件属性留在 components layer，让 utilities 可有意覆盖。
@@ -72,3 +73,16 @@ src/styles/content-aids.css
 ref 的目标也随引擎区分：SearchField/PasswordInput/Image 的 ref 指向实际 input/img；React Aria parts 保留其元素 ref；Resizable 保留 elementRef/panelRef/groupRef；EventCalendar 使用 CalendarRef.getApi()；Mentions 的 ref 是 MentionsInputHandle，inputRef 才是原生输入元素。不要把所有 wrapper ref 都假设为根 div。
 
 业务传输、认证、权限、持久化、远程查询、支付与通知送达不成为这些依赖的隐式职责。接入的组件保留可用的状态/事件入口，应用提供真实数据与完成/失败策略；验证应针对实际使用模块和宿主环境进行。
+
+## Motion boundary
+
+Motion adds no npm runtime dependency. Base UI Tabs.Indicator owns selection
+geometry and its existing Tooltip Provider owns hover grouping. CSS transitions
+handle ordinary component states and overlay presence. `SortableList motion`
+imports `hooks/use-list-motion.ts` and `lib/motion.ts` for optional native Web
+Animations; do not use it on virtualized collections. `FeedbackButton` composes
+Button/Spinner; CopyButton reuses it. `LoadingSwap` is a small grid/opacity pattern.
+The lazy `playground/motion-gallery.tsx` and demo timers stay out of Starter.
+Adopt `styles/motion.css` through the shared entry and include optional hooks
+alongside components that import them. Motion for React and AutoAnimate were
+evaluated but not installed; see [Motion](motion.md).

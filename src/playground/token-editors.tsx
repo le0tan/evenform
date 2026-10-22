@@ -17,8 +17,13 @@ export function TokenAdjustments({ tokens }: { tokens: TokenPlayground }) {
         ))}
       </div>
       <details className="advanced-tokens">
+        <summary>Motion</summary>
+        <div className="token-controls">{advancedTokenGroups.find(group => group.label === "Motion")?.controls.map(control => <TokenEditor key={control.name} control={control} tokens={tokens} />)}</div>
+        <a href="#components/motion" className="text-primary underline underline-offset-4">Try motion examples</a>
+      </details>
+      <details className="advanced-tokens">
         <summary>Advanced tokens</summary>
-        {advancedTokenGroups.map((group) => (
+        {advancedTokenGroups.filter(group => group.label !== "Motion").map((group) => (
           <details className="advanced-token-group" key={group.label}>
             <summary>{group.label}</summary>
             <div className="token-controls">

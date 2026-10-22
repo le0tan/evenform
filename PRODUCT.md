@@ -72,6 +72,12 @@ Semantic → Component. Custom color roles are calculated from a user seed again
 the CSS surfaces. The [appearance guide](docs/appearance.md) documents their
 scope, contrast checks, preference handling and adoption.
 
+Motion uses shared CSS timing and entrance parameters, interruptible popup
+transitions, opt-in sliding Tabs and sortable-list continuity, controlled button
+feedback and stable loading replacement. Appearance lab edits and exports these
+parameters through the same preference pipeline. The [motion guide](docs/motion.md)
+records behavior, reduced-motion handling, adoption and verification scope.
+
 Reusable controls and patterns cover forms, navigation, overlays, structured
 data, dates, media, editing, and workflows. Base UI provides the primary
 interaction primitives; React Aria, TanStack, Tiptap, and other focused libraries

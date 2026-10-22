@@ -1,6 +1,7 @@
 # UI development
 
 - Avoid unnecessary secondary labels and descriptions. Let the layout do the explaining.
+- Motion defaults live in CSS Tokens. Preserve primitive presence/focus contracts, make transitions interruptible, and verify CSS + JavaScript reduced-motion paths; see docs/motion.md.
 
 - 开始 UI 工作前阅读 DESIGN.md；区分工程契约、设计原则与当前实现，用户明确约束优先。
 - 先判断任务和内容结构，再复用适合的 Evenform 组件（基于 shadcn Nova）与 Layout Patterns；不适合时组合或扩展，不强套 AppShell。

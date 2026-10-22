@@ -4,6 +4,15 @@ function example(id: string, title: string, preview?: string): ShowcaseExample {
   return { id, title, anchor: `example-${id}`, preview: preview || undefined, keywords: id.replaceAll("-", " ") }
 }
 export const showcaseExamples: Record<string, readonly ShowcaseExample[]> = {
+  "components/motion": [
+    example("motion-tabs", "Selection"),
+    example("motion-tooltips", "Tooltips"),
+    example("motion-feedback", "Action feedback"),
+    example("motion-overlays", "Overlays"),
+    example("motion-list", "List updates"),
+    example("motion-loading", "Loading content"),
+    example("motion-reduced", "Reduced motion"),
+  ],
   "components/catalog": [
     example("combobox", "Combobox"),
     example("input-group", "Input group"),

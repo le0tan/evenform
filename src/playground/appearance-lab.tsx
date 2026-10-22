@@ -84,6 +84,7 @@ export function AppearanceLab({ tokens }: { tokens: TokenPlayground }) {
           </div>
           <Tabs defaultValue="appearance" className="appearance-settings-tabs">
             <TabsList
+              motion="slide"
               variant="line"
               className="w-full"
               aria-label="Settings category"
@@ -104,7 +105,7 @@ export function AppearanceLab({ tokens }: { tokens: TokenPlayground }) {
                     setTheme(value as "light" | "dark" | "system")
                   }
                 >
-                  <TabsList className="w-full" aria-label="Color mode">
+                  <TabsList motion="slide" className="w-full" aria-label="Color mode">
                     <TabsTrigger value="light">Light</TabsTrigger>
                     <TabsTrigger value="dark">Dark</TabsTrigger>
                     <TabsTrigger value="system">System</TabsTrigger>
@@ -119,7 +120,7 @@ export function AppearanceLab({ tokens }: { tokens: TokenPlayground }) {
                     tokens.setDensity(value as "compact" | "comfortable")
                   }
                 >
-                  <TabsList className="w-full" aria-label="Preview density">
+                  <TabsList motion="slide" className="w-full" aria-label="Preview density">
                     <TabsTrigger value="compact">Compact</TabsTrigger>
                     <TabsTrigger value="comfortable">Comfortable</TabsTrigger>
                   </TabsList>
@@ -127,7 +128,7 @@ export function AppearanceLab({ tokens }: { tokens: TokenPlayground }) {
               </fieldset>
               <AppearanceControls tokens={tokens} />
             </TabsContent>
-            <TabsContent value="tokens">
+            <TabsContent value="tokens" className="appearance-token-content">
               <TokenAdjustments tokens={tokens} />
             </TabsContent>
             <TabsContent value="export">

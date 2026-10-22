@@ -1,6 +1,6 @@
 // Editor metadata only: labels, bounds and units. Design defaults remain in CSS.
 export type TokenName = `--ds-${string}`
-export type TokenControl = { name: TokenName; label: string; min: number; max: number; step: number; note?: string; unit?: "px" | "" }
+export type TokenControl = { name: TokenName; label: string; min: number; max: number; step: number; note?: string; unit?: "px" | "ms" | "" }
 export const tokenControls = [
   { name: "--ds-page-padding-x", label: "Page padding", min: 16, max: 56, step: 4, note: "Horizontal page inset" },
   { name: "--ds-section-gap", label: "Section gap", min: 16, max: 56, step: 4, note: "Between content groups" },
@@ -11,6 +11,12 @@ export const tokenControls = [
   { name: "--ds-sidebar-width", label: "Sidebar width", min: 192, max: 280, step: 8, note: "Desktop navigation" },
 ] satisfies TokenControl[]
 export const advancedTokenGroups: { label: string; controls: TokenControl[] }[] = [
+  { label: "Motion", controls: [
+    { name: "--ds-duration-fast", label: "Fast duration", min: 0, max: 400, step: 10, unit: "ms" },
+    { name: "--ds-duration-standard", label: "Standard duration", min: 0, max: 600, step: 10, unit: "ms" },
+    { name: "--ds-motion-enter-distance", label: "Enter distance", min: 0, max: 16, step: 1 },
+    { name: "--ds-motion-enter-scale", label: "Enter scale", min: 0.94, max: 1, step: 0.01, unit: "" },
+  ] },
   { label: "Layout", controls: [
     { name: "--ds-page-padding-y", label: "Vertical page padding", min: 12, max: 64, step: 4 },
     { name: "--ds-content-max-width", label: "Content max width", min: 640, max: 1600, step: 40 },

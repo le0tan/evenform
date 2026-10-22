@@ -22,8 +22,10 @@
     if (config?.density === "comfortable" || config?.density === "compact") root.dataset.density = config.density
     for (const [name, value] of Object.entries(config?.overrides || {})) {
       // Numeric values are the original v1 format; strings also support unitless tokens.
-      const css = typeof value === "number" ? `${value}px` : value
-      if (name.startsWith("--ds-") && typeof css === "string" && /^-?\d+(\.\d+)?(px)?$/.test(css)) root.style.setProperty(name, css)
+      const isDuration = name === "--ds-duration-fast" || name === "--ds-duration-standard"
+      const unit = isDuration ? "ms" : name === "--ds-motion-enter-scale" || name === "--ds-line-height-body" ? "" : "px"
+      const css = typeof value === "number" ? `${value}${unit}` : value
+      if (name.startsWith("--ds-") && typeof css === "string" && /^-?\d+(\.\d+)?(px|ms)?$/.test(css) && (isDuration ? css.endsWith("ms") : !css.endsWith("ms"))) root.style.setProperty(name, css)
     }
   } catch { /* Invalid or unavailable persistence leaves HTML/CSS defaults intact. */ }
 })()

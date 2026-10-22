@@ -59,14 +59,12 @@
     font-size: var(--ds-text-body);
     outline: none;
     transform-origin: var(--transform-origin);
-    transition:
-      opacity var(--ds-duration-fast) var(--ds-ease-out),
-      transform var(--ds-duration-fast) var(--ds-ease-out);
+
   }
   .evenform-floating-panel[data-starting-style],
   .evenform-floating-panel[data-ending-style] {
     opacity: 0;
-    transform: scale(0.98);
+    transform: scale(var(--ds-motion-enter-scale));
   }
   .evenform-popover {
     display: grid;

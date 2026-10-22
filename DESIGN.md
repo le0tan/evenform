@@ -55,6 +55,10 @@ Component 层在组件所在元素解析变量，因此也支持局部 override�
 
 Appearance lab 的 General / Tokens / Export 与全局 Design tokens 面板共享状态、编辑器和 CSS 导出。预设值分别由 `src/styles/appearance.css`、`control-sizing.css` 和 `tokens.css` 管理；自定义颜色由用户种子计算 Light/Dark 角色，不维护 TS 预设副本。颜色检查范围与接入要求见使用指南。
 
+## Motion
+
+动效契约与当前审计见 [Motion](docs/motion.md)。沿用 `--ds-duration-fast` / `--ds-duration-standard` / `--ds-ease-out`，进入距离和缩放仍由 CSS 定义。普通状态与浮层使用可中断 CSS transition；Tabs 的滑动标记和非虚拟 SortableList 的布局过渡是 opt-in。视觉默认值不复制到 JS；原生布局动画按实际元素解析 CSS，并响应系统 Reduced Motion。保留 Primitive 的 presence、焦点、键盘与 ARIA；不增加全局页面转场或自动章节入场。
+
 ## 常用参数
 
 | 用途 | CSS variable |

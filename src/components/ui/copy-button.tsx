@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type ComponentProps } from "react"
-import { CheckIcon, CopyIcon, LoaderCircleIcon } from "lucide-react"
+import { CopyIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { FeedbackButton } from "@/components/ui/feedback-button"
 
 type CopyButtonProps = Omit<
   ComponentProps<typeof Button>,
@@ -40,14 +41,30 @@ function CopyButton({
       clearTimeout(timer.current)
     }
   }, [])
-  const text =
-    status === "copied" ? copiedLabel : status === "error" ? errorLabel : label
   return (
     <span data-slot="copy-button" className="evenform-copy-button">
-      <Button
+      <FeedbackButton
         {...props}
         variant={variant}
-        disabled={disabled || status === "copying"}
+        disabled={disabled}
+        state={
+          status === "copying"
+            ? "loading"
+            : status === "copied"
+              ? "success"
+              : status
+        }
+        loadingLabel={label}
+        successLabel={children ?? copiedLabel}
+        errorLabel={children ?? "Retry copy"}
+        statusMessage={
+          status === "error"
+            ? errorLabel
+            : status === "copied"
+              ? copiedLabel
+              : label
+        }
+        icon={<CopyIcon aria-hidden="true" />}
         aria-busy={status === "copying" || undefined}
         onClick={async (event) => {
           onClick?.(event)
@@ -77,22 +94,8 @@ function CopyButton({
           if (copiedValue !== undefined) onCopy?.(copiedValue)
         }}
       >
-        {status === "copied" ? (
-          <CheckIcon aria-hidden="true" />
-        ) : status === "copying" ? (
-          <LoaderCircleIcon aria-hidden="true" />
-        ) : (
-          <CopyIcon aria-hidden="true" />
-        )}
-        {children ?? text}
-      </Button>
-      <span className="sr-only" role="status">
-        {status === "copied"
-          ? copiedLabel
-          : status === "error"
-            ? errorLabel
-            : ""}
-      </span>
+        {children ?? label}
+      </FeedbackButton>
     </span>
   )
 }

@@ -4,6 +4,7 @@
 | --- | --- |
 | Run the repository or adopt it in a product | [Getting started](getting-started.md) |
 | Customize theme color, elevation, control size and export CSS | [Appearance](appearance.md) |
+| Configure motion and adopt selection, feedback and list transitions | [Motion](motion.md) |
 | Choose tokens, layouts, and override rules | [Design contract](../DESIGN.md) (中文) |
 | Find component APIs and responsibilities | [Component catalog](components.md) (中文) |
 | Choose runtime dependencies and shared CSS | [Dependency boundaries](dependencies.md) (中文) |

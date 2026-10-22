@@ -16,7 +16,8 @@ from other pages.
 | Elevation | Flat, Soft, Layered | Soft |
 
 **General** contains these choices. **Tokens** contains seven primary sliders
-and six advanced groups for layout, controls, forms, data, overlays and typography.
+plus a Motion group (Fast/Standard duration, enter distance/scale) and six advanced
+groups for layout, controls, forms, data, overlays and typography.
 **Export** provides CSS inspection, copying and reset. On wide screens, the
 settings pane scrolls independently while the preview stays available; narrow
 screens stack settings above the preview.
@@ -107,6 +108,11 @@ palette and elevation. Changing control size clears only dependent geometry
 overrides. Moving a slider back to its current CSS-derived value removes the
 redundant override, its dot and its exported entry. CSS remains the source of
 preset values; editor metadata does not duplicate their defaults.
+
+Motion parameters use the same overrides, persistence, redundant-value removal,
+reset and export paths. Durations are read through computed CSS time properties
+and exported as `ms`; scale is unitless. See [Motion](motion.md) for component
+semantics, local overrides and reduced-motion behavior.
 
 ## Preferences and adoption
 

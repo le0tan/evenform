@@ -131,7 +131,7 @@
     transition: opacity var(--ds-duration-fast) var(--ds-ease-out), transform var(--ds-duration-fast) var(--ds-ease-out);
     outline: none;
   }
-  .evenform-toast[data-starting-style], .evenform-toast[data-ending-style] { opacity: 0; transform: translateY(var(--ds-space-2)); }
+  .evenform-toast[data-starting-style], .evenform-toast[data-ending-style] { opacity: 0; transform: translateY(var(--ds-toast-enter-distance, var(--ds-motion-enter-distance))); }
   .evenform-toast[data-limited] { display: none; }
   .evenform-toast[data-swiping] { transition: none; }
   .evenform-toast-content { display: flex; align-items: flex-start; gap: var(--ds-control-gap); padding: var(--ds-card-padding); }

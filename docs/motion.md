@@ -1,0 +1,219 @@
+# Motion
+
+Evenform uses motion for selection, spatial continuity and action feedback. It
+keeps the Nova appearance, CSS token hierarchy and mature interaction primitives.
+There are no page transitions, section entrances, hover lifts or automatic Card
+animations. [Try the interactive examples](https://le0tan.github.io/evenform/#components/motion)
+after this change is deployed; locally open `/#components/motion`.
+
+## Review of main before implementation
+
+Reviewed against main `121066ea7823bcec4788cb048e57c5d0d47f81c3`, fetched on
+2026-10-22. This is an extension of the existing system, not a replacement.
+
+| Area | Existing behavior | Decision |
+| --- | --- | --- |
+| Button | Fast token, ease-out; 1px press on ordinary buttons | Preserve press distance; transition the actual `translate` property and allow a local duration override |
+| Accordion / Collapsible | CSS height transition from Base UI measured panel height; tokenized chevron | Preserve; no custom presence or height measurement engine |
+| Popover / Menu / PreviewCard / Combobox | Shared fast fade/0.98 scale; interruptible CSS | Keep structure; replace scale literal with shared semantic and centralize popup timing |
+| Dialog / Select / Tooltip | 100ms / animation-utility defaults, 95% scale and directional utility distances | Replace with shared CSS transitions and Base UI starting/ending styles |
+| Sheet / Sidebar | Fixed 150/200ms, ease-in-out/linear, 2.5rem Sheet displacement | Tokenize; keep directional Sheet movement at three enter distances |
+| Toast / Tree chevrons / Scrollbar | Tokenized opacity/transform and swipe behavior | Preserve; Toast entrance distance now follows the motion semantic |
+| Tabs | Background/line moved instantly between triggers | Opt-in persistent Base UI Indicator, no separate selection store |
+| CopyButton | Immediate loading, replaced text/icon, changing intrinsic width | Reuse controlled FeedbackButton with reserved faces and delayed loading visibility |
+| SortableList | React Aria pointer/touch/keyboard collection DnD | Optional native layout continuity after state changes; retain the interaction engine |
+| Skeleton / Spinner | Indeterminate progress cycles | Keep their own cycle semantics; reduced motion stops/reduces these cycles |
+| Static content, form values, page routes, virtual rows | Immediate updates or engine-owned layout | No added animation or global entrance choreography |
+
+## Token contract
+
+CSS is the only source of visual defaults. `src/styles/tokens.css` defines the
+shared parameters; `src/styles/motion.css` maps them to state semantics in the
+components layer. No JavaScript/JSON copy of durations, distances or curves exists.
+
+| Shared token | CSS default | Use |
+| --- | --- | --- |
+| `--ds-duration-fast` | `140ms` | Button feedback, floating popups, first Tooltip entrance, modal exits, Toast, chevrons |
+| `--ds-duration-standard` | `200ms` | Tabs indicator, Dialog/Sheet entrance, disclosure height, list continuity, loading replacement |
+| `--ds-ease-out` | `cubic-bezier(0.23, 1, 0.32, 1)` | Shared deceleration without overshoot |
+| `--ds-motion-enter-distance` | `6px` | Tooltip offset, Dialog entrance, Toast; Sheet uses three times the distance along its edge |
+| `--ds-motion-enter-scale` | `0.98` | Floating popup and Dialog entrance/exit |
+
+No slow duration or additional easing preset is necessary for these short
+interactions. Colors, selected surfaces, radius, density, control size and
+elevation continue to come from their existing tokens.
+
+### Global configuration
+
+Appearance lab → **Tokens → Motion** and the global Design tokens panel share
+four controls: Fast duration, Standard duration, Enter distance and Enter scale.
+The duration sliders use milliseconds; scale is unitless. Reset clears overrides,
+and returning a slider to its current CSS fallback removes the redundant entry.
+Changing density retains its existing behavior of clearing numeric overrides,
+including motion; changing control size only clears dependent control geometry.
+
+```css
+/* Import after Evenform's shared styles. */
+:root {
+  --ds-duration-fast: 120ms;
+  --ds-duration-standard: 180ms;
+  --ds-motion-enter-distance: 4px;
+}
+```
+
+The editor resolves `px` via length measurement, unitless scale/leading via a
+1px-font line-height probe, and `ms` via computed transition-duration. This
+supports CSS aliases and `calc()` without treating time as width. Overrides
+persist under the existing `evenform-tokens-v1` key. The parser-blocking
+`public/evenform-init.js` restores validated time strings before React starts,
+and continues to accept the legacy numeric format. CSS export preserves each
+unit and records only overrides. Keep that bootstrap when adopting persistence.
+
+### Local configuration
+
+Component overrides resolve on the actual animated element, falling back to the
+shared semantic: `--ds-button-duration`, `--ds-popup-duration`,
+`--ds-dialog-duration`, `--ds-sheet-duration`, `--ds-tabs-duration`,
+`--ds-list-duration`, `--ds-popup-enter-scale` and `--ds-toast-enter-distance`.
+For example:
+
+```tsx
+<TabsList motion="slide" style={{ "--ds-tabs-duration": "160ms" } as CSSProperties}>
+  <TabsTrigger value="overview">Overview</TabsTrigger>
+  <TabsTrigger value="activity">Activity</TabsTrigger>
+</TabsList>
+```
+
+Pass an override to the popup itself when it is portalled; custom properties on
+only the trigger's parent do not cross a Portal. Root overrides apply everywhere.
+Ordinary utility/inline overrides can deliberately replace component styling.
+
+## Components and behavior
+
+### Tabs
+
+`TabsList motion="slide"` opts into a single persistent `Tabs.Indicator` per
+list. `motion="none"` remains the default, preserving the existing API and
+immediate selected surface. Both Default and Line variants, horizontal and
+vertical orientations, controlled/uncontrolled values, null values and Base UI
+keyboard activation stay with the primitive. Appearance lab uses the opt-in
+style after visual validation.
+
+CSS transforms track the primitive's active-tab coordinates; bounded absolute
+indicator width/height transitions accommodate unequal labels without scaling
+text. CSS interrupts from the current interpolated position. Geometry updates
+come from Base UI, not a per-frame application measurement loop, shared layout ID
+or cross-instance global state. Custom nested trigger markup still needs checking
+against the underlying primitive's layout contract.
+
+### Tooltip and overlays
+
+TooltipProvider defaults to a **200ms initial hover delay** and **400ms group
+warm window**, with all Provider props still configurable. These are interaction
+timers, not visual design defaults. Base UI cancels early departures and handles
+warm switching, focus, Escape and hoverable content. Its `data-instant` focus,
+dismiss and group transitions remain instant. Do not duplicate its state machine
+or add redundant ARIA naming over the primitive's current accessibility contract.
+
+Floating popups fade with a very small scale. Tooltips fade and translate toward
+their trigger. Dialogs use the standard duration with a small offset/scale, exits
+use Fast; Sheets move from the correct edge. Item-aligned Selects omit scaling to
+retain the selected-row anchor. Accordion/Collapsible retain height transitions.
+Base UI continues to own portals, presence/unmount, focus traps/restoration,
+outside interaction, Escape, controlled state, ARIA and scroll locking.
+
+### FeedbackButton / CopyButton
+
+`FeedbackButton` composes Button with `state="idle" | "loading" | "success" |
+"error"`, optional loading/success/error labels, icon and status message. All
+faces occupy the same grid cell and reserve the widest label's footprint;
+opacity transitions crossfade without changing button width. Choose concise
+labels appropriate to the available space. Explicit button size/variant/render
+props remain available. A loading state is immediately `aria-busy` /
+`aria-disabled`, while its visual face appears after `loadingDelay` (150ms by
+default), so short work does not flash a spinner. Focus remains available.
+
+The consumer owns submission, an in-flight guard, completion, error and retry.
+The button blocks click handlers while controlled state is loading; it is not an
+async task manager or a substitute for request deduplication. `CopyButton` reuses
+this presentation, retains its synchronous pending guard, Clipboard handling,
+success reset and unmount cleanup. Errors announce the supplied `errorLabel` and
+offer a short Retry copy face. Custom children remain the visible label.
+
+### SortableList
+
+`<SortableList motion ... />` opts into native Web Animations for a **non-virtual**
+collection. It uses stable keyed DOM identities, batches rectangle reads before
+writes, and FLIPs rows with the independent `translate` property. A second update
+includes the currently drawn offset rather than restarting at the previous
+endpoint. Inserted rows fade; removed rows leave immediately and remaining rows
+move into place. Exit clones are intentionally absent: no duplicate IDs, stale
+focus targets or detached accessible content.
+
+React Aria retains pointer, touch, keyboard DnD, DropIndicator, move buttons and
+focus. Active dragging suppresses our layout animation; CSS transforms used by
+the drag engine are never replaced. Width changes snap to a new baseline.
+Observers, media listeners and animations are disconnected/cancelled on unmount.
+Unsupported Web Animations browsers fall back to immediate layout. Do not attach
+this hook to VirtualList or another engine that owns row positioning.
+
+`src/lib/motion.ts` reads the **effective element-level CSS** time/curve through a
+computed-style probe immediately before a layout update. It resolves aliases and
+`calc()` and adds no numerical duration fallback. No persistent frame loop runs.
+
+### LoadingSwap
+
+`<LoadingSwap ready={ready} skeleton={...}>…</LoadingSwap>` overlaps placeholder
+and content in one grid cell, reserves the larger footprint, crossfades and
+announces busy/completion. Hidden content is inert. There is no minimum wait
+before completed content can be used. Supply a suitable skeleton/minimum height
+for genuinely unknown content; no generic component can reserve an unknown final
+document height. It does not fetch data or impose a global loading framework.
+
+## Reduced motion and boundaries
+
+System `prefers-reduced-motion: reduce` shortens CSS transitions to effectively
+instant changes, removes overlay displacement/scale, limits indeterminate cycles,
+and bypasses/cancels JavaScript layout animations. Selection, busy/result text,
+content and focus remain usable. A local `data-motion="reduce"` subtree supports
+the Showcase comparison and optional local reduction; it cannot force motion
+back on when the system asks to reduce it. Portal examples use the system
+preference rather than pretending local DOM ancestry crosses a portal.
+
+CSS transitions handle hover, press, selection and popup reversal. Web Animations
+is limited to opt-in list layout. Motion for React and AutoAnimate were evaluated
+but are **not installed**: Base UI already supplies selection geometry, and the
+remaining non-virtual list needs a small native animation adapter. Starter does
+not import FeedbackButton, list motion or the lazy Motion gallery unless a
+consumer chooses them. Shared CSS is still part of the full stylesheet.
+
+Morphing Popover is deferred. Scaling a trigger into a positioned Portal adds
+clipping, text distortion and focus/presence coordination without a necessary
+product task here. Ordinary Popover behavior remains the default.
+
+## References and licensing
+
+Reviewed 2026-10-22. These are behavioral/architectural references, **not copied
+component sources or installed dependencies**:
+
+- [interior.dev](https://github.com/ddoemonn/interior/tree/b6b272307464ba79db7183cee0515846d7eb1f9c/components/interior): segmented selection, tooltip warm groups, stable loading faces, skeleton replacement; MIT. Evenform uses Base UI behavior and its own CSS/controlled presentation.
+- [Motion Primitives](https://github.com/ibelick/motion-primitives): Animated Background's instance isolation and Morphing Popover coordination; [MIT](https://github.com/ibelick/motion-primitives/blob/main/LICENCE.md). The docs host returned 403 during this review; the official repository was used instead.
+- [Animate UI Base UI Tabs documentation](https://animate-ui.com/docs/primitives/base-ui/tabs): primitive/animated-part separation. Its [license](https://github.com/imskyleen/animate-ui/blob/e6cea6b5ae5a4985d3bf3cc0ebea173555eafd72/LICENSE.md) is MIT **with a Commons Clause restriction**, not unrestricted MIT. No source or bulk replacement commands are used.
+- [GodUI motion guidelines](https://godui.design/docs/guidelines/motion): transform/opacity, FLIP interruption and reduced motion. Guidelines only; no code or assets reused. Disclosure height transitions remain appropriate here.
+- [FormKit AutoAnimate](https://github.com/formkit/auto-animate), [MIT](https://github.com/formkit/auto-animate/blob/master/LICENSE): collection identity and add/remove/reorder continuity. No dependency or source reuse.
+- [Base UI animation](https://base-ui.com/react/handbook/animation), [Tabs](https://base-ui.com/react/components/tabs) and [Tooltip](https://base-ui.com/react/components/tooltip): installed primitives and current animation/presence contracts. Existing upstream notices remain required.
+- [Motion for React](https://motion.dev/docs/react): evaluated for shared layout; not selected for this scope.
+
+See [license audit](license-audit.md), [third-party notices](../THIRD_PARTY_NOTICES.md)
+and [dependency boundaries](dependencies.md). Reference-only study does not add a
+vendored-code license obligation or make restricted components safe to copy.
+
+## Verification
+
+Run the local server and `npm run verify:motion`. The targeted Playwright check
+records actual animation frames/progress, rapid state changes, grouping and
+keyboard/focus behavior, token propagation, persistence/export/reset/bootstrap,
+layout reservations and reduced motion. It saves a JSON report, screenshots and
+video under ignored `evidence/motion/`. Static screenshots verify layout; they do
+not establish motion continuity on their own. Run typecheck, lint, navigation,
+Showcase and standalone Starter builds as documented in [development](development.md).
