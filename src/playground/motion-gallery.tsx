@@ -161,16 +161,17 @@ export function MotionGallery() {
                 <TooltipContent>{label}</TooltipContent>
               </Tooltip>
             ))}
-            <Tooltip>
-              <TooltipTrigger render={<Button variant="outline" />}>
+            <Popover>
+              <PopoverTrigger render={<Button variant="outline" />}>
                 Formatting help
-              </TooltipTrigger>
-              <TooltipContent>
+              </PopoverTrigger>
+              <PopoverContent>
+                <PopoverTitle>Formatting help</PopoverTitle>
                 <a href="#components/compose" className="underline">
                   View examples
                 </a>
-              </TooltipContent>
-            </Tooltip>
+              </PopoverContent>
+            </Popover>
           </div>
         </TooltipProvider>
       </PageSection>

@@ -40,11 +40,29 @@ export function useListMotion(
     }
     const update = () => {
       // React Aria exclusively owns the active drag. Run after it releases the rows.
-      if (root.querySelector("[data-dragging]")) return
+      if (root.querySelector("[data-dragging]")) {
+        stop()
+        return
+      }
       const rows = read() // Batch all geometry reads before any animation writes.
-      const options = motionTiming(root)
       const next = new Map<HTMLElement, Position>()
       for (const row of rows) next.set(row.element, { x: row.x, y: row.y })
+      const previousOrder = [...positions.keys()]
+      const changed =
+        rows.length !== positions.size ||
+        rows.some(({ element, x, y }, index) => {
+          const previous = positions.get(element)
+          return (
+            previousOrder[index] !== element ||
+            !previous ||
+            Math.abs(previous.x - x) > 0.5 ||
+            Math.abs(previous.y - y) > 0.5
+          )
+        })
+      // Text/status mutations can occur during a running reorder. If layout and
+      // row identity did not change, leave its Animation and timeline untouched.
+      if (initialized && !changed) return
+      const options = motionTiming(root)
       for (const [element, animation] of animations) {
         if (!next.has(element)) {
           animation.cancel()
@@ -53,6 +71,12 @@ export function useListMotion(
       }
       for (const { element, x, y, dx, dy } of rows) {
         const previous = positions.get(element)
+        if (
+          previous &&
+          Math.abs(previous.x - x) <= 0.5 &&
+          Math.abs(previous.y - y) <= 0.5
+        )
+          continue
         // A second reorder starts at the currently drawn position, not the old endpoint.
         const offsetX = previous ? previous.x + dx - x : 0
         const offsetY = previous ? previous.y + dy - y : 0
@@ -88,10 +112,19 @@ export function useListMotion(
       initialized = true
     }
     update()
-    const observer = new MutationObserver(update)
+    let frame = 0
+    const observer = new MutationObserver(() => {
+      if (root.querySelector("[data-dragging]")) {
+        stop()
+        return
+      }
+      cancelAnimationFrame(frame)
+      frame = requestAnimationFrame(update)
+    })
     observer.observe(root, {
       childList: true,
       subtree: true,
+      characterData: true,
       attributes: true,
       attributeFilter: ["data-dragging"],
     })
@@ -114,6 +147,7 @@ export function useListMotion(
     resize.observe(root)
     return () => {
       observer.disconnect()
+      cancelAnimationFrame(frame)
       resize.disconnect()
       media.removeEventListener("change", reduce)
       stop()

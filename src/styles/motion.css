@@ -13,6 +13,16 @@
   /* Item-aligned Select positioning must stay anchored to the selected row. */
   [data-slot="select-content"][data-align-trigger="true"] { transform: none; }
   [data-slot="tooltip-content"][data-instant] { transition-duration: 0s; }
+  .evenform-menu-bar-trigger, .evenform-navigation-link, .evenform-radio {
+    transition: color var(--ds-duration-fast) var(--ds-ease-out), background-color var(--ds-duration-fast) var(--ds-ease-out), border-color var(--ds-duration-fast) var(--ds-ease-out);
+  }
+  .evenform-navigation-popup {
+    width: var(--popup-width, auto);
+    height: var(--popup-height, auto);
+    transition: opacity var(--ds-duration-fast) var(--ds-ease-out), transform var(--ds-duration-fast) var(--ds-ease-out), width var(--ds-duration-standard) var(--ds-ease-out), height var(--ds-duration-standard) var(--ds-ease-out);
+  }
+  .evenform-navigation-content { opacity: 1; transition: opacity var(--ds-duration-fast) var(--ds-ease-out); }
+  .evenform-navigation-content:is([data-starting-style], [data-ending-style]) { opacity: 0; }
   [data-slot="tooltip-content"] { --_tooltip-y: var(--ds-motion-enter-distance); --_tooltip-x: 0px; }
   [data-slot="tooltip-content"][data-side="bottom"] { --_tooltip-y: calc(-1 * var(--ds-motion-enter-distance)); }
   [data-slot="tooltip-content"][data-side="left"] { --_tooltip-x: var(--ds-motion-enter-distance); --_tooltip-y: 0px; }

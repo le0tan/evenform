@@ -49,8 +49,8 @@ Appearance lab → **Tokens → Motion** and the global Design tokens panel shar
 four controls: Fast duration, Standard duration, Enter distance and Enter scale.
 The duration sliders use milliseconds; scale is unitless. Reset clears overrides,
 and returning a slider to its current CSS fallback removes the redundant entry.
-Changing density retains its existing behavior of clearing numeric overrides,
-including motion; changing control size only clears dependent control geometry.
+Changing density clears only density-dependent geometry. Independent Motion
+settings persist and export under global `:root`, so both densities share them.
 
 ```css
 /* Import after Evenform's shared styles. */
@@ -96,8 +96,9 @@ Ordinary utility/inline overrides can deliberately replace component styling.
 list. `motion="none"` remains the default, preserving the existing API and
 immediate selected surface. Both Default and Line variants, horizontal and
 vertical orientations, controlled/uncontrolled values, null values and Base UI
-keyboard activation stay with the primitive. Appearance lab uses the opt-in
-style after visual validation.
+keyboard activation stay with the primitive. Appearance lab and the real Workspace view switcher use the opt-in style after
+visual validation. Workspace also opts its reorderable checklist into list motion.
+The reusable Tabs and SortableList defaults remain unchanged.
 
 CSS transforms track the primitive's active-tab coordinates; bounded absolute
 indicator width/height transitions accommodate unequal labels without scaling
@@ -111,7 +112,9 @@ against the underlying primitive's layout contract.
 TooltipProvider defaults to a **200ms initial hover delay** and **400ms group
 warm window**, with all Provider props still configurable. These are interaction
 timers, not visual design defaults. Base UI cancels early departures and handles
-warm switching, focus, Escape and hoverable content. Its `data-instant` focus,
+warm switching, focus and Escape. Showcase Tooltip groups contain only
+non-interactive descriptions. Formatting help uses an explicit, focusable Popover
+for its action link, accessible by click, keyboard or touch. Its `data-instant` focus,
 dismiss and group transitions remain instant. Do not duplicate its state machine
 or add redundant ARIA naming over the primitive's current accessibility contract.
 
@@ -229,6 +232,48 @@ click advances a finite icon rotation using Standard duration and the shared
 curve. Repeated clicks retarget the current rotation. It announces completion
 in a live region, including with Reduced Motion. Appearance lab and the token
 export panel use the same control; neither simulates an asynchronous task.
+
+## Coverage review and adoption
+
+| Component | Current behavior and decision |
+| --- | --- |
+| Navigation Menu | Fast content fade and bounded popup width/height transitions use Base UI's measured size variables. Native hover/keyboard, activation direction, interruption and presence remain with the primitive. No extra route-selection indicator: opened menus are not Tabs. |
+| Toast stack | Existing enter/exit/swipe behavior remains. Expanded notifications use Base UI's measured offset/index for Standard transform continuity on insertion/removal; no collapsed-card redesign or JS animation engine. Viewport height follows measured toast heights to retain hover/focus pausing. |
+| Switch | Existing color and thumb transitions already resolve shared Fast timing; retain them. |
+| Checkbox | Existing Fast color transition and immediate checkmark communicate the binary state clearly; retain them. |
+| Radio | Add the same Fast color/border transition as Checkbox. Keep its small dot immediate. |
+| Progress | Existing determinate width transition uses shared CSS timing. Preserve it without introducing a loop, overshoot or artificial delay. |
+| Tabs / SortableList | Compatibility defaults remain no-slide / no-layout-motion. Workspace opts into both, so the gallery is not their only live use. Tabs is a good candidate for broader adoption after product feedback; list motion belongs on explicit reordering tasks, not every list. |
+
+The list observer coalesces DOM mutations into one frame and compares stable row
+identities, order and unanimated coordinates before changing an animation. Text
+or status changes that leave layout intact preserve the current Animation and
+its timeline; rows unaffected by another row's movement also continue. Starting
+a React Aria drag cancels optional layout animations. Fast subsequent reorders
+retarget from current drawn positions, and Reduced Motion cancels in-flight work.
+A true text reflow can legitimately move neighboring rows and animate that change.
+
+Useful future coverage: virtualized/windowed collection adapters and cross-list
+DnD need separate positioning contracts; neither is covered by this non-virtual
+SortableList hook. Anchored/multi-region toast composition and dynamic nested
+navigation content deserve targeted checks when a consuming product uses them.
+There is no demonstrated need for global page transitions or card entrances.
+
+Targeted review commands:
+
+```sh
+node scripts/verify-motion-review.mjs
+node scripts/verify-motion-review.mjs --webkit
+node scripts/record-motion-demo.mjs
+```
+
+The WebKit command uses Playwright's local engine, not the Safari application
+or a claim of complete iOS hardware coverage. Both engines check density/export,
+mutation stability during reorder, keyboard drag cancellation, rapid moves,
+Reduced Motion, actionable formatting help, navigation and Toast continuity.
+The existing `verify:motion` keeps pointer/keyboard reorder and overlay coverage.
+Generated reports, screenshots and the short interaction video stay under ignored
+`evidence/motion-review/`; they are not shipped with Starter.
 
 ## References and licensing
 

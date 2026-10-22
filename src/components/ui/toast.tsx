@@ -1,5 +1,5 @@
 import { Toast as ToastPrimitive } from "@base-ui/react/toast"
-import { useEffect } from "react"
+import { useEffect, type CSSProperties } from "react"
 import { XIcon } from "lucide-react"
 import { cn } from "cn"
 const ToastProvider = ToastPrimitive.Provider
@@ -9,8 +9,14 @@ const createToastManager = ToastPrimitive.createToastManager
 function Toast({ className, ...props }: ToastPrimitive.Root.Props) {
   return <ToastPrimitive.Root data-slot="Toast" className={(state) => cn("evenform-toast", typeof className === "function" ? className(state) : className)} {...props} />
 }
-function ToastViewport({ className, ...props }: ToastPrimitive.Viewport.Props) {
-  return <ToastPrimitive.Viewport data-slot="ToastViewport" className={(state) => cn("evenform-toast-viewport", typeof className === "function" ? className(state) : className)} {...props} />
+function ToastViewport({ className, style, ...props }: ToastPrimitive.Viewport.Props) {
+  const { toasts } = useToastManager()
+  const visible = toasts.filter(toast => !toast.limited)
+  const height = visible.reduce((sum, toast) => sum + (toast.height ?? 0), 0)
+  return <ToastPrimitive.Viewport data-slot="ToastViewport" className={(state) => cn("evenform-toast-viewport", typeof className === "function" ? className(state) : className)} style={(state) => ({
+    "--_toast-stack-height": `calc(${height}px + ${Math.max(0, visible.length - 1)} * var(--ds-space-2))`,
+    ...(typeof style === "function" ? style(state) : style),
+  } as CSSProperties)} {...props} />
 }
 function ToastContent({ className, ...props }: ToastPrimitive.Content.Props) {
   return <ToastPrimitive.Content data-slot="ToastContent" className={(state) => cn("evenform-toast-content", typeof className === "function" ? className(state) : className)} {...props} />
