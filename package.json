@@ -25,7 +25,11 @@
     "verify:details": "node scripts/verify-description-list.mjs",
     "verify:navigation": "node scripts/verify-showcase-index.mjs",
     "verify:motion": "node scripts/verify-motion.mjs",
-    "verify:palette": "node --experimental-strip-types scripts/verify-theme-palette.mjs"
+    "verify:palette": "node --experimental-strip-types scripts/verify-theme-palette.mjs",
+    "verify:source-contracts": "node scripts/verify-source-contracts.mjs",
+    "verify:chart-contracts": "node scripts/verify-chart-contracts.mjs",
+    "verify:operations": "node scripts/verify-operations.mjs",
+    "verify:reading-contrast": "node scripts/verify-reading-contrast.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",

@@ -1,5 +1,7 @@
 @layer components {
-  .evenform-chart { position: relative; min-width: 0; height: var(--ds-chart-height, 280px); }
+  .evenform-chart {
+    --_chart-bar-separator-width: var(--ds-chart-bar-separator-width, 0px);
+    --_chart-bar-separator-color: var(--ds-chart-bar-separator-color, var(--card)); position: relative; min-width: 0; height: var(--ds-chart-height, 280px); }
   .evenform-chart-canvas { width: 100%; height: 100%; }
   .evenform-chart-message { position: absolute; inset: 0; display: flex; flex-direction: column; gap: var(--ds-form-field-gap); align-items: center; justify-content: center; color: var(--muted-foreground); background: var(--card); font-size: var(--ds-text-label); }
 }

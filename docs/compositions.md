@@ -84,3 +84,89 @@ For this example use `core.css` plus `workflow-aids.css` (HeaderShell) and
 The [dependency map](dependencies.md#base-entry-and-common-adoption-map) explains
 source, CSS, npm and license boundaries. Keep product overrides after shared
 styles. Copying the whole Showcase is unnecessary.
+
+## Operational review: one selection, several views
+
+Open `/#patterns/operations`. The anonymous
+[operational example](../src/playground/operations-example.tsx) composes the
+existing DetailLayout, two independent Cards, Stat/StatGroup, Badge, Table,
+Button, Tooltip, native disclosures and EvenformChart. Its data and relationship
+rules stay in Showcase; it does not introduce a topology or monitoring API.
+
+The compact summary leads with the review exception, then the recorded total
+and missing-source count. Inventory does not get six equally prominent cards.
+The main workspace and inspector have separate contours and a shared gap;
+the heading and Tabs sit outside both. Existing DetailLayout provides the
+responsive two-column structure, so another inspector layout API is unnecessary.
+StatGroup columns and value sizes use local component tokens.
+
+A single selected ID drives the workflow, proportional composition, exact
+comparison and inspector. A context item resolves its current owner from the
+latest data. The owning node gets a related marker; only the directly selected
+item has `aria-pressed=true`. Selecting a contribution chooses its owner;
+selecting a context item chooses that item. The exact comparison gives tiny
+segments a full-size alternative target without increasing their plotted width.
+
+The refresh action exercises unchanged, changed and missing context ownership.
+A new relationship reveals its context; closing it manually survives a refresh
+with the same relationship. Missing relationships clear the related highlight.
+Selection keeps the trigger's focus and vertical reading position; only the
+workflow's local horizontal scroll is adjusted when needed. The explicit
+“Inspect selection” action intentionally moves focus to the inspector heading.
+
+Desktop Table rows align exact amounts and shares. On narrow screens, the same
+records produce identity-first rows with paired Stat values; the identity never
+scrolls away from its numbers. The collapsed analysis retains the total,
+partial-data warning and selected identity. Its native summary remains keyboard
+operable, independent of contribution/context selection controls.
+
+Recorded amounts form one proportional bar with an exact comparison. Zero,
+missing data and excluded policy context are distinct. These synthetic work
+units are not elapsed time, an execution timeline, or an end-to-end percentile.
+Never sum stage percentiles and label the result as an observed total latency.
+
+### Cascade and legal interactive compositions
+
+- A more specific components-layer selector still loses to an intentional
+  utility. Use `className="rounded-none ring-0"` for an embedded Card whose
+  parent supplies the boundary. Independent panels keep their own Card outline;
+  adding another outer border repeats that boundary.
+- Button's `outline-none` utility outranks a components-layer outline. Use a
+  separate non-interactive selection marker; keep primitive keyboard focus
+  feedback. A local hit layer can cancel press translation using the same
+  modifier: `active:not-aria-[haspopup]:translate-y-0`. Do not remove Button
+  feedback globally.
+- A native button accepts phrasing content. Keep Stat's `dl`, report blocks and
+  `details` outside it. The mobile example places a labeled absolute Button and
+  non-interactive display content as siblings. Context disclosures are outside
+  that target, so their summaries and child actions work independently.
+- Card's clipping is intentional. For a disclosure near its edge, use a local
+  `outline-offset: -2px`; an inspector focus wrapper can use the same radius as
+  the Card. Do not disable clipping or flatten every Card to repair one focus
+  target.
+
+### Reading on muted surfaces
+
+`--muted-foreground` is the existing subdued role; it is not a guarantee of
+4.5:1 on every background. For secondary reading text on `--muted`, use
+`--ds-reading-muted-foreground` (neutral-600 in Light, neutral-400 in Dark).
+The operational composition maps this role locally; the global palette remains
+unchanged. Selected surfaces use `accent-foreground` for secondary text too.
+
+```css
+.product-muted-reading-surface {
+  background: var(--muted);
+  --muted-foreground: var(--ds-reading-muted-foreground);
+}
+.product-selected-surface {
+  background: var(--accent);
+  color: var(--accent-foreground);
+  --muted-foreground: var(--accent-foreground);
+}
+```
+
+`verify:reading-contrast` measures actual CSS pairs across light/dark, Neutral /
+Indigo / Teal / Rose / one generated Custom preset, and both densities. Its
+baseline measurement records the old muted-foreground/muted pair separately;
+that known pair is not presented as passing. This is a targeted role/surface
+check, not an accessibility certification or an audit of arbitrary host themes.

@@ -9,19 +9,28 @@ import "./evenform-chart.css"
 type ChartPalette = "categorical" | "sequential" | "change"
 function readTheme(element: HTMLElement, mode: ChartPalette): ITheme {
   const probe = document.createElement("span")
-  probe.style.cssText = "position:absolute;visibility:hidden;font-size:var(--ds-text-caption);border-radius:var(--radius);"
+  probe.style.cssText = "position:absolute;visibility:hidden;font-size:var(--ds-text-caption);border-radius:var(--radius);border:var(--_chart-bar-separator-width) solid transparent;"
   element.append(probe)
   const style = getComputedStyle(probe)
   const fontSize = parseFloat(style.fontSize)
   const fontFamily = style.fontFamily
   const radius = parseFloat(style.borderRadius)
+  const barSeparatorWidth = parseFloat(style.borderTopWidth)
   const canvas = document.createElement("canvas")
   canvas.width = canvas.height = 1
   const ctx = canvas.getContext("2d", { willReadFrequently: true })!
   const color = (token: string) => {
-    probe.style.color = token.startsWith("--") ? `var(${token})` : token
+    // Connect a fully styled probe for each color. Reusing a mutated probe can
+    // return a stale inherited color during chart initialization/theme updates.
+    const colorProbe = document.createElement("span")
+    colorProbe.style.position = "absolute"
+    colorProbe.style.visibility = "hidden"
+    colorProbe.style.color = token.startsWith("--") ? `var(${token})` : token
+    element.append(colorProbe)
+    const resolvedColor = getComputedStyle(colorProbe).color
+    colorProbe.remove()
     ctx.clearRect(0, 0, 1, 1)
-    ctx.fillStyle = getComputedStyle(probe).color
+    ctx.fillStyle = resolvedColor
     ctx.fillRect(0, 0, 1, 1)
     const [r, g, b, a] = ctx.getImageData(0, 0, 1, 1).data
     return `rgba(${r},${g},${b},${a / 255})`
@@ -30,6 +39,7 @@ function readTheme(element: HTMLElement, mode: ChartPalette): ITheme {
   const muted = color("--muted-foreground")
   const border = color("--border")
   const surface = color("--popover")
+  const barSeparatorColor = color("--_chart-bar-separator-color")
   const palette = mode === "change"
     ? ["total", "increase", "decrease"].map((name) => color(`--ds-chart-change-${name}`))
     : Array.from({ length: mode === "sequential" ? 5 : 8 }, (_, index) => color(`--ds-chart-${mode === "sequential" ? "sequential" : "series"}-${index + 1}`))
@@ -54,7 +64,7 @@ function readTheme(element: HTMLElement, mode: ChartPalette): ITheme {
     mark: { text: { style: { fill: foreground, fontFamily, fontSize } } },
     series: {
       line: { line: { style: { lineWidth: 2 } }, point: { visible: false } },
-      bar: { barMaxWidth: 28, bar: { style: { cornerRadius: [3, 3, 0, 0] } } },
+      bar: { barMaxWidth: 28, bar: { style: { cornerRadius: [3, 3, 0, 0], stroke: barSeparatorColor, lineWidth: barSeparatorWidth } } },
       pie: { pie: { style: { cornerRadius: 2 } } },
       treemap: { label: { style: { fill: onFill, fontSize, fontFamily } }, nonLeafLabel: { style: { fill: foreground, fontSize, fontFamily } } },
       sunburst: { label: { style: { fill: onFill, fontSize, fontFamily } } },
@@ -99,11 +109,12 @@ export function EvenformChart({ spec, label, description, className, palette = "
     let disposed = false
     let chart: import("@visactor/vchart").default | undefined
     let frame = 0
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)")
     const root = document.documentElement
     const fail = () => { if (!disposed) setStatus("error") }
     const themedSpec = () => {
       const theme = readTheme(host, palette)
-      return { ...spec, theme, ...(spec.color && !Array.isArray(spec.color) ? { color: { ...spec.color, range: theme.colorScheme!.default as string[] } } : {}) }
+      return { ...spec, ...(reducedMotion.matches ? { animation: false } : {}), theme, ...(spec.color && !Array.isArray(spec.color) ? { color: { ...spec.color, range: theme.colorScheme!.default as string[] } } : {}) }
     }
     const sync = () => {
       cancelAnimationFrame(frame)
@@ -115,6 +126,7 @@ export function EvenformChart({ spec, label, description, className, palette = "
         } catch { fail() }
       })
     }
+    reducedMotion.addEventListener("change", sync)
     const resize = new ResizeObserver(sync)
     resize.observe(host)
     const preferences = new MutationObserver(sync)
@@ -134,6 +146,7 @@ export function EvenformChart({ spec, label, description, className, palette = "
     }).catch(fail)
     return () => {
       disposed = true
+      reducedMotion.removeEventListener("change", sync)
       resize.disconnect()
       preferences.disconnect()
       cancelAnimationFrame(frame)
@@ -143,7 +156,7 @@ export function EvenformChart({ spec, label, description, className, palette = "
 
   return <div className={cn("evenform-chart", className)}>
     <div ref={container} className="evenform-chart-canvas" role="img" aria-label={`${label}. ${description}`} aria-busy={status === "loading"} />
-    {status === "loading" && <div className="evenform-chart-message" role="status">Loading chart…</div>}
+    {status === "loading" && <output className="evenform-chart-message">Loading chart…</output>}
     {status === "error" && <div className="evenform-chart-message" role="alert"><p>Unable to render this chart.</p><Button variant="outline" size="sm" onClick={() => { setStatus("loading"); setAttempt((value) => value + 1) }}>Try again</Button></div>}
   </div>
 }

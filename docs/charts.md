@@ -52,6 +52,8 @@ function Sessions({ rows }: { rows: { date: string; value: number }[] }) {
 
 `spec` 使用 VChart 原生配置；调用方负责数据、业务筛选、图例和表格。保持 spec 引用稳定，避免无关 React 更新重建实例。`EvenformChart` 提供加载提示、失败后重试、ResizeObserver、自定义主题更新和卸载释放；它不会模拟数据或引入示例业务状态。
 
+组件读取并监听 `prefers-reduced-motion`；偏好减少动态效果时将 VChart `animation` 设为 `false`。无此偏好时仍使用调用方的 spec；按需运行包未注册的动画能力不会因此自动启用。
+
 Canvas 不提供逐点键盘阅读。必须提供可读的 `label` / `description`，并在业务层提供相应数据表；当前 Demo 的 **Data tables** 包含四张 Analytics 图的精确值，**Advanced charts** 的每张图下方提供 **View source data**。HTML 图例和摘要也保留文字标签，避免仅依赖颜色。
 
 ## 主题与参数
@@ -92,3 +94,39 @@ VChart 在 `EvenformChart` 挂载时异步加载，Showcase 首页不请求图�
 本地历史截图与运行记录不随仓库发布，不作为当前版本已通过检查的依据。每次验证需记录所测提交、图表家族、场景、结果和未覆盖项；构建通过不代表任意图表类型、超大数据量、SSR 或后端接入已验证。
 
 参考：[VChart 示例库](https://visactor.io/vchart/example)、[主题定制](https://visactor.io/vchart/guide/tutorial_docs/Theme/Customize_Theme)、[主题概念](https://visactor.io/vchart/guide/tutorial_docs/Theme/Theme_Concept_and_Design_Rules)。
+
+### 堆叠条分段边界
+
+需要区分相邻同色分段时，可在图表实例祖先配置：
+
+```css
+.contribution-chart {
+  --ds-chart-bar-separator-width: var(--ds-border-width);
+  --ds-chart-bar-separator-color: var(--card);
+}
+```
+
+宽度默认 `0px`，颜色回退到实例位置的 `--card`。CSS 是默认值的唯一来源，
+封装读取实际 computed width，并将颜色转换为 Canvas 使用的 sRGB 后注入 Bar
+主题。不要在该图的 `bar.style` 再覆盖 stroke/lineWidth，否则显式 spec 会优先。
+这个配置不改变数据色板。静态构成条可隐藏坐标轴、Legend 和 Tooltip，但应保留
+精确数值的 HTML 列表或表格，并明确其表达的是构成而非执行时间线。
+
+## Lifecycle and bar-boundary regression
+
+`npm run verify:chart-contracts` uses real VChart instances and rendered marks.
+It covers initial reduced motion, restoring the caller's animation preference,
+interrupting a running appear animation, and unmount cleanup followed by media,
+resize and root-theme changes. Explicit caller `animation: false` stays false.
+The test fixture instruments the runtime; no instance/debug API is added to the
+shared component.
+
+Bar coverage is bounded to a horizontal stacked bar with adjacent same-color
+segments and a subpixel contribution. It checks default zero separator,
+instance-local width, Light/Dark stroke conversion, unchanged data geometry,
+and coexisting explicit-color line marks. Automatic palette marks are checked
+against the CSS series colors in both themes too. The token reader connects a
+fully styled probe per color, avoiding inherited text colors from a repeatedly
+mutated probe during initialization/update. Other bar-derived chart families are
+not implied by this result. A zero-width default preserves prior visuals;
+`--ds-chart-bar-separator-color` falls back to `--card` at the chart instance.

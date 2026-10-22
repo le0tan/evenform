@@ -1,0 +1,13 @@
+@layer components {
+  .adoption-workspace { --ds-header-shell-height: 36rem; border: var(--ds-border-width) solid var(--border); }
+  .adoption-workspace[data-embedded="false"] { --ds-header-shell-height: 100svh; }
+  .adoption-workspace-panels { display: grid; grid-template-columns: minmax(5rem, 1fr) minmax(0, 4fr); height: 100%; min-height: 0; }
+  .adoption-workspace-navigation, .adoption-workspace-feed { overflow-y: auto; min-height: 0; padding: var(--ds-card-padding); }
+  .adoption-workspace-navigation { display: flex; flex-direction: column; gap: var(--ds-control-gap); border-inline-end: var(--ds-border-width) solid var(--border); }
+  .adoption-workspace-navigation a { white-space: nowrap; flex-shrink: 0; text-decoration: underline; text-underline-offset: 3px; }
+  .adoption-workspace-feed { display: flex; flex-direction: column; gap: var(--ds-panel-gap); }
+  @media (max-width: 40rem) { .adoption-workspace-navigation { padding-inline: var(--ds-space-2); } }
+  .adoption-workspace-feed details { margin-top: var(--ds-control-gap); }
+  .adoption-workspace-feed summary { cursor: pointer; }
+  .adoption-workspace-feed ol { list-style: decimal; padding-inline-start: var(--ds-space-5); }
+}
