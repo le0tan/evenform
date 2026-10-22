@@ -114,3 +114,26 @@ state calculation. Local layout of existing Stat definitions can align values
 beneath wrapped labels without fixing label heights or replacing the component.
 These are adoption recipes and consumer responsibilities, not defects attributed
 to the underlying primitives.
+
+## Composition bars and shared outlines
+
+One consumer replaced repeated percentage tracks with a single stacked composition
+bar and compact exact values. It reuses EvenformChart and Stat/Table, preserves
+source order and progressively disclosed context, and omits a fake full bar when
+the known sum is zero or unavailable. Tiny segments retain their true width; the
+exact list carries identities and numbers without tiny interactive targets.
+
+Adjacent same-category segments needed a token-based separator. The chart bridge
+now resolves `--ds-chart-bar-separator-width` (default 0px) and
+`--ds-chart-bar-separator-color` (fallback `--card`) at the chart instance, converting
+the color to sRGB for the bar theme. Data palettes and existing line charts keep
+their prior behavior. In the consuming host, using a palette-key object directly
+in the mark spec produced an unintended stroke; the final implementation uses
+the supported theme bridge and does not retain that attempted configuration.
+
+Nested compositions also need one owner for their outer outline. A consumer's
+component-layer zero radius/ring rule was overridden by the Card's utility layer.
+Use intentional className utility overrides for an embedded Card, preserve its
+header/content primitives, and let the outer workspace clip the shared contour.
+Check anchor and disclosure focus feedback after introducing clipping. This
+requires no global change to Card rounding.

@@ -9,12 +9,13 @@ import "./evenform-chart.css"
 type ChartPalette = "categorical" | "sequential" | "change"
 function readTheme(element: HTMLElement, mode: ChartPalette): ITheme {
   const probe = document.createElement("span")
-  probe.style.cssText = "position:absolute;visibility:hidden;font-size:var(--ds-text-caption);border-radius:var(--radius);"
+  probe.style.cssText = "position:absolute;visibility:hidden;font-size:var(--ds-text-caption);border-radius:var(--radius);border:var(--_chart-bar-separator-width) solid transparent;"
   element.append(probe)
   const style = getComputedStyle(probe)
   const fontSize = parseFloat(style.fontSize)
   const fontFamily = style.fontFamily
   const radius = parseFloat(style.borderRadius)
+  const barSeparatorWidth = parseFloat(style.borderTopWidth)
   const canvas = document.createElement("canvas")
   canvas.width = canvas.height = 1
   const ctx = canvas.getContext("2d", { willReadFrequently: true })!
@@ -30,6 +31,7 @@ function readTheme(element: HTMLElement, mode: ChartPalette): ITheme {
   const muted = color("--muted-foreground")
   const border = color("--border")
   const surface = color("--popover")
+  const barSeparatorColor = color("--_chart-bar-separator-color")
   const palette = mode === "change"
     ? ["total", "increase", "decrease"].map((name) => color(`--ds-chart-change-${name}`))
     : Array.from({ length: mode === "sequential" ? 5 : 8 }, (_, index) => color(`--ds-chart-${mode === "sequential" ? "sequential" : "series"}-${index + 1}`))
@@ -54,7 +56,7 @@ function readTheme(element: HTMLElement, mode: ChartPalette): ITheme {
     mark: { text: { style: { fill: foreground, fontFamily, fontSize } } },
     series: {
       line: { line: { style: { lineWidth: 2 } }, point: { visible: false } },
-      bar: { barMaxWidth: 28, bar: { style: { cornerRadius: [3, 3, 0, 0] } } },
+      bar: { barMaxWidth: 28, bar: { style: { cornerRadius: [3, 3, 0, 0], stroke: barSeparatorColor, lineWidth: barSeparatorWidth } } },
       pie: { pie: { style: { cornerRadius: 2 } } },
       treemap: { label: { style: { fill: onFill, fontSize, fontFamily } }, nonLeafLabel: { style: { fill: foreground, fontSize, fontFamily } } },
       sunburst: { label: { style: { fill: onFill, fontSize, fontFamily } } },

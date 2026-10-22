@@ -94,3 +94,20 @@ VChart 在 `EvenformChart` 挂载时异步加载，Showcase 首页不请求图�
 本地历史截图与运行记录不随仓库发布，不作为当前版本已通过检查的依据。每次验证需记录所测提交、图表家族、场景、结果和未覆盖项；构建通过不代表任意图表类型、超大数据量、SSR 或后端接入已验证。
 
 参考：[VChart 示例库](https://visactor.io/vchart/example)、[主题定制](https://visactor.io/vchart/guide/tutorial_docs/Theme/Customize_Theme)、[主题概念](https://visactor.io/vchart/guide/tutorial_docs/Theme/Theme_Concept_and_Design_Rules)。
+
+### 堆叠条分段边界
+
+需要区分相邻同色分段时，可在图表实例祖先配置：
+
+```css
+.contribution-chart {
+  --ds-chart-bar-separator-width: var(--ds-border-width);
+  --ds-chart-bar-separator-color: var(--card);
+}
+```
+
+宽度默认 `0px`，颜色回退到实例位置的 `--card`。CSS 是默认值的唯一来源，
+封装读取实际 computed width，并将颜色转换为 Canvas 使用的 sRGB 后注入 Bar
+主题。不要在该图的 `bar.style` 再覆盖 stroke/lineWidth，否则显式 spec 会优先。
+这个配置不改变数据色板。静态构成条可隐藏坐标轴、Legend 和 Tooltip，但应保留
+精确数值的 HTML 列表或表格，并明确其表达的是构成而非执行时间线。
