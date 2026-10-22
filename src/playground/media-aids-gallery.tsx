@@ -67,8 +67,7 @@ function LocalVideoExample() {
   return (
     <div className="evenform-media-stack">
       <p className="text-muted-foreground">
-        Choose a local video to inspect native playback. Add a WebVTT track to
-        test captions. Files stay in this browser.
+        Choose a local video to play. Add a WebVTT track for captions. Files stay in this browser.
       </p>
       <div className="evenform-media-grid">
         <label className="evenform-media-stack">
@@ -169,16 +168,13 @@ function MediaAidsGallery() {
                 }
               />
             </AspectRatio>
-            <p className="text-muted-foreground">
-              A failed image keeps its reserved space and accessible
-              description.
-            </p>
+
           </div>
         </div>
       </PageSection>
       <PageSection id="example-carousel"
         title="Browse a sequence"
-        description="Drag or swipe, use the navigation buttons, or focus the viewport and use arrow keys. Motion starts only after an action."
+        description="Drag or swipe, use the navigation buttons, or focus the viewport and use arrow keys."
       >
         <Carousel
           aria-label="Process reference diagrams"
@@ -210,7 +206,7 @@ function MediaAidsGallery() {
       </PageSection>
       <PageSection
         title="Feedback and people"
-        description="Native radio inputs support keyboard selection and form values; read-only feedback stays readable."
+
       >
         <div className="evenform-media-grid">
           <div className="evenform-media-stack">
@@ -290,7 +286,7 @@ function MediaAidsGallery() {
       </PageSection>
       <PageSection id="example-qr-code"
         title="Share a reference"
-        description="The QR symbol encodes the value below. Copy feedback includes asynchronous permission and clipboard failures."
+         description="Encode a link or text as a QR code."
       >
         <div className="evenform-media-share">
           <QRCode
@@ -327,15 +323,15 @@ function MediaAidsGallery() {
       </PageSection>
       <PageSection id="example-code-block"
         title="Code and clipboard"
-        description="Selectable source keeps native scrolling, an optional filename, and a copy action."
+
       >
         <div id="media-code-example">
           <CodeBlock code={code} language="tsx" filename="review-preview.tsx" />
         </div>
       </PageSection>
       <PageSection id="example-video"
-        title="Native video"
-        description="Browser controls preserve playback, volume, full screen, and caption behavior."
+        title="Video player"
+
       >
         <LocalVideoExample />
       </PageSection>

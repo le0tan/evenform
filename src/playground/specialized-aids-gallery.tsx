@@ -87,9 +87,7 @@ function MentionsExample() {
         />
       </Mentions>
       <Text id="specialized-mentions-help" tone="muted" size="caption">
-        Type @ at the caret, use Up or Down to choose a local reviewer, and
-        press Enter or Tab to insert. Escape closes the list. The local search
-        delay demonstrates asynchronous results; no notification is sent.
+        Type @, use Up or Down to choose a reviewer, and press Enter or Tab to insert. Escape closes the list. No notification is sent.
       </Text>
       <div>
         <Button
@@ -177,11 +175,10 @@ function CountdownExample() {
           : running
             ? "Countdown running."
             : "Countdown paused."}{" "}
-        Completion callback count: {completionCount}.
+        Completed cycles: {completionCount}.
       </Text>
       <Text size="caption" tone="muted">
-        Pausing freezes the remaining duration. Restarting supplies a new target
-        timestamp. Completion fires once for each target cycle.
+        Pause to hold the remaining time, or restart a 15-second review window.
       </Text>
     </div>
   )
@@ -221,8 +218,7 @@ function WatermarkExample() {
         <div className="evenform-specialized-stack">
           <h3>Reviewing a shared reference</h3>
           <p>
-            The application supplies these visible labels. The document stays
-            selectable and its form controls remain available.
+            Add a review note before sharing this reference with your team.
           </p>
           <label className="evenform-specialized-stack">
             Your review note
@@ -247,8 +243,7 @@ function WatermarkExample() {
         <div className="evenform-specialized-stack">
           <h3>Image watermark</h3>
           <p>
-            The same repeated layer can use an application-owned image. This
-            example uses the local Evenform favicon.
+            Watermarked with the Evenform favicon.
           </p>
         </div>
       </Watermark>
@@ -260,19 +255,19 @@ function SpecializedAidsGallery() {
     <div className="evenform-specialized-gallery">
       <PageSection
         title="Mentions at the caret"
-        description="Compose text with structured mentions. The maintained primitive owns caret mapping, keyboard candidates, markup, and cancellable asynchronous data."
+
       >
         <div role="group" aria-label="Mentions example" id="example-mentions" className="showcase-example"><MentionsExample /></div>
       </PageSection>
       <PageSection
         title="Countdown with a target"
-        description="Remaining time is calculated from the clock, with controlled pause/resume and one completion callback per target cycle. Seconds are not broadcast as live updates."
+
       >
         <div role="group" aria-label="Countdown example" id="example-countdown" className="showcase-example"><CountdownExample /></div>
       </PageSection>
       <PageSection
         title="Visual watermarks"
-        description="Text or image marks repeat across a content region. Tile spacing, angle, opacity, color, and text scale are local CSS component parameters."
+
       >
         <div role="group" aria-label="Watermark example" id="example-watermark" className="showcase-example"><WatermarkExample /></div>
       </PageSection>

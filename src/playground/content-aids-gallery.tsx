@@ -11,7 +11,7 @@ import {
 import { Text, Title } from "@/components/ui/typography"
 
 const summary =
-  "Keep the review close to the material. A useful summary explains the user’s task, the change being proposed, and the evidence that supports it. Include enough context for someone joining the project later to understand the decision. When a detail needs more room, readers can expand this paragraph without leaving the page. The full text stays available as the container changes size, including on a narrow screen."
+  "The workspace handover is ready for review. Sam will answer questions about the release schedule, and Jordan will confirm the support rota. The remaining checklist covers account access, the invoice contact, and the first reporting date. Please add any open questions before Thursday’s checkpoint so the team can resolve them before the handover."
 
 export function ContentAidsGallery() {
   const resizeRef = useRef<ResizeBoxHandle>(null)
@@ -58,8 +58,7 @@ export function ContentAidsGallery() {
                   Reading preview
                 </Title>
                 <Text tone="muted" size="label">
-                  The content scrolls inside this surface. Resizing changes its
-                  actual width and height.
+                  The handover checklist covers account access, team contacts, reporting dates and open questions.
                 </Text>
                 <ExpandableText lines={3}>{summary}</ExpandableText>
               </div>
@@ -91,8 +90,7 @@ export function ContentAidsGallery() {
                 className="max-w-full"
               >
                 <Text size="label">
-                  This preview is locked while the application owns its
-                  dimensions.
+                  Resizing is locked in this preview.
                 </Text>
               </ResizeBox>
             </div>
@@ -105,7 +103,7 @@ export function ContentAidsGallery() {
       >
         <div className="evenform-content-aids-examples">
           <div className="evenform-content-aids-example">
-            <h3>Controlled title · required</h3>
+            <h3>Project title · required</h3>
             <EditableText
               label="Review title"
               value={title}
@@ -154,11 +152,11 @@ export function ContentAidsGallery() {
       </PageSection>
       <PageSection id="example-expandable-text"
         title="Expandable text"
-        description="The toggle appears only when rendered text overflows its collapsed line count. Width changes and font loading update the measurement."
+
       >
         <div className="evenform-content-aids-examples">
           <div className="evenform-content-aids-example">
-            <h3>Controlled · two lines</h3>
+            <h3>Project summary · two lines</h3>
             <ExpandableText
               lines={2}
               expanded={expanded}

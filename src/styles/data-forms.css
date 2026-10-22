@@ -96,7 +96,7 @@
     background: color-mix(in oklab, var(--muted) 50%, var(--background));
   }
   .evenform-data-table tr[data-state="selected"] > [data-pinned] {
-    background: var(--muted);
+    background: var(--accent);
   }
   .evenform-data-table [data-pinned="start"] {
     border-inline-end: var(--ds-border-width) solid var(--border);

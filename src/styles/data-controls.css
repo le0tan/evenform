@@ -211,7 +211,7 @@
     background: var(--accent);
     color: var(--accent-foreground);
   }
-  .evenform-transfer-item:hover {
+  .evenform-transfer-item:hover:not(:has(input:checked)) {
     background: var(--muted);
   }
   .evenform-transfer-item[data-disabled],
@@ -250,7 +250,7 @@
   }
   .evenform-file-upload[data-dragging] {
     background: var(--accent);
-    border-color: var(--ring);
+    border-color: var(--primary);
   }
   .evenform-file-upload:focus-within {
     border-color: var(--ring);

@@ -113,7 +113,7 @@
 .inspector-help { color: var(--muted-foreground); font-size: var(--pg-small-size); line-height: 1.6; }
 .token-controls { display: flex; flex-direction: column; gap: var(--ds-space-5); padding-block: var(--ds-space-6); }
 .token-control { display: flex; flex-direction: column; gap: var(--ds-space-2); }
-.token-control input[type='range'] { width: 100%; height: var(--ds-space-3); accent-color: var(--foreground); }
+.token-control input[type='range'] { width: 100%; height: var(--ds-space-3); accent-color: var(--primary); }
 .override-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--foreground); }
 .advanced-tokens { margin-bottom: var(--ds-space-6); }
 .advanced-tokens summary { cursor: pointer; font-weight: var(--ds-weight-medium); padding-block: var(--ds-space-2); }

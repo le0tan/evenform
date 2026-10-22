@@ -29,9 +29,7 @@ function GradientExample() {
   return (
     <div className="design-tools-example">
       <p className="design-tools-note">
-        Edit each color and position, add or remove stops, reverse the gradient,
-        or switch to a radial blend. These colors belong to the document being
-        edited.
+        Edit colors and positions, add or remove stops, reverse the gradient, or switch to a radial blend.
       </p>
       <div className="toolbar">
         <Button
@@ -57,10 +55,7 @@ function GradientExample() {
           <output className="design-tools-output" aria-label="Gradient CSS">
             {gradientToCss(value)}
           </output>
-          <p className="design-tools-note">
-            The editor emits a structured model. Applications can use the CSS
-            helper for a preview or save the model with their own document.
-          </p>
+
         </div>
       </div>
     </div>
@@ -116,9 +111,7 @@ function ImageExample() {
   return (
     <div className="design-tools-example">
       <p className="design-tools-note">
-        A local vector color study demonstrates fit, fill, source-relative crop,
-        tile, rotation and CSS adjustments. Choose your own image to try the
-        same controls. This page owns and revokes its object URLs.
+        Adjust the local color study, or choose your own image. Files stay in this browser.
       </p>
       <div className="toolbar">
         <Button
@@ -172,9 +165,7 @@ function ImageExample() {
             {JSON.stringify(value, null, 2)}
           </output>
           <p className="design-tools-note">
-            Crop coordinates are normalized to the source image. Width and
-            height stay within the source bounds; CSS filters and rotation apply
-            to the rendered result.
+            Crop coordinates are relative to the source image, from 0 to 1.
           </p>
         </div>
       </div>
@@ -227,9 +218,7 @@ function EventCalendarExample() {
   return (
     <div className="design-tools-example">
       <p className="design-tools-note">
-        A FullCalendar event grid with month, week and day views. Dates are
-        shown in UTC. Activate an event with Enter or Space to show its details;
-        drag or resize timed events to update page-owned state.
+        Dates are shown in UTC. Press Enter or Space on an event to view details; drag or resize timed events to change them in this preview.
       </p>
       <form
         className="design-tools-calendar-form"
@@ -353,13 +342,6 @@ export function DesignToolsGallery() {
   const [preview, setPreview] = useShowcasePreview("components", "tools", ["gradient", "image", "calendar"], "gradient")
   return (
     <div className="design-tools-gallery">
-      <div>
-        <h2>Visual editing and event planning</h2>
-        <p className="design-tools-note">
-          Controlled document values, genuine preview rendering, and a mature
-          event calendar.
-        </p>
-      </div>
       <Tabs value={preview} onValueChange={setPreview}>
         <TabsList>
           <TabsTrigger value="gradient">Gradient picker</TabsTrigger>

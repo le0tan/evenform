@@ -65,7 +65,7 @@
   [data-slot='page-navigation'] ul { display: flex; flex-direction: column; gap: var(--ds-space-1); margin: 0; padding: 0; list-style: none; }
   [data-slot='page-navigation'] a { display: flex; align-items: center; min-height: var(--ds-control-height); padding: var(--ds-space-1) var(--ds-control-padding-x); border-radius: var(--radius); font-size: var(--ds-text-label); color: var(--muted-foreground); overflow-wrap: anywhere; }
   [data-slot='page-navigation'] a:hover { color: var(--foreground); background: var(--muted); }
-  [data-slot='page-navigation'] a[aria-current] { color: var(--foreground); background: var(--accent); font-weight: var(--ds-weight-medium); }
+  [data-slot='page-navigation'] a[aria-current] { color: var(--accent-foreground); background: var(--accent); font-weight: var(--ds-weight-medium); }
   [data-slot='page-navigation'] a:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
   @media (pointer: coarse) { [data-slot='page-navigation'] a { min-height: 44px; } }
 

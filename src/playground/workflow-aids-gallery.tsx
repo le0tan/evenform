@@ -58,9 +58,7 @@ function AgendaExample() {
   return (
     <div className="workflow-aids-example">
       <p className="workflow-aids-note">
-        Choose a date to view its events. These illustrative entries are shown
-        in Singapore time (UTC+08:00); the application supplies date and
-        timezone formatting.
+        Choose a date to view its events. Illustrative schedule · Singapore time (UTC+08:00).
       </p>
       <div className="workflow-agenda-columns">
         <div>
@@ -203,8 +201,7 @@ function StepFormExample() {
   return (
     <div className="workflow-aids-example">
       <p className="workflow-aids-note">
-        The page controls the current step and validates each transition. Back
-        preserves entered data. This preview creates no workspace or invitation.
+        Back preserves your entries. This preview creates no workspace or invitation.
       </p>
       {complete ? (
         <div className="workflow-aids-example">
@@ -354,12 +351,7 @@ function HeaderExample() {
   const [section, setSection] = useState("overview")
   return (
     <div className="workflow-aids-example">
-      <p className="workflow-aids-note">
-        A header-based workspace with optional section navigation and footer.
-        This embedded preview explicitly uses contentAs="div" because the
-        Showcase already owns the page’s main landmark. Standalone HeaderShell
-        defaults to one main with a skip link.
-      </p>
+
       <HeaderShell
         className="workflow-shell-preview"
         contentAs="div"
@@ -391,7 +383,7 @@ function HeaderExample() {
           </>
         }
         secondaryNavigationLabel="Preview workspace sections"
-        footer="Illustrative workspace · Content and navigation are supplied by the application."
+        footer="Illustrative workspace"
       >
         {section === "overview" ? (
           <section aria-labelledby="workflow-shell-overview">
@@ -399,9 +391,7 @@ function HeaderExample() {
               A focused review workspace
             </h3>
             <p className="workflow-shell-copy">
-              Use a header layout when navigation fits alongside the workspace
-              identity. The main region stays readable, while section navigation
-              and supporting footer content share the same content alignment.
+              Review the handover, confirm the owner, and record any open questions before the next checkpoint.
             </p>
           </section>
         ) : (
@@ -433,13 +423,6 @@ export function WorkflowAidsGallery() {
   const [preview, setPreview] = useShowcasePreview("patterns", "workflow", ["agenda", "form", "header"], "agenda")
   return (
     <div className="workflow-aids-gallery">
-      <div>
-        <h2>Schedules and guided work</h2>
-        <p className="workflow-aids-note">
-          Agenda groups, controlled step navigation, and a header shell for
-          focused workspaces.
-        </p>
-      </div>
       <Tabs value={preview} onValueChange={setPreview}>
         <TabsList>
           <TabsTrigger value="agenda">Calendar agenda</TabsTrigger>

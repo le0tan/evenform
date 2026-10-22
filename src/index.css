@@ -3,6 +3,8 @@
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/geist";
 @import "./styles/tokens.css";
+@import "./styles/appearance.css";
+@import "./styles/control-sizing.css";
 @import "./styles/patterns.css";
 @import "./styles/extended-controls.css";
 @import "./styles/extended-patterns.css";

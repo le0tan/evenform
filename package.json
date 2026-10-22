@@ -16,7 +16,8 @@
     "verify:refinements": "node scripts/verify-refinements.mjs",
     "preview:starter": "vite preview --outDir dist-starter",
     "verify:details": "node scripts/verify-description-list.mjs",
-    "verify:navigation": "node scripts/verify-showcase-index.mjs"
+    "verify:navigation": "node scripts/verify-showcase-index.mjs",
+    "verify:palette": "node --experimental-strip-types scripts/verify-theme-palette.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",

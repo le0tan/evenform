@@ -75,9 +75,7 @@ function EditorExample() {
   return (
     <div className="product-patterns-example">
       <p className="product-patterns-note">
-        A Tiptap document model with history, selection-aware formatting, lists,
-        and links. This example owns the JSON document; no server persistence is
-        connected.
+        Changes stay in this page and are not saved to a server.
       </p>
       <div className="toolbar">
         <Button
@@ -165,7 +163,7 @@ function ReorderExample() {
       <p role="status" className="product-patterns-note">
         {moved
           ? `Current order: ${items.map((item) => item.textValue).join(", ")}.`
-          : "The application owns this checklist order."}
+          : "Reorder the checklist to set your review sequence."}
       </p>
     </div>
   )
@@ -307,8 +305,7 @@ function PeopleExample() {
           </Comment>
         </Comments>
         <p className="product-patterns-note">
-          Comment text, edit forms, and replies are owned by this page and stay
-          in memory.
+          Comments and replies stay in this page.
         </p>
       </div>
       <div className="product-patterns-example">
@@ -344,8 +341,7 @@ function ConversationExample() {
   return (
     <Conversation aria-label="Handover conversation">
       <p className="product-patterns-note">
-        Send a message to append it to the local conversation. Delivery and
-        connection status remain application state.
+        Add a message to this local conversation. No message is sent.
       </p>
       <ConversationList aria-label="Conversation history">
         <ConversationDaySeparator>
@@ -477,7 +473,7 @@ function PlansExample() {
       <PlanPicker
         name="preview-plan"
         label="Choose a workspace plan"
-        description="Illustrative options demonstrate plan selection. This preview does not start a subscription."
+        description="Choose a plan to preview its selection. No subscription is started."
         value={plan}
         onValueChange={setPlan}
         options={[
@@ -532,13 +528,6 @@ export function ProductPatternsGallery() {
   const [preview, setPreview] = useShowcasePreview("patterns", "product", ["editor", "reorder", "comments", "conversation", "notifications", "plans"], "editor")
   return (
     <div className="product-patterns-gallery">
-      <div>
-        <h2>Content and collaboration</h2>
-        <p className="product-patterns-note">
-          Reusable editing, ordering, discussion, and selection structures. Each
-          preview owns its data and actions.
-        </p>
-      </div>
       <Tabs value={preview} onValueChange={setPreview}>
         <TabsList>
           <TabsTrigger value="editor">Rich text</TabsTrigger>
