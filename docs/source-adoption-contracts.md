@@ -269,3 +269,7 @@ footer and image corner rules follow the public radius token.
 ### Anchored chart tooltips
 
 `TooltipContent` accepts `positionerProps` for SVG or virtual anchors, fixed positioning and collision boundaries. Keep coordinates on the positioner and transitions on the popup. A controlled chart can retain its last anchor/content while closing, then update both before opening again. `showArrow={false}` supports dense previews; use popup `className` to compose a neutral surface. The host owns hover/focus state, `aria-describedby`, Escape handling and the chart data.
+
+### Host clipboard bridges
+
+`CopyButton` uses the browser Clipboard API by default. Hosts can provide `writeText(value)` for an existing native bridge or compatibility adapter; resolve only after writing and reject/throw on failure. The component continues to own pending-action protection, success/error feedback and live announcements. Transport or environment fallbacks stay in the host.
