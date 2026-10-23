@@ -41,7 +41,8 @@ function SidebarCategory({ page, entry, route, onNavigate }: { page: ShowcasePag
     return () => window.removeEventListener("evenform:reveal-example", reveal)
   }, [])
   useEffect(() => { if (open && selected) links.current?.querySelector('[aria-current="page"]')?.scrollIntoView({ block: "nearest" }) }, [open, selected, route.anchor])
-  if (!entry.examples?.length) return <li><a className="showcase-nav-link" href={showcaseHref(page, entry.id)} aria-current={active ? "page" : undefined} onClick={event => followLink(event, onNavigate)}>{entry.title}</a></li>
+  // A single destination needs a direct link, not a duplicate nested example.
+  if (!entry.examples || entry.examples.length < 2) return <li><a className="showcase-nav-link" href={showcaseHref(page, entry.id)} aria-current={active ? "page" : undefined} onClick={event => followLink(event, onNavigate)}>{entry.title}</a></li>
   return <li><Collapsible open={open} onOpenChange={open => setExpansion({ context, open })}>
     <div className="showcase-category-row"><a className="showcase-nav-link" href={showcaseHref(page, entry.id)} aria-current={active && !selected ? "page" : undefined} data-active={active || undefined} onClick={event => followLink(event, onNavigate)}>{entry.title}</a><CollapsibleTrigger className="showcase-category-toggle" aria-label={`Toggle ${entry.title} examples`}><ChevronRight size={12} aria-hidden="true" /></CollapsibleTrigger></div>
     <CollapsibleContent><ul ref={links} className="showcase-nav-items showcase-example-links">{entry.examples.map(example => <li key={example.id}><a className="showcase-nav-link" href={showcaseHref(page, entry.id, example)} aria-current={active && route.anchor === example.anchor ? "page" : undefined} onClick={event => followLink(event, onNavigate)}>{example.title}</a></li>)}</ul></CollapsibleContent>

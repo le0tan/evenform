@@ -159,3 +159,16 @@ ignored `evidence/chart-contracts/`, `evidence/operations/` and
 composition tests use synthetic records; contrast tests measure selected actual
 CSS pairs. Their evidence does not establish backend, SSO, every chart family,
 every custom theme or a complete accessibility audit.
+
+`verify:operations` covers desktop/mobile × Light/Dark × Compact/Comfortable
+(eight cases): real pointer selection of the minimum-width tiny contribution,
+keyboard/list/inspector synchronization, selected computed styles, context-trigger
+visibility and scroll preservation with pointer/Enter/Space, path-scoped
+ownership, same/changed/missing relationships, absent versus null records,
+zero/all-unknown/near-100% samples, focus and vertical position, and initial plus
+dynamic OS/local reduced motion. It records instant horizontal scroll requests.
+The compact cases additionally check Neutral/Indigo/Teal/Rose in both viewports
+and themes (16 cases), resolving CSS colors through Canvas and compositing the
+actual translucent destructive Badge over its tinted inspector background.
+Selected text and category Badge pairs are checked too. This local recipe matrix
+is not a global status-color audit or coverage of arbitrary custom palettes.

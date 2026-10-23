@@ -208,8 +208,9 @@ the optional calendar export, and legacy node-resolution typechecking. See
 
 The [operational review composition](compositions.md#operational-review-one-selection-several-views)
 uses anonymous synthetic work units, one selection source, independent panels,
-responsive comparison, context disclosures and exact alternatives to tiny chart
-segments. It remains Showcase code; it is not a new shared business API.
+responsive comparison, context disclosures and minimum-width selection
+with real contribution percentages. It remains Showcase code; it is not a new
+shared business API.
 
 The chart follow-up now tests real mark geometry/colors, initial and dynamic
 reduced motion, running-animation interruption and release/listener cleanup.
@@ -223,3 +224,27 @@ muted-foreground/muted baseline. The opt-in reading role fixes that pair locally
 with selected text using its paired foreground. It does not change all palettes
 or certify arbitrary host overrides. Commands and evidence boundaries are in
 [development](development.md#implementer-feedback-regression).
+
+## Readable selection and colored surfaces follow-up
+
+A later consumer follow-up found no additional missing primitive. Existing
+Button, Card, Stat, Badge and Table can express readable contribution selection,
+parallel entry comparison and a shared inspector. The actionable library work is
+a runnable composition and explicit integration contracts:
+
+- Adjust hit-area width independently of real contribution data, explain the
+  adjusted width, and keep a shared exact-data/selection model.
+- Filter mutually exclusive entries before resolving shared containment; keep
+  those product rules outside public chart and layout APIs.
+- Distinguish absent entities (disabled placeholder) from existing records with
+  null observations (inspectable), including zero/all-unknown empty states.
+- Intentionally override default utilities for selected background, border and
+  alignment, then verify computed styles.
+- Resolve available category tokens and measure status Badge text over its
+  actual composited selected surface. Keep category identity and severity separate.
+
+The [operational review recipe](compositions.md#readable-contribution-strip)
+now exercises these cases with synthetic data. The previous proportional bar's
+subpixel click overlay is removed from that example; EvenformChart's real-data
+proportional rendering contract remains unchanged. This follow-up adds no public
+ContributionStrip, topology API, palette shade or global severity adjustment.

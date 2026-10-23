@@ -1,48 +1,89 @@
 @layer components {
-  .operations-example { --muted-foreground: var(--ds-reading-muted-foreground); display: flex; flex-direction: column; gap: var(--ds-panel-gap); min-width: 0; padding: var(--ds-card-padding); background: var(--muted); border-radius: var(--radius-xl); }
+  /* Recipe roles stay here: categories identify nodes, severity remains independent. */
+  .operations-example {
+    --muted-foreground: var(--ds-reading-muted-foreground);
+    --op-intake: var(--ds-blue-600);
+    --op-processing: var(--ds-violet-600);
+    --op-delivery: var(--ds-teal-600);
+    --op-context: var(--ds-amber-600);
+    --op-tint: 9%;
+    --op-selection-tint: 14%;
+    --op-tone: var(--op-intake);
+    /* Local, measured status foreground for translucent badges over tinted surfaces. */
+    --destructive: color-mix(in oklab, var(--ds-red-600) 78%, var(--ds-neutral-950));
+    display: flex; flex-direction: column; gap: var(--ds-panel-gap); min-width: 0;
+    padding: var(--ds-card-padding); background: var(--muted); border-radius: var(--radius-xl);
+    overflow-anchor: none;
+  }
+  .dark .operations-example {
+    --op-intake: var(--ds-blue-400);
+    --op-processing: var(--ds-violet-400);
+    --op-delivery: var(--ds-teal-400);
+    --op-context: var(--ds-amber-400);
+    --op-tint: 10%;
+    --op-selection-tint: 16%;
+    --destructive: color-mix(in oklab, var(--ds-red-400) 60%, var(--ds-neutral-0));
+  }
+  .operations-example [data-category] {
+    --op-tone: var(--op-intake);
+    --op-surface: color-mix(in oklab, var(--op-tone) var(--op-tint), var(--card));
+    --op-selected: color-mix(in oklab, var(--op-tone) var(--op-selection-tint), var(--card));
+  }
+  .operations-example [data-category="processing"] { --op-tone: var(--op-processing); }
+  .operations-example [data-category="delivery"] { --op-tone: var(--op-delivery); }
+  .operations-example [data-category="context"] { --op-tone: var(--op-context); }
   .operations-summary { --ds-stat-group-columns: repeat(3, minmax(0, 1fr)); --ds-stat-value-size: var(--ds-text-section-title); }
   .operations-summary > [data-slot="card-content"] { display: flex; gap: var(--ds-toolbar-gap); align-items: start; }
   .operations-summary [data-slot="stat-group"] { flex: 1; }
-  .operations-heading, .operations-workspace-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--ds-toolbar-gap); }
+  .operations-heading, .operations-workspace-header, .operations-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--ds-toolbar-gap); }
   .operations-heading h2, .operations-inspector h3 { font-size: var(--ds-text-section-title); font-weight: var(--ds-weight-semibold); }
   .operations-inspector h3 { overflow-wrap: anywhere; }
+  .operations-toolbar label { font-size: var(--ds-text-label); }
+  .operations-toolbar select { max-width: 100%; min-width: 0; min-height: var(--ds-control-height); padding: var(--ds-space-1) var(--ds-control-padding-x); border: var(--ds-border-width) solid var(--input); border-radius: var(--radius-md); background: var(--background); color: var(--foreground); font: inherit; }
+  .operations-routes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--ds-toolbar-gap); }
+  .operations-route { height: auto; min-width: 0; padding: var(--ds-card-padding); gap: var(--ds-toolbar-gap); }
+  .operations-route-name, .operations-route-total { display: flex; flex-direction: column; gap: var(--ds-space-1); }
+  .operations-route-total { margin-inline-start: auto; text-align: end; font-variant-numeric: tabular-nums; }
+  .operations-route-name > span, .operations-route-total > span { font-size: var(--ds-text-caption); font-weight: var(--ds-weight-normal); }
   .operations-layout { --ds-section-gap: var(--ds-panel-gap); }
-  .operations-inspector { --ds-stat-group-columns: minmax(0, 1fr); --ds-stat-value-size: var(--ds-text-section-title); }
+  .operations-inspector { --ds-stat-group-columns: minmax(0, 1fr); --ds-stat-value-size: var(--ds-text-section-title); padding-block-start: 0; }
+  .operations-inspector .operations-identity { background: var(--op-selected); padding-block: var(--ds-card-padding); }
   .operations-inspector [data-slot="card-content"] { display: flex; flex-direction: column; gap: var(--ds-panel-gap); }
-  .operations-flow { display: flex; gap: var(--ds-toolbar-gap); overflow-x: auto; padding: var(--ds-space-1); margin: calc(-1 * var(--ds-space-1)); }
-  .operations-flow > button { position: relative; display: flex; flex-direction: column; align-items: start; flex: 0 0 12rem; height: auto; min-height: var(--ds-space-16); white-space: normal; text-align: start; }
-  .operations-flow > button[aria-pressed="true"] { background: var(--accent); color: var(--accent-foreground); }
-  .operations-flow > button[data-related]::after { content: ""; position: absolute; inset: 3px; border: 1px dashed var(--foreground); border-radius: inherit; pointer-events: none; }
+  .operations-flow, .operations-strip { display: flex; align-items: stretch; gap: var(--ds-toolbar-gap); overflow-x: auto; padding: var(--ds-space-1); scroll-behavior: auto; scroll-padding-inline: var(--ds-space-1); }
+  .operations-node, .operations-segment { padding: var(--ds-control-padding-x); }
+  .operations-node { position: relative; flex: 0 0 12rem; flex-direction: column; height: auto; min-height: var(--ds-space-16); }
+  .operations-item-name { display: block; overflow-wrap: anywhere; }
+  /* Flexible space belongs above the metadata, so wrapping titles preserve row alignment. */
+  .operations-item-meta { display: flex; align-items: center; justify-content: space-between; gap: var(--ds-space-1); margin-block-start: auto; }
+  .operations-category { border-color: var(--op-tone); background: var(--op-surface); color: var(--foreground); }
+  .operations-selected-label { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 var(--ds-space-3); min-height: var(--ds-space-3); }
   .operations-analysis { margin-top: var(--ds-panel-gap); }
   .operations-analysis > summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ds-toolbar-gap); font-weight: var(--ds-weight-medium); cursor: pointer; padding-block: var(--ds-control-gap); }
   .operations-analysis > summary::before { content: "+"; }
   .operations-analysis[open] > summary::before { content: "−"; }
   .operations-current { flex-basis: 100%; color: var(--muted-foreground); font-weight: var(--ds-weight-normal); font-size: var(--ds-text-label); }
   .operations-analysis summary, .operations-inspector h3 { outline-offset: -2px; border-radius: var(--radius-md); }
-  .operations-composition { --ds-chart-height: 4rem; --ds-chart-bar-separator-width: 1px; position: relative; margin-top: var(--ds-control-gap); }
-  .operations-chart-targets { position: absolute; inset: 0; }
-  .operations-segment { position: absolute; top: 0; height: 100%; }
-  .operations-segment-button { width: 100%; height: 100%; padding: 0; border: 0; background: transparent; border-radius: 0; }
-  .operations-segment-button:hover { background: color-mix(in srgb, var(--foreground) 8%, transparent); }
-  .operations-segment-marker { position: absolute; inset: var(--ds-space-1) 0; border: 1px solid var(--foreground); pointer-events: none; }
+  .operations-strip { margin-top: var(--ds-control-gap); }
+  /* This floor is interaction geometry, never fabricated contribution data. */
+  .operations-segment { display: flex; flex-direction: column; flex-basis: 8rem; flex-shrink: 0; min-width: 8rem; height: auto; }
+  .operations-amount { font-variant-numeric: tabular-nums; }
+  .operations-node > .operations-item-name + .operations-amount { margin-block-start: auto; }
   .operations-caveat, .operations-context p { color: var(--muted-foreground); font-size: var(--ds-text-label); }
+  .operations-empty { padding: var(--ds-card-padding); background: var(--muted); border-radius: var(--radius-md); }
   .operations-comparison-desktop { margin-top: var(--ds-control-gap); }
   .operations-comparison-desktop td:first-child { white-space: normal; min-width: 12rem; }
   .operations-comparison-desktop td:first-child > button { white-space: normal; height: auto; text-align: start; justify-content: start; padding: 0; }
   .operations-comparison-desktop td:not(:first-child) { font-variant-numeric: tabular-nums; }
-  .operations-comparison-desktop tr[data-state="selected"] { background: var(--accent); color: var(--accent-foreground); }
-  .operations-comparison-desktop tr[data-state="selected"] .operations-context p { color: var(--accent-foreground); }
+  .operations-comparison-desktop tr[data-state="selected"] { background: var(--op-selected); color: var(--foreground); }
   .operations-context { margin-top: var(--ds-control-gap); }
   .operations-context summary { cursor: pointer; }
   .operations-comparison-mobile { display: none; }
   .operations-mobile-row { padding-block: var(--ds-card-padding); border-bottom: var(--ds-border-width) solid var(--border); }
-  .operations-mobile-row[data-related] { background: var(--accent); color: var(--accent-foreground); --muted-foreground: var(--accent-foreground); }
-  .operations-row-main { position: relative; padding: var(--ds-space-2); }
-  .operations-row-target { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: var(--radius-md); }
-  .operations-row-main > :not(button) { position: relative; pointer-events: none; }
-  .operations-row-main [data-slot="stat-group"] { --ds-stat-group-columns: repeat(2, minmax(0, 1fr)); --ds-stat-value-size: var(--ds-text-body); margin-top: var(--ds-control-gap); }
+  .operations-mobile-row[data-related] { background: var(--op-selected); color: var(--foreground); }
+  .operations-mobile-row [data-slot="stat-group"] { --ds-stat-group-columns: repeat(2, minmax(0, 1fr)); --ds-stat-value-size: var(--ds-text-body); margin-top: var(--ds-control-gap); padding-inline: var(--ds-control-padding-x); }
   .operations-unassigned { margin-top: var(--ds-panel-gap); }
   @media (max-width: 40rem) {
+    .operations-routes { grid-template-columns: minmax(0, 1fr); }
     .operations-summary { --ds-stat-group-columns: minmax(0, 1fr); }
     .operations-comparison-desktop { display: none; }
     .operations-comparison-mobile { display: block; }
