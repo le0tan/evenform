@@ -8,6 +8,8 @@ type CopyButtonProps = Omit<
   "onCopy" | "value"
 > & {
   value: string | (() => string | Promise<string>)
+  /** Optional host clipboard bridge; reject or throw when copying fails. */
+  writeText?: (value: string) => void | Promise<void>
   label?: string
   copiedLabel?: string
   errorLabel?: string
@@ -17,6 +19,7 @@ type CopyButtonProps = Omit<
 
 function CopyButton({
   value,
+  writeText = writeClipboardText,
   label = "Copy",
   copiedLabel = "Copied",
   errorLabel = "Copy failed. Try again.",
@@ -75,11 +78,7 @@ function CopyButton({
           let copiedValue: string | undefined
           try {
             const result = typeof value === "function" ? await value() : value
-            if (!navigator.clipboard?.writeText)
-              throw new Error(
-                "Clipboard requires a secure context and browser permission."
-              )
-            await navigator.clipboard.writeText(result)
+            await writeText(result)
             if (mounted.current) {
               setStatus("copied")
               timer.current = setTimeout(() => setStatus("idle"), 2500)
@@ -98,6 +97,12 @@ function CopyButton({
       </FeedbackButton>
     </span>
   )
+}
+
+async function writeClipboardText(value: string) {
+  if (!navigator.clipboard?.writeText)
+    throw new Error("Clipboard requires a secure context and browser permission.")
+  await navigator.clipboard.writeText(value)
 }
 
 export { CopyButton, type CopyButtonProps }
