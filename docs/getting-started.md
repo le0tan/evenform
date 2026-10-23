@@ -109,7 +109,9 @@ pipeline differs from this repository's Vite setup.
 Electron/Tauri products can use the components in their renderer/webview. Their
 host must own native menus, window controls, resource paths, and CSP. SSR hosts
 need appropriate client boundaries, stable locale/timezone, and hydration checks;
-this Starter does not establish an SSR compatibility guarantee.
+this Starter does not establish an SSR compatibility guarantee. The
+[React Router SSR guide](react-router-ssr.md) gives a checked theme/provider
+recipe, dual-alias setup and production-verification boundaries.
 
 ## Reproduce and review a source upgrade
 

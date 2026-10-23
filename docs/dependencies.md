@@ -100,6 +100,8 @@ ref 的目标也随引擎区分：SearchField/PasswordInput/Image 的 ref 指向
 
 业务传输、认证、权限、持久化、远程查询、支付与通知送达不成为这些依赖的隐式职责。接入的组件保留可用的状态/事件入口，应用提供真实数据与完成/失败策略；验证应针对实际使用模块和宿主环境进行。
 
+ThemeProvider 的存储读取明确限定在浏览器；SSR 与首次 hydration 使用相同默认快照，随后接管已保存偏好。React Router 的 head bootstrap、双 alias、源码格式归属和验证边界见 [SSR 接入指南](react-router-ssr.md)。自由输入 Combobox 与 SVG Dialog 焦点恢复见 [接入契约](source-adoption-contracts.md)。[包体分析](adoption-size-analysis.md) 记录可复现的构建对照与临时消融实验；本次未据此删减共享样式或交互能力。
+
 ## Motion boundary
 
 Motion adds no npm runtime dependency. Base UI Tabs.Indicator owns selection

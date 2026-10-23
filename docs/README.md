@@ -3,6 +3,9 @@
 | Task | Guide |
 | --- | --- |
 | Run the repository or adopt it in a product | [Getting started](getting-started.md) |
+| Integrate free-entry suggestions, SVG dialog focus and workspace contracts | [Source adoption contracts](source-adoption-contracts.md) |
+| Adopt into React Router and validate SSR preferences/hydration | [React Router SSR](react-router-ssr.md) |
+| Review measured adoption costs before optimizing bundles | [Adoption size analysis](adoption-size-analysis.md) |
 | Customize theme color, elevation, control size and export CSS | [Appearance](appearance.md) |
 | Configure motion and adopt selection, feedback and list transitions | [Motion](motion.md) |
 | Choose tokens, layouts, and override rules | [Design contract](../DESIGN.md) (中文) |

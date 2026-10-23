@@ -154,6 +154,7 @@ export const showcaseExamples: Record<string, readonly ShowcaseExample[]> = {
   ],
   "patterns/workflow": [
     example("scrolling-workspace", "Scrolling workspace", "workspace"),
+    example("input-focus", "Inputs and focus", "adoption"),
     example("calendar-agenda", "Calendar agenda", "agenda"),
     example("step-form", "Step form", "form"),
     example("header-layout", "Header layout", "header"),

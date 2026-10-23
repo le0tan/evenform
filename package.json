@@ -4,6 +4,9 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
+    "verify:input-adoption": "node scripts/verify-input-adoption.mjs",
+    "verify:ssr": "node scripts/verify-ssr.mjs",
+    "analyze:adoption-size": "node scripts/analyze-adoption-size.mjs",
     "verify:feedback": "node scripts/verify-field-feedback.mjs",
     "verify:adoption": "node scripts/verify-adoption.mjs",
     "verify:classes": "npm run generate:cn && node --experimental-strip-types scripts/verify-class-merging.mjs",

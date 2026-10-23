@@ -109,7 +109,9 @@ For browser verification and the theme/density matrix, see the
 [development guide](docs/development.md). Current examples use illustrative
 data and browser-local state. Authentication, API transport, authorization,
 payments, and persistence belong to the consuming application. Browser-focused
-components need additional integration work and verification in SSR hosts.
+components need additional integration work and verification in SSR hosts; see
+the [React Router SSR guide](docs/react-router-ssr.md) and
+[source adoption recipes](docs/source-adoption-contracts.md).
 
 Evenform is pre-1.0; component APIs and tokens may change. Report reproducible
 bugs or propose focused improvements through this repository's issues and pull
