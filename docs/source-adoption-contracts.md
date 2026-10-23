@@ -1,9 +1,97 @@
 # Source adoption contracts
 
-These recipes cover restored values, bounded workspaces, menu anatomy, scrolling
-feeds and surface presets. They retain the Base UI interaction contracts.
+These recipes cover restored values, free-entry suggestions, SVG dialog focus,
+bounded workspaces, menu anatomy, scrolling feeds and surface presets. They
+retain the Base UI interaction contracts.
 See the runnable **Patterns → Workflow → Scrolling workspace** example, or
 [`workspace-adoption-example.tsx`](../src/playground/workspace-adoption-example.tsx).
+**Patterns → Workflow → Inputs and focus** adds runnable input/focus recipes in
+[`input-adoption-example.tsx`](../src/playground/input-adoption-example.tsx).
+For framework setup and preference hydration, see [React Router SSR](react-router-ssr.md).
+
+## Free-entry suggestions
+
+Choose the data contract first. A closed-set selector submits a selected item;
+a free-entry field submits the user's text even when it is absent from the
+suggestion list. Keep that draft separate from the Combobox selection:
+
+```tsx
+const [draft, setDraft] = useState(savedId)
+const input = useRef<HTMLInputElement>(null)
+
+<Combobox items={items} inputValue={draft}
+  value={items.includes(draft) ? draft : null}
+  onInputValueChange={(text, details) => {
+    if (details.reason === "input-change") setDraft(text)
+  }}
+  onValueChange={(selected) => {
+    if (selected !== null) setDraft(selected)
+  }}>
+  <ComboboxInputGroup>
+    <ComboboxInput ref={input} aria-label="Record ID" />
+    {draft && <Button variant="ghost" size="icon-sm" aria-label="Clear record ID"
+      onClick={() => { setDraft(""); input.current?.focus() }}><X /></Button>}
+    <ComboboxTrigger aria-label="Show records" />
+  </ComboboxInputGroup>
+  <ComboboxContent>
+    <ComboboxEmpty>No suggestions.</ComboboxEmpty>
+    <ComboboxList>{(item: string) =>
+      <ComboboxItem key={item} value={item}>{item}</ComboboxItem>
+    }</ComboboxList>
+  </ComboboxContent>
+</Combobox>
+```
+
+The primitive can emit `input-clear` after an unmatched input loses focus. For
+this contract, process deliberate typing (`input-change`) and non-null selected
+items; clear the draft only through the field's explicit clear action or typing
+an empty string. Do not forward every input/selection change into one state
+setter. `ComboboxClear` clears a **selection** and can be absent for unmatched
+text; the separate Button above clears the free-entry **input**.
+
+This changes no default Combobox behavior: closed-set and multiple-selection
+callers keep the existing primitive API. Validation of a free-typed ID, its form
+serialization, request debouncing and persistence remain host responsibilities.
+If the field is in a form, serialize `draft` explicitly rather than relying on
+the selected-value form field.
+
+The runnable recipe loads suggestions on opening. It aborts the preceding request,
+ignores aborted completions (even when a loader ignores its signal), preserves
+the draft across loading/error/retry, and focuses the input after clearing.
+Show loading and error feedback separately from an empty successful response;
+do not fabricate an option or erase the draft when a request fails. The sample
+loader returns illustrative local records; it is not an application data API.
+
+## Dialogs opened from SVG or removed elements
+
+Use the normal `DialogTrigger render={<Button />}` for HTML triggers. For a
+controlled Dialog opened by an SVG chart part, keep the opening element in a
+host ref at the pointer/keyboard event. Default HTML focus restoration does not
+cover that SVG element. `DialogContent` forwards Base UI's `finalFocus`:
+
+```tsx
+const opener = useRef<SVGRectElement | null>(null)
+const fallback = useRef<HTMLButtonElement>(null)
+
+<DialogContent finalFocus={() => {
+  if (opener.current?.isConnected) {
+    opener.current.focus()
+    return false // prevent a second default focus move
+  }
+  return fallback.current?.isConnected ? fallback.current : true
+}}>
+  {/* DialogTitle, content and actions */}
+</DialogContent>
+```
+
+The source example captures the opener on both click and Enter/Space, exposes
+SVG controls inside a `role="group"` root, and uses a stable HTML reset action
+when the selected element is removed. An SVG `role="img"` root can hide
+interactive descendants from assistive technology. Give each interactive part
+an accessible name, keyboard action and visible focus treatment. Do not change
+the shared Dialog's default focus policy for all consumers, or return a removed
+element. The host also owns focus fallback when filtering, virtualization or
+navigation removes an opener. This recipe is not a complete chart accessibility audit.
 
 ## Restored Select labels
 
@@ -177,3 +265,7 @@ opacity. Existing presence, focus restoration and CSS reduced-motion behavior
 remain in `motion.css`. Utilities such as `rounded-none`, `ring-0`, `shrink` and
 `bg-transparent` intentionally override components-layer defaults. Card header,
 footer and image corner rules follow the public radius token.
+
+### Anchored chart tooltips
+
+`TooltipContent` accepts `positionerProps` for SVG or virtual anchors, fixed positioning and collision boundaries. Keep coordinates on the positioner and transitions on the popup. A controlled chart can retain its last anchor/content while closing, then update both before opening again. `showArrow={false}` supports dense previews; use popup `className` to compose a neutral surface. The host owns hover/focus state, `aria-describedby`, Escape handling and the chart data.

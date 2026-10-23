@@ -1,4 +1,5 @@
 import { WorkspaceAdoptionExample } from "./workspace-adoption-example"
+import { InputAdoptionExample } from "./input-adoption-example"
 import { useShowcasePreview } from "./use-showcase-preview"
 import { useState } from "react"
 import { CalendarDate } from "@internationalized/date"
@@ -421,15 +422,16 @@ function HeaderExample() {
   )
 }
 export function WorkflowAidsGallery() {
-  const [preview, setPreview] = useShowcasePreview("patterns", "workflow", ["agenda", "form", "header", "workspace"], "agenda")
+  const [preview, setPreview] = useShowcasePreview("patterns", "workflow", ["agenda", "form", "header", "workspace", "adoption"], "agenda")
   return (
     <div className="workflow-aids-gallery">
       <Tabs value={preview} onValueChange={setPreview}>
-        <TabsList>
+        <TabsList className="h-auto max-w-full flex-wrap">
           <TabsTrigger value="agenda">Calendar agenda</TabsTrigger>
           <TabsTrigger value="form">Step form</TabsTrigger>
           <TabsTrigger value="header">Header layout</TabsTrigger>
           <TabsTrigger value="workspace">Scrolling workspace</TabsTrigger>
+          <TabsTrigger value="adoption">Inputs and focus</TabsTrigger>
         </TabsList>
         <TabsContent value="agenda">
           <div role="group" aria-label="Calendar agenda example" id="example-calendar-agenda" className="showcase-example"><AgendaExample /></div>
@@ -439,6 +441,9 @@ export function WorkflowAidsGallery() {
         </TabsContent>
         <TabsContent value="workspace">
           <div role="group" aria-label="Scrolling workspace example" id="example-scrolling-workspace" className="showcase-example"><WorkspaceAdoptionExample /></div>
+        </TabsContent>
+        <TabsContent value="adoption">
+          <div role="group" aria-label="Input and focus adoption example" id="example-input-focus" className="showcase-example"><InputAdoptionExample /></div>
         </TabsContent>
         <TabsContent value="header">
           <div role="group" aria-label="Header layout example" id="example-header-layout" className="showcase-example"><HeaderExample /></div>

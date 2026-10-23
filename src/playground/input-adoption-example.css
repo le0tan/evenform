@@ -1,0 +1,51 @@
+@layer components {
+  .input-adoption-examples {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+    gap: var(--ds-section-gap);
+  }
+  .input-adoption-section {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    align-items: start;
+    gap: var(--ds-form-group-gap);
+  }
+  .input-adoption-section h3 {
+    font-size: var(--ds-text-section-title);
+    font-weight: var(--ds-weight-medium);
+  }
+  .input-adoption-field {
+    display: grid;
+    gap: var(--ds-form-field-gap);
+    width: 100%;
+  }
+  .input-adoption-error {
+    display: grid;
+    gap: var(--ds-form-field-gap);
+    color: var(--destructive);
+  }
+  .input-adoption-sequence {
+    width: 100%;
+    max-width: 20rem;
+    overflow: visible;
+  }
+  .input-adoption-sequence rect {
+    fill: var(--muted);
+    stroke: var(--border);
+    cursor: pointer;
+  }
+  .input-adoption-sequence rect:hover {
+    fill: var(--accent);
+  }
+  .input-adoption-sequence rect:focus-visible {
+    stroke: var(--ring);
+    stroke-width: 3;
+    outline: none;
+  }
+  .input-adoption-sequence text {
+    fill: var(--foreground);
+    font: inherit;
+    pointer-events: none;
+  }
+}

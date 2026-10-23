@@ -182,7 +182,7 @@ ThemeProvider/useTheme 位于 `@/components/theme-provider`；System Theme 的�
 
 ### 单选与多选 Combobox
 
-以下示例使用当前导出的部件，不依赖 Playground。单选值为 `string | null`，多选值为 `string[]`；多选 chips 使用 ComboboxValue 的当前值，不额外维护一份派生选中列表。
+以下示例使用当前导出的部件，不依赖 Playground。单选值为 `string | null`，多选值为 `string[]`；多选 chips 使用 ComboboxValue 的当前值，不额外维护一份派生选中列表。若允许提交列表之外的文本，需要独立的 draft 与选择状态；完整异步、失焦和清空示例见 [自由输入接入契约](source-adoption-contracts.md#free-entry-suggestions)，不改变这里的闭合集合选择语义。
 
 ```tsx
 import { useState } from "react"

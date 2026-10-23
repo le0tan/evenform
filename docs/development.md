@@ -136,6 +136,19 @@ host using OptionSelect and HeaderShell (including its additional CSS).
 The fixture links installed packages rather than downloading them; use the real
 host lockfile and CI installation for transitive dependency reproducibility.
 
+With the same source server, `npm run verify:input-adoption` checks 16 viewport,
+theme, density and reduced-motion combinations, free-entry async/retry/cancellation,
+SVG dialog return/fallback and ordinary HTML trigger restoration. `npm run verify:ssr`
+checks zero server storage reads, three deterministic SSR snapshots and 18 preference
+hydration cases, including blocked storage and system-mode changes. They write to
+`evidence/input-adoption/` and `evidence/ssr/`. The SSR fixture uses actual server
+rendering/hydration but is not a full React Router deployment test.
+
+`npm run analyze:adoption-size -- /path/to/consumer BEFORE_SHA AFTER_SHA` profiles
+archived consumer builds without editing the consumer or installing packages.
+See [size analysis](adoption-size-analysis.md) for optional temporary ablations,
+runtime requirements and the distinction between build size and runtime performance.
+
 ## Implementer feedback regression
 
 With the source server running at port 4173, use `verify:chart-contracts`,
