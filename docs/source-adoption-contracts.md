@@ -265,3 +265,7 @@ opacity. Existing presence, focus restoration and CSS reduced-motion behavior
 remain in `motion.css`. Utilities such as `rounded-none`, `ring-0`, `shrink` and
 `bg-transparent` intentionally override components-layer defaults. Card header,
 footer and image corner rules follow the public radius token.
+
+### Anchored chart tooltips
+
+`TooltipContent` accepts `positionerProps` for SVG or virtual anchors, fixed positioning and collision boundaries. Keep coordinates on the positioner and transitions on the popup. A controlled chart can retain its last anchor/content while closing, then update both before opening again. `showArrow={false}` supports dense previews; use popup `className` to compose a neutral surface. The host owns hover/focus state, `aria-describedby`, Escape handling and the chart data.
