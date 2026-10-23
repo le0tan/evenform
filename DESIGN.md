@@ -238,7 +238,7 @@ Playground → Components → In context 展示真实运行信息、长结果与
 两者共享 `src/index.css`、`styles/tokens.css`、`styles/patterns.css`、`components/ui`、`components/patterns` 和 ThemeProvider。
 
 - Showcase：`index.html` → `src/main.tsx` → `src/App.tsx`，包含完整演示与编辑器，单独导入 playground.css。Charts 是独立导航页面（`/#charts`），示例、数据与局部样式位于 `src/playground/charts/`，共用 Showcase 的应用壳、主题和 Token 编辑器；页面与图表运行包按需加载。
-- Showcase 目录：Components / Patterns / Charts 的分类、具体组件和示例共用一条可折叠侧栏；正文直接展示当前页面，不叠加第二条分类导航。保留同一任务内的局部 Tabs。当前页使用原生链接与 `aria-current`，hash 路由支持分享、刷新和浏览器历史；移动端复用目录到 Sidebar Sheet。目录搜索优先匹配具体组件，结果与目录共用 `src/playground/showcase-examples.ts` 的真实示例索引。`?anchor=example-…` 定位并聚焦示例；存在局部 Tabs 时由 `?preview=…` 同步打开对应面板。原有分类链接继续可用。只有可见目标且浮层已关闭时才移交焦点，避免定位到未挂载或隐藏的面板；应用层注册 ⌘ / Ctrl + K，并避开输入编辑焦点。Workspace / Settings 归入 Application examples，Token Inspector 默认关闭、按需打开。导航尺寸和颜色复用现有语义参数，元数据只在 Playground，不进入共享组件或 Starter。
+- Showcase 目录：Components / Patterns / Charts 的分类、具体组件和示例共用一条可折叠侧栏；正文直接展示当前页面，不叠加第二条分类导航。仅一个示例的页面直接导航，不重复添加二级示例菜单；搜索与已有锚点链接仍可定位示例。保留同一任务内的局部 Tabs。当前页使用原生链接与 `aria-current`，hash 路由支持分享、刷新和浏览器历史；移动端复用目录到 Sidebar Sheet。目录搜索优先匹配具体组件，结果与目录共用 `src/playground/showcase-examples.ts` 的真实示例索引。`?anchor=example-…` 定位并聚焦示例；存在局部 Tabs 时由 `?preview=…` 同步打开对应面板。原有分类链接继续可用。只有可见目标且浮层已关闭时才移交焦点，避免定位到未挂载或隐藏的面板；应用层注册 ⌘ / Ctrl + K，并避开输入编辑焦点。Workspace / Settings 归入 Application examples，Token Inspector 默认关闭、按需打开。导航尺寸和颜色复用现有语义参数，元数据只在 Playground，不进入共享组件或 Starter。
 - App Starter：`starter.html` → `src/starter/main.tsx` → `src/starter/App.tsx`，只包含可替换的应用壳与 Home 内容，不导入 Showcase 页面、图表 Demo、模拟数据或编辑器。独立构建不包含 VChart 运行包；共享 `EvenformChart` 组件保留在 components 层，业务可按需采用。
 - `npm run build` 构建两个入口；`npm run build:starter` 只构建业务入口并在 dist-starter 输出 index.html。两个构建没有复制设计系统。源码中保留 Showcase 作为参考，未来开发直接编辑 src/starter/App.tsx 即可，无需先删演示文件。
 
@@ -285,4 +285,4 @@ Showcase 默认进入 Foundations。Components 默认展示 Core controls；In c
 
 Select 的 items 与延迟挂载标签、OptionSelect、HeaderShell workspace、菜单 GroupLabel、Card 滚动流与公共表面参数见 [Source adoption contracts](docs/source-adoption-contracts.md)。Card 默认不参与 flex 压缩；确需压缩的布局通过 shrink utility 或 --ds-card-shrink 显式选择并提供内容滚动边界。浮层 tint / opacity / blur 共享语义参数，继续保留原有 presence 与 reduced-motion。
 
-匿名运行概览、双向选择、响应式精确比较与 inspector 示例见 [Compositions](docs/compositions.md#operational-review-one-selection-several-views)。muted 阅读面的辅助文字使用 --ds-reading-muted-foreground，选中面使用配对 accent-foreground；该局部角色不更改全局 palette。
+匿名运行概览、双向选择、响应式精确比较与 inspector 示例见 [Compositions](docs/compositions.md#operational-review-one-selection-several-views)。muted 阅读面的辅助文字使用 --ds-reading-muted-foreground，accent 选中面使用配对 accent-foreground；该局部角色不更改全局 palette。贡献阶段带使用有最小操作宽度的 Button 并明确宽度经过调整，真实份额保留在数值中；并行入口先按路径过滤再解析共享关联。类别配色和选中表面的状态 Badge 合成对比度见同一 recipe，不新增公共拓扑 API 或全局颜色覆盖。

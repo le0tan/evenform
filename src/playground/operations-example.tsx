@@ -1,6 +1,5 @@
-import { useMemo, useRef, useState } from "react"
-import type { ISpec } from "@visactor/vchart"
-import { CircleHelp } from "lucide-react"
+import { useLayoutEffect, useRef, useState } from "react"
+import { Check, CircleHelp, Link2 } from "lucide-react"
 import { DetailLayout } from "@/components/patterns/detail-layout"
 import {
   DescriptionItem,
@@ -10,7 +9,6 @@ import { Stat, StatGroup } from "@/components/patterns/stat"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { EvenformChart } from "@/components/ui/evenform-chart"
 import {
   Table,
   TableBody,
@@ -26,159 +24,122 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import {
+  contributions,
+  contextOwner,
+  observations,
+  pathItems,
+  pathTotal,
+  routes,
+  scenarios,
+  share,
+  units,
+  type Contribution,
+  type RouteId,
+  type Scenario,
+} from "./operations-model"
 import "./operations-example.css"
 
-type Contribution = {
-  id: string
-  name: string
-  units: number | null
-  status: "Ready" | "Review" | "Unavailable"
-}
-const contributions: Contribution[] = [
-  {
-    id: "collect",
-    name: "Source collection and normalization",
-    units: 360,
-    status: "Ready",
-  },
-  {
-    id: "enrich",
-    name: "Content enrichment and verification",
-    units: 570,
-    status: "Review",
-  },
-  {
-    id: "publish",
-    name: "Publication and indexing",
-    units: 69.98,
-    status: "Ready",
-  },
-  { id: "audit", name: "Sample audit", units: 0.02, status: "Ready" },
-  { id: "idle", name: "Archive maintenance", units: 0, status: "Ready" },
-  {
-    id: "unknown",
-    name: "External delivery",
-    units: null,
-    status: "Unavailable",
-  },
-]
-const units = (value: number | null) =>
-  value === null
-    ? "Not available"
-    : value.toLocaleString("en-US", { maximumFractionDigits: 2 })
-const share = (value: number | null, total: number) =>
-  value === null
-    ? "Not available"
-    : `${((value / total) * 100).toLocaleString("en-US", { maximumFractionDigits: 3 })}%`
+// Intent: compare path totals, choose even tiny contributions, and inspect shared context.
+// Keep the established Card/Geist/token hierarchy; category color identifies, status evaluates.
+const selectionClasses =
+  "aria-pressed:bg-[var(--op-selected)] aria-pressed:text-foreground aria-pressed:border-[var(--op-tone)] aria-pressed:hover:bg-[var(--op-selected)] data-linked:border-dashed data-linked:border-[var(--op-tone)] dark:aria-pressed:bg-[var(--op-selected)] dark:aria-pressed:border-[var(--op-tone)] dark:aria-pressed:hover:bg-[var(--op-selected)] dark:data-linked:border-[var(--op-tone)]"
 
-/** Synthetic composition, not a new topology or monitoring API. */
+/** Synthetic host composition, not a shared topology or monitoring API. */
 export function OperationsExample() {
   const [selectedId, setSelectedId] = useState("enrich")
+  const [route, setRoute] = useState<RouteId>("collection")
+  const [scenario, setScenario] = useState<Scenario>("skewed")
   const [revision, setRevision] = useState(0)
   const [contexts, setContexts] = useState<Record<string, boolean>>({})
   const [analysisOpen, setAnalysisOpen] = useState(false)
   const inspector = useRef<HTMLHeadingElement>(null)
   const flow = useRef<HTMLDivElement>(null)
-  // Refresh intentionally exercises unchanged, changed and missing relationships.
-  const contextOwner =
-    revision % 4 < 2 ? "enrich" : revision % 4 === 2 ? "collect" : null
-  const ownerId = selectedId === "validation" ? contextOwner : selectedId
-  const owner = contributions.find((item) => item.id === ownerId)
+  const strip = useRef<HTMLDivElement>(null)
+  const records = observations(scenario)
+  const items = pathItems(route)
+  const total = pathTotal(items, records)
+  const missing = items.filter((item) => records[item.id]?.units == null).length
+  const relationship = contextOwner(route, revision)
+  const ownerId = selectedId === "validation" ? relationship : selectedId
+  const owner = items.find((item) => item.id === ownerId)
+  const observation = owner ? records[owner.id] : undefined
   const selectedName =
     selectedId === "validation"
       ? "Validation rules"
       : (owner?.name ?? "Selection unavailable")
-  const total = contributions.reduce((sum, item) => sum + (item.units ?? 0), 0)
-  const missing = contributions.filter((item) => item.units === null).length
-  const included = contributions.filter(
-    (item): item is Contribution & { units: number } =>
-      item.units !== null && item.units > 0
-  )
-  const composition = useMemo(
-    () =>
-      ({
-        type: "bar",
-        direction: "horizontal",
-        stack: true,
-        animation: false,
-        padding: 0,
-        data: [
-          {
-            id: "contributions",
-            values: contributions
-              .filter((item) => item.units !== null && item.units > 0)
-              .map((item) => ({
-                group: "Recorded",
-                segment: item.id,
-                units: item.units,
-              })),
-          },
-        ],
-        xField: "units",
-        yField: "group",
-        seriesField: "segment",
-        color: {
-          type: "ordinal",
-          domain: contributions.map((item) => item.id),
-          range: [],
-        },
-        axes: [
-          { orient: "bottom", visible: false, min: 0, max: 1000, nice: false },
-          { orient: "left", visible: false },
-        ],
-        legends: { visible: false },
-        tooltip: { visible: false },
-        bar: { style: { cornerRadius: 0 } },
-      }) as ISpec,
-    []
-  )
+  const currentRoute = routes.find((item) => item.id === route)!
+
+  useLayoutEffect(() => {
+    // The workflow reveals the selected item, not its related owner. Otherwise
+    // choosing context at the end scrolls its own focused trigger out of view.
+    // The contribution-only strip can still reveal the context's linked owner.
+    // Instant horizontal scrolling preserves focus and reduced-motion behavior.
+    for (const region of [flow.current, strip.current]) {
+      const selector =
+        region === flow.current
+          ? '[aria-pressed="true"]'
+          : `[data-owner="${ownerId}"]`
+      const node = region?.querySelector<HTMLElement>(selector)
+      if (!region || !node) continue
+      const bounds = region.getBoundingClientRect(),
+        target = node.getBoundingClientRect()
+      const offset =
+        target.left < bounds.left
+          ? target.left - bounds.left
+          : target.right > bounds.right
+            ? target.right - bounds.right
+            : 0
+      if (offset)
+        region.scrollTo({
+          left: region.scrollLeft + offset,
+          behavior: "instant",
+        })
+    }
+  }, [selectedId, ownerId, route, analysisOpen])
 
   function choose(id: string) {
-    const nextOwner = id === "validation" ? contextOwner : id
-    if (
-      id === "validation" &&
-      (id !== selectedId || nextOwner !== ownerId) &&
-      nextOwner
-    ) {
-      setContexts((previous) => ({ ...previous, [nextOwner]: true }))
-    }
+    if (id !== "validation" && !records[id]) return
+    const entry = contributions.find((item) => item.id === id)?.entry
+    if (entry) setRoute(entry)
+    if (id === "validation" && id !== selectedId && relationship)
+      setContexts((previous) => ({
+        ...previous,
+        [`${route}:${relationship}`]: true,
+      }))
     setSelectedId(id)
-    // Reveal only the local horizontal workspace; preserve vertical position/focus.
-    const node = flow.current?.querySelector<HTMLElement>(
-      `[data-owner="${nextOwner}"]`
-    )
-    if (node && flow.current) {
-      const region = flow.current.getBoundingClientRect(),
-        target = node.getBoundingClientRect()
-      if (target.left < region.left)
-        flow.current.scrollLeft -= region.left - target.left
-      else if (target.right > region.right)
-        flow.current.scrollLeft += target.right - region.right
-    }
+  }
+  function changeRoute(next: RouteId) {
+    if (next === route) return
+    const nextOwner = contextOwner(next, revision)
+    if (selectedId === "validation" && nextOwner)
+      setContexts((previous) => ({
+        ...previous,
+        [`${next}:${nextOwner}`]: true,
+      }))
+    if (contributions.find((item) => item.id === selectedId)?.entry)
+      setSelectedId(routes.find((item) => item.id === next)!.entry)
+    setRoute(next)
   }
   function refresh() {
-    const nextRevision = revision + 1
-    const nextOwner =
-      nextRevision % 4 < 2
-        ? "enrich"
-        : nextRevision % 4 === 2
-          ? "collect"
-          : null
-    if (selectedId === "validation" && nextOwner && nextOwner !== ownerId)
-      setContexts((previous) => ({ ...previous, [nextOwner]: true }))
-    setRevision(nextRevision)
+    const nextOwner = contextOwner(route, revision + 1)
+    if (selectedId === "validation" && nextOwner && nextOwner !== relationship)
+      setContexts((previous) => ({
+        ...previous,
+        [`${route}:${nextOwner}`]: true,
+      }))
+    setRevision(revision + 1)
   }
   function context(item: Contribution) {
-    if (contextOwner !== item.id) return null
+    if (relationship !== item.id) return null
+    const key = `${route}:${item.id}`
     return (
       <details
-        open={contexts[item.id] ?? false}
+        open={contexts[key] ?? false}
         onToggle={(event) => {
           const open = event.currentTarget.open
           setContexts((previous) =>
-            previous[item.id] === open
-              ? previous
-              : { ...previous, [item.id]: open }
+            previous[key] === open ? previous : { ...previous, [key]: open }
           )
         }}
         className="operations-context"
@@ -194,6 +155,39 @@ export function OperationsExample() {
         <p>Policy context; excluded from the recorded work total.</p>
       </details>
     )
+  }
+  function identity(item: Contribution) {
+    return (
+      <>
+        <span className="operations-item-name">{item.name}</span>
+        <span className="operations-item-meta">
+          <Badge
+            variant="outline"
+            className="operations-category border-[var(--op-tone)] bg-[var(--op-surface)] text-foreground"
+          >
+            {item.category}
+          </Badge>
+          <span className="operations-selected-label">
+            {selectedId === item.id ? (
+              <>
+                <Check aria-hidden="true" className="size-3" />
+                <span className="sr-only">Selected</span>
+              </>
+            ) : ownerId === item.id ? (
+              <>
+                <Link2 aria-hidden="true" className="size-3" />
+                <span className="sr-only">Linked</span>
+              </>
+            ) : null}
+          </span>
+        </span>
+      </>
+    )
+  }
+  function amount(item: Contribution) {
+    return records[item.id]
+      ? units(records[item.id]?.units)
+      : "Record unavailable"
   }
   return (
     <div
@@ -214,7 +208,7 @@ export function OperationsExample() {
               }}
             />
             <Stat label="Recorded work units" value={units(total)} />
-            <Stat label="Missing sources" value={missing} />
+            <Stat label="Missing observations" value={missing} />
           </StatGroup>
           <TooltipProvider>
             <Tooltip>
@@ -238,9 +232,49 @@ export function OperationsExample() {
       </Card>
       <div className="operations-heading">
         <h2>Work review</h2>
-        <Button variant="outline" onClick={refresh}>
-          Refresh sample
-        </Button>
+        <div className="operations-toolbar">
+          <label htmlFor="operations-scenario">Sample</label>
+          <select
+            id="operations-scenario"
+            value={scenario}
+            onChange={(event) => setScenario(event.target.value as Scenario)}
+          >
+            {scenarios.map((item) => (
+              <option key={item.id} value={item.id}>
+                {item.name}
+              </option>
+            ))}
+          </select>
+          <Button variant="outline" onClick={refresh}>
+            Refresh sample
+          </Button>
+        </div>
+      </div>
+      <div
+        className="operations-routes"
+        role="group"
+        aria-label="Compare paths"
+      >
+        {routes.map((item) => (
+          <Button
+            key={item.id}
+            variant="outline"
+            data-category={item.tone}
+            className={`operations-route items-stretch justify-start text-left whitespace-normal ${selectionClasses}`}
+            aria-label={item.name}
+            aria-pressed={route === item.id}
+            onClick={() => changeRoute(item.id)}
+          >
+            <span className="operations-route-name">
+              {item.name}
+              <span>{route === item.id ? "Current path" : "View path"}</span>
+            </span>
+            <span className="operations-route-total">
+              {units(pathTotal(pathItems(item.id), records))}
+              <span>known units</span>
+            </span>
+          </Button>
+        ))}
       </div>
       <Tabs defaultValue="review">
         <TabsList aria-label="Work review views">
@@ -249,8 +283,9 @@ export function OperationsExample() {
         </TabsList>
         <TabsContent value="notes">
           <p>
-            Illustrative records. The missing delivery source is excluded from
-            the known total.
+            Illustrative records. Paths have mutually exclusive entries and
+            shared downstream work. Totals overlap and must not be added
+            together.
           </p>
         </TabsContent>
         <TabsContent value="review">
@@ -261,7 +296,10 @@ export function OperationsExample() {
                 className="operations-inspector"
                 aria-labelledby="operations-inspector-heading"
               >
-                <CardHeader>
+                <CardHeader
+                  className="operations-identity"
+                  data-category={owner?.category ?? "context"}
+                >
                   <h3
                     id="operations-inspector-heading"
                     tabIndex={-1}
@@ -271,10 +309,16 @@ export function OperationsExample() {
                   </h3>
                   <Badge
                     variant={
-                      owner?.status === "Review" ? "warning" : "secondary"
+                      observation?.status === "Needs review"
+                        ? "destructive"
+                        : "secondary"
                     }
                   >
-                    {owner?.status ?? "Owner unavailable"}
+                    {selectedId === "validation"
+                      ? owner
+                        ? "Excluded context"
+                        : "Owner unavailable"
+                      : (observation?.status ?? "Record unavailable")}
                   </Badge>
                 </CardHeader>
                 <CardContent>
@@ -284,7 +328,7 @@ export function OperationsExample() {
                       value={
                         selectedId === "validation"
                           ? "Excluded"
-                          : units(owner?.units ?? null)
+                          : units(observation?.units)
                       }
                     />
                     <Stat
@@ -292,7 +336,7 @@ export function OperationsExample() {
                       value={
                         selectedId === "validation"
                           ? "Excluded"
-                          : share(owner?.units ?? null, total)
+                          : share(observation?.units, total)
                       }
                     />
                   </StatGroup>
@@ -300,8 +344,15 @@ export function OperationsExample() {
                     <DescriptionItem label="Owner">
                       {owner?.name ?? "Not available"}
                     </DescriptionItem>
-                    <DescriptionItem label="Selection">
-                      {selectedId === "validation" ? "Context" : "Contribution"}
+                    <DescriptionItem label="Path">
+                      {currentRoute.name}
+                    </DescriptionItem>
+                    <DescriptionItem label="Observation">
+                      {selectedId === "validation"
+                        ? "Excluded"
+                        : observation?.units == null
+                          ? "Not available"
+                          : "Recorded"}
                     </DescriptionItem>
                     <DescriptionItem label="Sample revision">
                       {revision + 1}
@@ -338,27 +389,34 @@ export function OperationsExample() {
                   {contributions.map((item) => (
                     <Button
                       key={item.id}
-                      data-owner={item.id}
-                      className="min-w-0 items-start justify-start text-left whitespace-normal"
                       variant="outline"
+                      data-owner={item.id}
+                      data-category={item.category}
+                      className={`operations-node items-stretch justify-start text-left whitespace-normal ${selectionClasses}`}
+                      disabled={!records[item.id]}
+                      aria-label={item.name}
                       aria-pressed={selectedId === item.id}
-                      data-related={
+                      data-linked={
                         (ownerId === item.id && selectedId !== item.id) ||
                         undefined
                       }
                       onClick={() => choose(item.id)}
                     >
-                      <span>{item.name}</span>
-                      <span>{units(item.units)}</span>
+                      {identity(item)}
+                      <span className="operations-amount">{amount(item)}</span>
                     </Button>
                   ))}
                   <Button
                     variant="outline"
+                    data-category="context"
+                    className={`operations-node items-stretch justify-start text-left whitespace-normal ${selectionClasses}`}
                     aria-pressed={selectedId === "validation"}
                     onClick={() => choose("validation")}
                   >
-                    <span>Validation rules</span>
-                    <span>Context</span>
+                    <span className="operations-item-name">
+                      Validation rules
+                    </span>
+                    <span className="operations-amount">Context</span>
                   </Button>
                 </div>
                 <details
@@ -371,56 +429,67 @@ export function OperationsExample() {
                   <summary>
                     <span>Contribution analysis</span>
                     <span>{units(total)} units</span>
-                    <Badge variant="warning">Partial data</Badge>
-                    <span className="operations-current">{selectedName}</span>
+                    {missing > 0 && (
+                      <Badge variant="warning">Partial data</Badge>
+                    )}
+                    <span className="operations-current">
+                      {currentRoute.name} · {selectedName}
+                    </span>
                   </summary>
-                  <div
-                    className="operations-composition"
-                    aria-label="Recorded work composition"
-                  >
-                    <EvenformChart
-                      spec={composition}
-                      label="Recorded contributions"
-                      description="Proportional work units. Exact values and selection controls follow in the comparison."
-                    />
-                    <div className="operations-chart-targets">
-                      {included.map((item, index) => {
-                        const left =
-                          (included
-                            .slice(0, index)
-                            .reduce((sum, item) => sum + item.units, 0) /
-                            total) *
-                          100
-                        return (
-                          <div
+                  <p className="operations-caveat" id="operations-width-note">
+                    Widths adjusted for readability; percentages show the true
+                    share of known work.
+                  </p>
+                  {total === null || total === 0 ? (
+                    <p className="operations-empty" role="status">
+                      {total === null
+                        ? "No known observations. Open a record below to inspect missing data."
+                        : "Recorded total is zero. Shares cannot be calculated; exact values follow."}
+                    </p>
+                  ) : (
+                    <div
+                      className="operations-strip"
+                      role="region"
+                      aria-label="Readable contribution strip"
+                      aria-describedby="operations-width-note"
+                      tabIndex={0}
+                      ref={strip}
+                    >
+                      {items
+                        .filter((item) => records[item.id])
+                        .map((item) => (
+                          <Button
                             key={item.id}
-                            className="operations-segment"
+                            variant="outline"
+                            className={`operations-segment items-stretch justify-start text-left whitespace-normal ${selectionClasses}`}
                             style={{
-                              left: `${left}%`,
-                              width: `${(item.units / total) * 100}%`,
+                              flexGrow:
+                                records[item.id]?.units == null
+                                  ? 0
+                                  : records[item.id]!.units! / total,
                             }}
+                            data-owner={item.id}
+                            data-category={item.category}
+                            data-linked={
+                              (ownerId === item.id && selectedId !== item.id) ||
+                              undefined
+                            }
+                            aria-label={`Select ${item.name} in contribution strip`}
+                            aria-pressed={selectedId === item.id}
+                            onClick={() => choose(item.id)}
                           >
-                            <Button
-                              variant="ghost"
-                              className="operations-segment-button h-full w-full rounded-none border-0 p-0 active:not-aria-[haspopup]:translate-y-0"
-                              aria-label={`Select ${item.name} in composition`}
-                              aria-pressed={selectedId === item.id}
-                              onClick={() => choose(item.id)}
-                            />
-                            {ownerId === item.id && (
-                              <span
-                                className="operations-segment-marker"
-                                aria-hidden="true"
-                              />
-                            )}
-                          </div>
-                        )
-                      })}
+                            {identity(item)}
+                            <span className="operations-amount">
+                              {amount(item)} units
+                            </span>
+                            <span>{share(records[item.id]?.units, total)}</span>
+                          </Button>
+                        ))}
                     </div>
-                  </div>
+                  )}
                   <p className="operations-caveat">
-                    Known contributions only. One source is missing; zero and
-                    unavailable remain distinct.
+                    Known contributions only. Missing observations and
+                    unavailable records are excluded from totals.
                   </p>
                   <div className="operations-comparison-desktop">
                     <Table>
@@ -435,9 +504,11 @@ export function OperationsExample() {
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                        {contributions.map((item) => (
+                        {items.map((item) => (
                           <TableRow
                             key={item.id}
+                            className="data-[state=selected]:bg-[var(--op-selected)]"
+                            data-category={item.category}
                             data-state={
                               ownerId === item.id ? "selected" : undefined
                             }
@@ -445,6 +516,7 @@ export function OperationsExample() {
                             <TableCell>
                               <Button
                                 variant="link"
+                                disabled={!records[item.id]}
                                 aria-pressed={selectedId === item.id}
                                 onClick={() => choose(item.id)}
                               >
@@ -452,42 +524,45 @@ export function OperationsExample() {
                               </Button>
                               {context(item)}
                             </TableCell>
-                            <TableCell>{units(item.units)}</TableCell>
-                            <TableCell>{share(item.units, total)}</TableCell>
+                            <TableCell>{amount(item)}</TableCell>
+                            <TableCell>
+                              {share(records[item.id]?.units, total)}
+                            </TableCell>
                           </TableRow>
                         ))}
                       </TableBody>
                     </Table>
                   </div>
                   <div className="operations-comparison-mobile">
-                    {contributions.map((item) => (
+                    {items.map((item) => (
                       <div
                         className="operations-mobile-row"
                         key={item.id}
+                        data-category={item.category}
                         data-related={ownerId === item.id || undefined}
                       >
-                        <div className="operations-row-main">
-                          <Button
-                            variant="ghost"
-                            className="operations-row-target h-full w-full p-0 active:not-aria-[haspopup]:translate-y-0"
-                            aria-label={`Select ${item.name}`}
-                            aria-pressed={selectedId === item.id}
-                            onClick={() => choose(item.id)}
+                        <Button
+                          variant="ghost"
+                          className="h-auto w-full items-start justify-start text-left whitespace-normal"
+                          disabled={!records[item.id]}
+                          aria-label={`Select ${item.name}`}
+                          aria-pressed={selectedId === item.id}
+                          onClick={() => choose(item.id)}
+                        >
+                          {item.name}
+                        </Button>
+                        <StatGroup>
+                          <Stat label="Units" value={amount(item)} />
+                          <Stat
+                            label="Share"
+                            value={share(records[item.id]?.units, total)}
                           />
-                          <strong>{item.name}</strong>
-                          <StatGroup>
-                            <Stat label="Units" value={units(item.units)} />
-                            <Stat
-                              label="Share"
-                              value={share(item.units, total)}
-                            />
-                          </StatGroup>
-                        </div>
+                        </StatGroup>
                         {context(item)}
                       </div>
                     ))}
                   </div>
-                  {!contextOwner && (
+                  {!relationship && (
                     <div className="operations-unassigned">
                       <p>Unassigned context</p>
                       <Button

@@ -88,62 +88,142 @@ styles. Copying the whole Showcase is unnecessary.
 ## Operational review: one selection, several views
 
 Open `/#patterns/operations`. The anonymous
-[operational example](../src/playground/operations-example.tsx) composes the
-existing DetailLayout, two independent Cards, Stat/StatGroup, Badge, Table,
-Button, Tooltip, native disclosures and EvenformChart. Its data and relationship
-rules stay in Showcase; it does not introduce a topology or monitoring API.
+[operational example](../src/playground/operations-example.tsx) composes existing
+DetailLayout, independent Cards, Stat/StatGroup, Badge, Table, Button, Tooltip
+and native disclosures. Its [sample model](../src/playground/operations-model.ts)
+and path rules stay in Showcase; neither is a shared topology or monitoring API.
+The sample selector exposes a dominant contribution, recorded zeros, all-unknown
+observations and near-100% rounding. No product identifiers or responses are used.
 
-The compact summary leads with the review exception, then the recorded total
-and missing-source count. Inventory does not get six equally prominent cards.
-The main workspace and inspector have separate contours and a shared gap;
-the heading and Tabs sit outside both. Existing DetailLayout provides the
-responsive two-column structure, so another inspector layout API is unnecessary.
-StatGroup columns and value sizes use local component tokens.
+The compact summary leads with the review exception, then the current path's
+known total and missing-observation count. The workspace and inspector have
+separate contours and a shared gap; the heading and Tabs sit outside both.
+Existing DetailLayout provides the responsive columns. Local Stat tokens adjust
+columns and value sizes without adding a layout API.
 
-A single selected ID drives the workflow, proportional composition, exact
-comparison and inspector. A context item resolves its current owner from the
-latest data. The owning node gets a related marker; only the directly selected
-item has `aria-pressed=true`. Selecting a contribution chooses its owner;
-selecting a context item chooses that item. The exact comparison gives tiny
-segments a full-size alternative target without increasing their plotted width.
+### Readable contribution strip
 
-The refresh action exercises unchanged, changed and missing context ownership.
-A new relationship reveals its context; closing it manually survives a refresh
-with the same relationship. Missing relationships clear the related highlight.
-Selection keeps the trigger's focus and vertical reading position; only the
-workflow's local horizontal scroll is adjusted when needed. The explicit
-“Inspect selection” action intentionally moves focus to the inspector heading.
+Each strip segment is a real Button with an **8rem minimum width**. Flex starts
+with that minimum for every segment and distributes leftover space by its real
+share of the known total. If the minimums do not fit, only this region scrolls.
+The amount, category and percentage stay inside the target. A 99.8% contribution
+and a contribution below 0.01% are both operable with the pointer and keyboard.
 
-Desktop Table rows align exact amounts and shares. On narrow screens, the same
-records produce identity-first rows with paired Stat values; the identity never
-scrolls away from its numbers. The collapsed analysis retains the total,
-partial-data warning and selected identity. Its native summary remains keyboard
-operable, independent of contribution/context selection controls.
+This is an operational selection strip with adjusted widths, **not a strictly
+proportional chart**. Its visible and accessible note states that distinction.
+No fabricated share, minimum numeric contribution or inflated chart data is
+passed to EvenformChart. If a product needs an exact proportional graphic, use
+EvenformChart with the original amounts, plus a full-size exact list as its
+selection alternative. Do not put an invisible clickable layer over subpixel
+chart marks: coordinate rounding can select a neighbor even with correct labels.
 
-Recorded amounts form one proportional bar with an exact comparison. Zero,
-missing data and excluded policy context are distinct. These synthetic work
-units are not elapsed time, an execution timeline, or an end-to-end percentile.
-Never sum stage percentiles and label the result as an observed total latency.
+The strip, desktop Table, identity-first mobile comparison and inspector all use
+one contribution model and selected ID. Nonzero values below 0.01% show `<0.01%`;
+a value just below 100% shows `>99.99%`, rather than rounding a non-whole share to
+100%. Known zero stays zero; unknown observations are excluded from the sum.
+An all-unknown total stays unknown, rather than becoming a synthetic zero. Zero
+and all-unknown totals replace the strip with different empty states and retain
+the precise records. An existing entity with a null observation still opens its
+inspector. A missing entity has a labeled placeholder and disabled selection in
+the workflow and both comparison views; it never renders an enabled dead action.
+
+Selection reveals only the relevant horizontal region with an explicit instant
+scroll, preserving the initiating focus and vertical reading position. The
+workflow reveals the selected item itself; selecting Validation rules must not
+scroll that trigger away to reveal its linked owner. The contribution-only strip
+can reveal the related owner because it has no context segment. A compact
+check slot beside the category keeps selection feedback from changing layout.
+The recipe excludes itself from browser scroll anchoring. There is no animated
+scrolling in either normal or reduced motion; instant scroll also overrides a
+host's smooth-scroll CSS. Existing CSS reduced
+motion paths still apply to Button transitions. Only **Inspect selection**
+intentionally moves focus to the inspector heading.
+
+### Parallel entries and shared downstream work
+
+Both compact path summaries show their own known totals. They overlap on shared
+downstream work and must not be added together. The workflow has a unique node
+set, including two alternative entries; the analysis shows the active path once.
+Choosing an entry changes the path. Choosing a shared node preserves the active
+path. Changing the summary preserves a shared selection, or replaces a previous
+entry selection with the newly active entry.
+
+`pathItems` filters mutually exclusive entries **before** `contextOwner` resolves
+containment and fallback. The same context can therefore belong to Collection's
+entry or Import's entry without a first-owner lookup across both paths. The
+refresh action exercises unchanged, changed and absent relationships. The owner
+gets a dashed linked border and a link icon; only the selected item has
+`aria-pressed=true`. Manually closing a context survives an unchanged refresh;
+a new relationship reveals its context, and an absent owner clears the marker.
+These rules are an illustrative host policy, not a universal graph API.
 
 ### Cascade and legal interactive compositions
 
-- A more specific components-layer selector still loses to an intentional
-  utility. Use `className="rounded-none ring-0"` for an embedded Card whose
-  parent supplies the boundary. Independent panels keep their own Card outline;
-  adding another outer border repeats that boundary.
-- Button's `outline-none` utility outranks a components-layer outline. Use a
-  separate non-interactive selection marker; keep primitive keyboard focus
-  feedback. A local hit layer can cancel press translation using the same
-  modifier: `active:not-aria-[haspopup]:translate-y-0`. Do not remove Button
-  feedback globally.
-- A native button accepts phrasing content. Keep Stat's `dl`, report blocks and
-  `details` outside it. The mobile example places a labeled absolute Button and
-  non-interactive display content as siblings. Context disclosures are outside
-  that target, so their summaries and child actions work independently.
-- Card's clipping is intentional. For a disclosure near its edge, use a local
-  `outline-offset: -2px`; an inspector focus wrapper can use the same radius as
-  the Card. Do not disable clipping or flatten every Card to repair one focus
-  target.
+A components-layer rule loses to a utility even when its selector is more
+specific. Button ships utilities for background, border and `items-center`.
+The recipe intentionally overrides them at the call site:
+
+```tsx
+<Button
+  variant="outline"
+  aria-pressed={selected}
+  data-linked={linked || undefined}
+  className="items-stretch aria-pressed:bg-[var(--op-selected)] aria-pressed:text-foreground aria-pressed:border-[var(--op-tone)] aria-pressed:hover:bg-[var(--op-selected)] data-linked:border-dashed data-linked:border-[var(--op-tone)] dark:aria-pressed:bg-[var(--op-selected)] dark:aria-pressed:border-[var(--op-tone)] dark:aria-pressed:hover:bg-[var(--op-selected)] dark:data-linked:border-[var(--op-tone)]"
+/>
+```
+
+These local CSS roles resolve on the same `data-category` element, including
+inside a Button. The Table row also intentionally overrides its selected utility
+with `data-[state=selected]:bg-[var(--op-selected)]`. Verify computed background,
+border and alignment after transitions settle; reading CSS alone is insufficient.
+Include the dark pressed/linked modifiers: the outline variant also ships dark
+background, border and hover utilities. Keep the primitive's separate keyboard
+focus ring. Do not globally increase specificity or replace focus feedback with
+a pressed marker.
+
+- Embedded Cards can use `rounded-none ring-0` when their parent owns the outline;
+  the independent workspace and inspector keep their own contours.
+- Buttons contain phrasing content only. Stat's `dl` and native `details` stay
+  outside the selection control; a Badge rendered as a span is safe inside it.
+  Mobile identity buttons and their Stat values are siblings.
+- Context summaries remain native keyboard controls outside contribution buttons.
+  Card clipping is intentional; the recipe uses a local `outline-offset: -2px`
+  for native summary and inspector-heading focus rather than disabling clipping.
+
+A multiline Button also needs an explicit vertical inset: the shared Button
+contract provides horizontal padding for a single-line control. The workflow
+nodes and strip use equal token-based inset, free-wrapping titles, and a bottom
+metadata/value group. Category and a compact selection check share one row; an
+empty full-width selection row is not reserved. A tinted CardHeader needs the
+local Card's `padding-block-start: 0` so its color reaches the outer top edge;
+keep child horizontal inset and the Card's bottom padding intact.
+
+### Category color and status on selected surfaces
+
+The recipe uses existing exported blue/violet/teal/amber primitive pairs for
+intake, processing, delivery and context identity. Light/Dark doses and local
+surface/boundary roles live only in
+[operations-example.css](../src/playground/operations-example.css). Ordinary
+amounts remain neutral. Categories, current-path text, pressed state, a check
+and a dashed linked marker supply non-color cues. Severity stays independent:
+**Needs review** uses destructive, regardless of a node's category.
+
+Consumers should use the tokens actually present in their adopted version.
+Evenform exports selected primitive pairs, not a complete numbered color scale.
+If a new dose is necessary, derive it in product CSS from an existing primitive;
+do not reference an undefined red shade or duplicate CSS values in TypeScript.
+When replacing older per-category rules, remove or account for the selectors
+that still win the cascade, and inspect the resolved colors in the browser.
+
+A translucent destructive Badge over a tinted inspector header must be checked
+against the **composited background**, including all ancestor layers. Measuring
+raw red on white, or treating an alpha background as opaque, does not establish
+its text contrast. Also verify that the resolved role retains a red hue: an
+undefined variable can silently inherit neutral text while passing contrast.
+This recipe locally deepens destructive in Light and lightens it in Dark, using
+existing red primitives. It does not change the global destructive token or
+certify arbitrary consumer tints. Check category identity, selected surface and
+status Badge together in both themes before adopting different doses.
 
 ### Reading on muted surfaces
 
