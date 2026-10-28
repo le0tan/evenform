@@ -23,7 +23,7 @@ function ReadingExample() {
   const [notice, setNotice] = useState(true)
   return <div className="layout-aids-example">
     {notice ? <Banner tone="info" icon={<Info />} onDismiss={() => setNotice(false)} dismissLabel="Dismiss reading announcement" actions={<a className="underline underline-offset-4" href="#layout-reading-review">Read the review checklist</a>}>The October handover is ready for review. Please confirm open items before Thursday.</Banner> : <Button variant="ghost" className="self-start" onClick={() => setNotice(true)}>Show announcement</Button>}
-    <ContentLayout navigation={<PageNavigation items={[{ id: "layout-reading-principles", href: "#patterns/layouts?anchor=layout-reading-principles", label: "Handover ownership" }, { id: "layout-reading-content", href: "#patterns/layouts?anchor=layout-reading-content", label: "Review scope" }, { id: "layout-reading-review", href: "#patterns/layouts?anchor=layout-reading-review", label: "Review checklist" }]} />} aside={<p className="layout-aids-note">Illustrative handover · Updated 21 October 2026</p>}>
+    <ContentLayout navigation={<PageNavigation items={[{ id: "layout-reading-principles", href: "#patterns/layouts?anchor=layout-reading-principles", label: "Handover ownership" }, { id: "layout-reading-content", href: "#patterns/layouts?anchor=layout-reading-content", label: "Review scope" }, { id: "layout-reading-review", href: "#patterns/layouts?anchor=layout-reading-review", label: "Review checklist" }]} />} aside={<p className="layout-aids-note">Updated 21 October 2026</p>}>
       <h3>October workspace handover</h3>
       <p>The October handover covers active projects, account access and the support rota. Review the checklist and record any outstanding questions before the next team checkpoint.</p>
       <h2 id="layout-reading-principles">Handover ownership</h2>
@@ -71,18 +71,18 @@ function FormExample() {
   function submit(event: FormEvent<HTMLFormElement>) { event.preventDefault(); setSaved(true) }
   function reset() { setName("Design workspace"); setSummary("Shared design resources, decisions, and implementation notes."); setNotify(true); setSaved(false) }
   return <FormLayout aria-label="Workspace preferences" onSubmit={submit} header={<div><h3>Workspace preferences</h3></div>} footer={<><Button type="submit"><Save />Save preferences</Button><Button type="button" variant="outline" onClick={reset}>Reset form</Button>{saved && <span role="status" className="layout-aids-note">Preferences saved in this preview.</span>}</>}>
-    <FormLayoutSection title="Workspace identity" description="Choose the name and summary people see when browsing the workspace.">
+    <FormLayoutSection title="Workspace identity">
       <FormField id="layout-workspace-name" label="Workspace name"><Input id="layout-workspace-name" value={name} required onChange={(event) => { setName(event.target.value); setSaved(false) }} /></FormField>
       <FormField id="layout-workspace-summary" label="Summary" description="Use a short description of what belongs here."><Textarea id="layout-workspace-summary" aria-describedby="layout-workspace-summary-description" value={summary} onChange={(event) => { setSummary(event.target.value); setSaved(false) }} /></FormField>
     </FormLayoutSection>
-    <FormLayoutSection title="Notifications" description="Set the default for this workspace preview. This form does not send notifications."><label className="flex items-start gap-field"><Checkbox checked={notify} onCheckedChange={(value) => { setNotify(value); setSaved(false) }} /><span>Notify me when a review is requested</span></label></FormLayoutSection>
+    <FormLayoutSection title="Notifications"><label className="flex items-start gap-field"><Checkbox checked={notify} onCheckedChange={(value) => { setNotify(value); setSaved(false) }} /><span>Notify me when a review is requested</span></label></FormLayoutSection>
   </FormLayout>
 }
 
 function AdaptiveExample() {
   const [result, setResult] = useState<"success" | "error" | "forbidden" | "not-found">("success")
   const resultCopy = {
-    success: { title: "Export prepared", description: "Your workspace export is ready in this local preview." },
+    success: { title: "Export prepared", description: "Your export preview is ready." },
     error: { title: "Export could not be prepared", description: "Review the selected records and try the export again." },
     forbidden: { title: "Access is restricted", description: "Ask a workspace owner for access to these records." },
     "not-found": { title: "Record could not be found", description: "The record may have moved. Return to the workspace to find it." },
@@ -91,10 +91,10 @@ function AdaptiveExample() {
     <div><h3>Adaptable workspace regions</h3><p className="layout-aids-note">Drag the divider or focus it and use arrow keys to resize.</p></div>
     <DashboardGrid style={{ "--ds-dashboard-columns": 3 } as CSSProperties}>
       <DashboardItem style={{ "--ds-dashboard-span": 2 } as CSSProperties}><div className="layout-aids-panel"><h4>Review queue</h4><DescriptionList divided><DescriptionItem label="Ready for review">8 records</DescriptionItem><DescriptionItem label="Assigned to you">3 records</DescriptionItem><DescriptionItem label="Next checkpoint">Tomorrow, 10:00</DescriptionItem></DescriptionList></div></DashboardItem>
-      <DashboardItem><div className="layout-aids-panel"><h4>Completion</h4><p className="layout-aids-numbers">18 / 24</p><p className="layout-aids-note">Illustrative records reviewed this week.</p><Badge variant="secondary">6 remaining</Badge></div></DashboardItem>
+      <DashboardItem><div className="layout-aids-panel"><h4>Completion</h4><p className="layout-aids-numbers">18 / 24</p><p className="layout-aids-note">Reviewed this week.</p><Badge variant="secondary">6 remaining</Badge></div></DashboardItem>
     </DashboardGrid>
     <div className="layout-aids-resizable"><ResizablePanelGroup orientation="horizontal" aria-label="Resizable review workspace"><ResizablePanel id="review-notes" defaultSize="40%" minSize="25%"><div className="layout-aids-pane"><h4>Review notes</h4><p>Resize the panes to give more room to a long record or its supporting context.</p></div></ResizablePanel><ResizableHandle withHandle aria-label="Resize review notes and details" /><ResizablePanel id="review-record" defaultSize="60%" minSize="30%"><div className="layout-aids-pane"><h4>Selected record</h4><DescriptionList><DescriptionItem label="Project">Design foundations</DescriptionItem><DescriptionItem label="Owner">Sam Rivera</DescriptionItem><DescriptionItem label="Status">Awaiting review</DescriptionItem></DescriptionList><StatusMessage tone="info">Check the record and confirm its owner before requesting a review.</StatusMessage></div></ResizablePanel></ResizablePanelGroup></div>
-    <p className="layout-aids-note layout-aids-resizable-small">Open this preview in a wider window to resize the panes.</p>
+    <p className="layout-aids-note layout-aids-resizable-small">Widen the window to resize the panes.</p>
     <div><h4>Task outcomes</h4><div className="toolbar mt-field">{(["success", "error", "forbidden", "not-found"] as const).map((status) => <Button key={status} variant={result === status ? "secondary" : "ghost"} aria-pressed={result === status} onClick={() => setResult(status)}>{({ success: "Complete", error: "Error", forbidden: "Restricted", "not-found": "Not found" })[status]}</Button>)}</div><Result status={result} title={resultCopy[result].title} description={resultCopy[result].description} actions={<Button variant="outline" onClick={() => setResult(result === "success" ? "error" : "success")}>{result === "success" ? "Preview a failed export" : "Preview completed export"}</Button>} /></div>
   </DashboardLayout>
 }

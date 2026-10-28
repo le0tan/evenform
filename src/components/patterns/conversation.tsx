@@ -15,13 +15,14 @@ export function Conversation({
     />
   )
 }
-/** History is a normal list. Opt into a live region only when the application needs one. */
+/** Message history. The application can opt into live announcements. */
 export function ConversationList({
   className,
   ...props
 }: ComponentProps<"ol">) {
   return (
     <ol
+      role="list"
       data-slot="conversation-list"
       className={cn("evenform-conversation-list", className)}
       {...props}
@@ -104,7 +105,7 @@ export interface ConversationComposerProps extends Omit<
   status?: ReactNode
   actions?: ReactNode
 }
-/** Submission does not clear the draft: the caller controls success, errors, and clearing. */
+/** The caller controls the draft, submission feedback, and clearing. */
 export function ConversationComposer({
   onSubmit,
   value,
@@ -127,6 +128,7 @@ export function ConversationComposer({
   return (
     <form
       data-slot="conversation-composer"
+      aria-busy={pending || undefined}
       className={cn("evenform-conversation-composer", className)}
       onSubmit={(event) => {
         event.preventDefault()
@@ -141,6 +143,7 @@ export function ConversationComposer({
         id={id}
         value={draft}
         placeholder={placeholder}
+        aria-describedby={status ? `${id}-status` : undefined}
         disabled={disabled || pending}
         onChange={(event) => {
           if (value === undefined) setInternalValue(event.target.value)
@@ -156,7 +159,7 @@ export function ConversationComposer({
         >
           {pending ? pendingLabel : submitLabel}
         </Button>
-        {status}
+        {status && <div id={`${id}-status`} data-slot="conversation-composer-status">{status}</div>}
       </div>
     </form>
   )

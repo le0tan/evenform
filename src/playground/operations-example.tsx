@@ -224,7 +224,7 @@ export function OperationsExample() {
                 <CircleHelp />
               </TooltipTrigger>
               <TooltipContent>
-                Illustrative work units, not elapsed time or summed percentiles.
+                Sample work units.
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -283,9 +283,8 @@ export function OperationsExample() {
         </TabsList>
         <TabsContent value="notes">
           <p>
-            Illustrative records. Paths have mutually exclusive entries and
-            shared downstream work. Totals overlap and must not be added
-            together.
+            Paths include separate entries and shared downstream work.
+            Totals include overlapping contributions.
           </p>
         </TabsContent>
         <TabsContent value="review">
@@ -437,14 +436,13 @@ export function OperationsExample() {
                     </span>
                   </summary>
                   <p className="operations-caveat" id="operations-width-note">
-                    Widths adjusted for readability; percentages show the true
-                    share of known work.
+                    Minimum-width segments; percentages show each share of known work.
                   </p>
                   {total === null || total === 0 ? (
                     <p className="operations-empty" role="status">
                       {total === null
                         ? "No known observations. Open a record below to inspect missing data."
-                        : "Recorded total is zero. Shares cannot be calculated; exact values follow."}
+                        : "Recorded total: 0. Shares unavailable."}
                     </p>
                   ) : (
                     <div
@@ -488,8 +486,7 @@ export function OperationsExample() {
                     </div>
                   )}
                   <p className="operations-caveat">
-                    Known contributions only. Missing observations and
-                    unavailable records are excluded from totals.
+                    Totals include known contributions.
                   </p>
                   <div className="operations-comparison-desktop">
                     <Table>

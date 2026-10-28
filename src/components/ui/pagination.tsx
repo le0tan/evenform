@@ -22,8 +22,8 @@ export type PaginationControlsProps = Omit<ComponentProps<typeof Pagination>, "c
 }
 /** Controlled pagination for client state; link primitives support URL-based routing. */
 export function PaginationControls({ page, pageCount, onPageChange, disabled = false, ...props }: PaginationControlsProps) {
-  const count = Math.max(1, Math.trunc(pageCount) || 1)
-  const current = Math.min(count, Math.max(1, Math.trunc(page) || 1))
+  const count = Number.isFinite(pageCount) ? Math.max(1, Math.trunc(pageCount)) : 1
+  const current = Number.isFinite(page) ? Math.min(count, Math.max(1, Math.trunc(page))) : 1
   const pages = [...new Set([1, current - 1, current, current + 1, count])].filter((n) => n >= 1 && n <= count).sort((a, b) => a - b)
   return <Pagination {...props}><PaginationContent>
     <li><Button variant="outline" size="icon" aria-label="Previous page" disabled={disabled || current === 1} onClick={() => onPageChange(current - 1)}><ChevronLeft /></Button></li>

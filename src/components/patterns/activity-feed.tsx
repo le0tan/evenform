@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils"
 export function ActivityFeed({ className, ...props }: ComponentProps<"ol">) {
   return (
     <ol
+      role="list"
       data-slot="activity-feed"
       className={cn("evenform-activity-feed", className)}
       {...props}

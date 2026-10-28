@@ -6,7 +6,7 @@ const output = new URL("../evidence/copy-writer/", import.meta.url)
 await mkdir(output, { recursive: true })
 await writeFile(new URL("fixture.html", output), '<!doctype html><div id="root"></div><script type="module" src="./fixture.tsx"></script>')
 await writeFile(new URL("fixture.tsx", output), `import React from'react';import{createRoot}from'react-dom/client';import'../../src/core.css';import{CopyButton}from'../../src/components/ui/copy-button';window.writes=[];window.results=[];window.fail=true;const writer=async value=>{window.writes.push(value);await new Promise(r=>setTimeout(r,80));if(value==='retry'&&window.fail)throw Error('bridge denied')};createRoot(document.getElementById('root')).render(<main><CopyButton value={async()=> 'example'} writeText={writer} label="Copy example" onCopy={value=>window.results.push(value)}/><CopyButton value="retry" writeText={writer} label="Copy retry" onCopyError={()=>window.results.push('error')}/></main>);`)
-const browser = await chromium.launch()
+const browser = await chromium.launch({ executablePath: process.env.PLAYWRIGHT_EXECUTABLE_PATH || undefined })
 try {
   const page = await browser.newPage()
   const errors = []

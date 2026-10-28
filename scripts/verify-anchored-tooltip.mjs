@@ -8,7 +8,7 @@ await mkdir(output, { recursive: true })
 await writeFile(new URL("fixture.html", output), '<!doctype html><meta name="viewport" content="width=device-width,initial-scale=1"><div id="root"></div><script type="module" src="./fixture.tsx"></script>')
 await writeFile(new URL("fixture.tsx", output), `import React,{useState}from'react';import{createRoot}from'react-dom/client';import'../../src/core.css';import{Tooltip,TooltipContent}from'../../src/components/ui/tooltip';
 function Example(){const[anchor,setAnchor]=useState(null),[open,setOpen]=useState(false);const show=e=>{setAnchor(e.currentTarget);setOpen(true)};return <><svg width="100%" height="400"><rect x="180" y="200" width="48" height="24" fill="currentColor" role="button" aria-label="Inspect segment" aria-describedby={open?'preview':undefined} tabIndex={0} onMouseEnter={show} onMouseLeave={()=>setOpen(false)} onFocus={show} onBlur={()=>setOpen(false)} onKeyDown={e=>{if(e.key==='Escape')setOpen(false)}}/></svg><Tooltip open={open} onOpenChange={setOpen}><TooltipContent id="preview" role="tooltip" side="bottom" sideOffset={8} showArrow={false} positionerProps={{anchor,positionMethod:'fixed',collisionPadding:16}} className="evenform-floating-panel block bg-popover text-popover-foreground">Segment preview</TooltipContent></Tooltip></>};createRoot(document.getElementById('root')).render(<Example/>);`)
-const browser = await chromium.launch()
+const browser = await chromium.launch({ executablePath: process.env.PLAYWRIGHT_EXECUTABLE_PATH || undefined })
 const cases = []
 try {
   for (const width of [973, 1702]) for (const theme of ["light", "dark"]) for (const reducedMotion of ["reduce", "no-preference"]) {

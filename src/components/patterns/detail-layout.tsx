@@ -1,8 +1,7 @@
 import { type ComponentProps, type ReactNode } from "react"
 import { cn } from "@/lib/utils"
 
-/** A record's content and supporting panel. Does not create a second <main>
- * landmark when composed inside AppShell or an existing page. */
+/** A record's content and supporting panel, composed within a main landmark. */
 export function DetailLayout({ header, aside, footer, children, className, ...props }: ComponentProps<"div"> & {
   header?: ReactNode
   aside?: ReactNode

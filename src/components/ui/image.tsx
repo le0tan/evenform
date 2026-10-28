@@ -35,7 +35,7 @@ function ImageState({
         {...props}
         alt={alt}
         className={cn("evenform-image-element", className)}
-        hidden={status === "error" || props.hidden}
+        aria-hidden={status === "error" ? true : props["aria-hidden"]}
         onLoad={(event) => {
           setStatus("loaded")
           onLoad?.(event)

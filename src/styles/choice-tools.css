@@ -40,6 +40,8 @@
   .evenform-cascader-columns { display: flex; gap: var(--ds-control-gap); overflow-x: auto; max-width: 100%; }
   .evenform-cascader-list { width: var(--ds-cascader-column-width, 11rem); flex: none; max-height: min(18rem, 50svh); overflow-y: auto; outline: none; }
   .evenform-cascader-option { display: flex; align-items: center; justify-content: space-between; gap: var(--ds-control-gap); min-height: var(--ds-select-item-height); padding: var(--ds-select-item-padding-y) var(--ds-control-padding-x); border-radius: var(--radius-md); font-size: var(--ds-text-body); cursor: pointer; outline: none; }
+  .evenform-cascader-option > span { min-width: 0; overflow-wrap: anywhere; }
+  .evenform-cascader-option > svg { flex: none; }
   .evenform-cascader-option[data-hovered], .evenform-cascader-option[data-selected] { background: var(--accent); color: var(--accent-foreground); }
   .evenform-cascader-option[data-focus-visible] { outline: 2px solid var(--ring); outline-offset: -2px; }
   .evenform-cascader-option[data-disabled] { opacity: .5; cursor: default; }

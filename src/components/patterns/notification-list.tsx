@@ -6,6 +6,7 @@ export function NotificationList({
 }: ComponentProps<"ul">) {
   return (
     <ul
+      role="list"
       data-slot="notification-list"
       className={cn("evenform-notification-list", className)}
       {...props}

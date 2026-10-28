@@ -28,9 +28,7 @@ function GradientExample() {
   const [disabled, setDisabled] = useState(false)
   return (
     <div className="design-tools-example">
-      <p className="design-tools-note">
-        Edit colors and positions, add or remove stops, reverse the gradient, or switch to a radial blend.
-      </p>
+
       <div className="toolbar">
         <Button
           variant="outline"
@@ -110,9 +108,7 @@ function ImageExample() {
   }
   return (
     <div className="design-tools-example">
-      <p className="design-tools-note">
-        Adjust the local color study, or choose your own image. Files stay in this browser.
-      </p>
+
       <div className="toolbar">
         <Button
           variant="outline"
@@ -151,12 +147,11 @@ function ImageExample() {
           }
         />
         <div className="design-tools-example">
-          <h3 className="font-medium">Rendering configuration</h3>
+          <h3 className="font-medium">Image settings</h3>
           <p className="design-tools-note">
             {fileName
-              ? `Selected locally: ${fileName}`
-              : "Source: inline SVG geometry."}{" "}
-            Nothing is uploaded or exported.
+              ? fileName
+              : "Sample image"}
           </p>
           <output
             aria-label="Image configuration"
@@ -218,7 +213,7 @@ function EventCalendarExample() {
   return (
     <div className="design-tools-example">
       <p className="design-tools-note">
-        Dates are shown in UTC. Press Enter or Space on an event to view details; drag or resize timed events to change them in this preview.
+        Times are in UTC. Drag an event to move it or resize it to change its duration.
       </p>
       <form
         className="design-tools-calendar-form"

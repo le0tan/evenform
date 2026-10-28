@@ -4,7 +4,7 @@ import { EmptyState } from "@/components/patterns/empty-state"
 
 const resultIcons = { success: CircleCheck, error: TriangleAlert, forbidden: LockKeyhole, "not-found": CircleHelp }
 
-/** Product copy and recovery actions are explicit. No redirect or retry logic. */
+/** The caller supplies result copy and recovery actions. */
 export function Result({ status = "success", icon, ...props }: ComponentProps<typeof EmptyState> & {
   status?: keyof typeof resultIcons
   icon?: ReactNode

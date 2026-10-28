@@ -56,6 +56,12 @@ try {
   await page.emulateMedia({reducedMotion:'no-preference'})
   await page.waitForFunction(()=>window.chartTest.instances.filter(c=>!window.chartTest.released.includes(c)&&c.getSpec().type==='bar').every(c=>c.getSpec().animation===true))
   check('Preference change restores caller animation while explicit false remains false',(await sample()).find(c=>c.id==='line').animation===false)
+  await page.locator('#local').evaluate(element => element.dataset.motion = 'reduce')
+  await page.waitForFunction(()=>window.chartTest.instances.find(c=>c.getSpec().data.id==='local').getSpec().animation===false)
+  check('Local reduced motion affects only its chart',(await sample()).find(c=>c.id==='normal').animation===true)
+  await page.locator('#local').evaluate(element => delete element.dataset.motion)
+  await page.waitForFunction(()=>window.chartTest.instances.find(c=>c.getSpec().data.id==='local').getSpec().animation===true)
+  check('Removing local reduction restores caller animation',true)
   // Start a fresh long appear animation, then interrupt it with a real media-query change.
   await page.getByRole('button',{name:'Toggle charts'}).click()
   await page.waitForFunction(()=>window.chartTest.listeners.size===0)

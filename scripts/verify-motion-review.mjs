@@ -9,7 +9,7 @@ const output = new URL(`../evidence/motion-review/${name}/`, import.meta.url)
 await mkdir(output, {recursive:true})
 const report = { engine:name, result:'fail', checks:[], measurements:{}, errors:[] }
 const check = (label, condition) => { assert(condition,label); report.checks.push(label); console.log('PASS',label) }
-const browser = await engine.launch()
+const browser = await engine.launch({ executablePath: name === 'chromium' ? process.env.PLAYWRIGHT_EXECUTABLE_PATH || undefined : undefined })
 report.version=browser.version()
 const context = await browser.newContext({viewport:{width:1360,height:940},reducedMotion:'no-preference'})
 const page = await context.newPage()

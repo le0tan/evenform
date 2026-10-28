@@ -1,7 +1,7 @@
 import type { ComponentProps, ReactNode } from "react"
 import { cn } from "@/lib/utils"
 
-/** Overlapping grid cells reserve the larger footprint. No artificial completion delay. */
+/** Overlapping grid cells reserve the larger footprint during loading. */
 export function LoadingSwap({
   ready,
   skeleton,

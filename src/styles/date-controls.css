@@ -1,7 +1,7 @@
 /* Calendar geometry is a component concern. Shared typography, surfaces,
    control sizes and density remain the same Evenform decisions. */
 @layer components {
-  .evenform-calendar { width: fit-content; max-width: 100%; padding: var(--ds-calendar-padding, var(--ds-space-2)); color: var(--foreground); font-size: var(--ds-text-label); }
+  .evenform-calendar { width: fit-content; max-width: 100%; overflow-x: auto; padding: var(--ds-calendar-padding, var(--ds-space-2)); color: var(--foreground); font-size: var(--ds-text-label); }
   .evenform-calendar-header { display: flex; justify-content: space-between; align-items: center; gap: var(--ds-control-gap); margin-bottom: var(--ds-space-2); }
   .evenform-calendar-header > h2 { font-weight: var(--ds-weight-medium); font-size: var(--ds-text-body); }
   .evenform-calendar-nav, .evenform-date-trigger { display: inline-flex; align-items: center; justify-content: center; width: var(--ds-control-height); height: var(--ds-control-height); flex: none; border-radius: var(--radius-md); outline: none; color: var(--muted-foreground); }

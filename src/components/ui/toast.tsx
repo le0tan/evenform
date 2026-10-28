@@ -34,11 +34,9 @@ function ToastAction({ className, ...props }: ToastPrimitive.Action.Props) {
 function ToastClose({className, children, "aria-label": ariaLabel = "Dismiss notification", ...props}: ToastPrimitive.Close.Props) {
  return <ToastPrimitive.Close aria-label={ariaLabel} data-slot="toast-close" className={(state) => cn("evenform-toast-close", typeof className === "function" ? className(state) : className)} {...props}>{children ?? <XIcon size={16} aria-hidden="true" />}</ToastPrimitive.Close>
 }
-/* Render one Toaster inside one Provider. Provider's native limit (default 3),
-   timers, pointer/focus pause, live announcements and swipe dismissal stay intact.
-   The composed renderer closes overflow instead of retaining an unbounded hidden
-   backlog; set dismissOverflow=false to opt into Base UI's queued behavior.
-   Compose the parts instead for application-specific toast presentation. */
+/* Render one Toaster inside one Provider. Base UI owns limits, timers, pause,
+   announcements and swipe dismissal. Overflow closes by default;
+   dismissOverflow=false enables Base UI's queue. */
 type ToasterProps = ToastPrimitive.Viewport.Props & { dismissOverflow?: boolean; closeLabel?: string }
 function Toaster({dismissOverflow = true, closeLabel = "Dismiss notification", ...props}: ToasterProps) {
  const {toasts, close} = useToastManager()

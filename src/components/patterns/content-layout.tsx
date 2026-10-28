@@ -1,7 +1,7 @@
 import { type ComponentProps, type ReactNode } from "react"
 import { cn } from "@/lib/utils"
 
-/** Reading layout without an application shell or a second main landmark.
+/** Reading layout for use within a main landmark.
  * --ds-content-measure and --ds-content-aside-width are local layout parameters. */
 export function ContentLayout({ navigation, aside, children, className, ...props }: ComponentProps<"div"> & {
   navigation?: ReactNode

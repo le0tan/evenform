@@ -83,7 +83,7 @@ try {
     if (width === 1440 && theme === 'light' && density === 'compact') {
       await openTokens(page)
       // Real controls: no TS copy of the CSS default values.
-      await page.locator('.advanced-tokens > summary').click()
+      await page.locator('.advanced-tokens > summary').filter({ hasText: /^Advanced tokens$/ }).click()
       await page.locator('.advanced-token-group > summary').filter({ hasText: /^Data$/ }).click()
       assert.equal(await page.getByRole('slider', { name: 'Property vertical padding', exact: true }).inputValue(), '8')
       await edit(page, 'Property vertical padding', 18)

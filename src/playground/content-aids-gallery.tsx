@@ -23,7 +23,7 @@ export function ContentAidsGallery() {
     <div className="evenform-content-aids-gallery">
       <PageSection id="example-resize-box"
         title="Standalone resize box"
-        description="Resize one surface independently with the edge handles. Focus a handle and use arrow keys, Shift + arrows, Home, or End."
+        description="Drag an edge, or focus its handle and use arrow keys. Hold Shift for larger steps."
       >
         <div className="evenform-content-aids-stack">
           <div className="evenform-content-aids-toolbar">
@@ -76,8 +76,7 @@ export function ContentAidsGallery() {
                 className="max-w-full"
               >
                 <Text size="label">
-                  Only the right edge changes this surface. Height remains
-                  fixed.
+                  Drag the right edge to resize.
                 </Text>
               </ResizeBox>
             </div>
@@ -90,7 +89,7 @@ export function ContentAidsGallery() {
                 className="max-w-full"
               >
                 <Text size="label">
-                  Resizing is locked in this preview.
+                  Resizing disabled.
                 </Text>
               </ResizeBox>
             </div>
@@ -139,12 +138,12 @@ export function ContentAidsGallery() {
             />
           </div>
           <div className="evenform-content-aids-example">
-            <h3>Save error · demonstration</h3>
+            <h3>Save error</h3>
             <EditableText
               label="Offline draft"
               defaultValue="Try saving this draft"
               onSave={() => Promise.reject(new Error("Demonstration"))}
-              saveErrorMessage="This demonstration is offline. Your draft is retained; cancel to close it."
+              saveErrorMessage="Save failed. Your draft is retained."
             />
           </div>
         </div>
@@ -167,7 +166,7 @@ export function ContentAidsGallery() {
           <div className="evenform-content-aids-example">
             <h3>Short text</h3>
             <ExpandableText lines={3}>
-              This text already fits. There is no extra action to navigate.
+              The handover is ready for review.
             </ExpandableText>
           </div>
         </div>

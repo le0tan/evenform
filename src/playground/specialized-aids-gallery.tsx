@@ -87,7 +87,7 @@ function MentionsExample() {
         />
       </Mentions>
       <Text id="specialized-mentions-help" tone="muted" size="caption">
-        Type @, use Up or Down to choose a reviewer, and press Enter or Tab to insert. Escape closes the list. No notification is sent.
+        Type @ to mention a reviewer. Use arrow keys to choose and Enter to insert.
       </Text>
       <div>
         <Button
@@ -177,9 +177,6 @@ function CountdownExample() {
             : "Countdown paused."}{" "}
         Completed cycles: {completionCount}.
       </Text>
-      <Text size="caption" tone="muted">
-        Pause to hold the remaining time, or restart a 15-second review window.
-      </Text>
     </div>
   )
 }
@@ -202,6 +199,7 @@ function WatermarkExample() {
           Opacity: {opacity}%
           <Input
             type="range"
+            style={{ accentColor: "var(--primary)" }}
             min={0}
             max={30}
             step={1}
@@ -222,7 +220,7 @@ function WatermarkExample() {
           </p>
           <label className="evenform-specialized-stack">
             Your review note
-            <Input placeholder="Try typing through the visual layer" />
+            <Input placeholder="Add a review note…" />
           </label>
           <div>
             <Button
@@ -235,16 +233,14 @@ function WatermarkExample() {
           <Text role="status" tone="muted" size="caption">
             {acknowledged
               ? "Reference acknowledged in this preview."
-              : "Awaiting local acknowledgment."}
+              : "Awaiting acknowledgment."}
           </Text>
         </div>
       </Watermark>
       <Watermark image={`${import.meta.env.BASE_URL}favicon.svg`} className="evenform-specialized-watermark">
         <div className="evenform-specialized-stack">
           <h3>Image watermark</h3>
-          <p>
-            Watermarked with the Evenform favicon.
-          </p>
+
         </div>
       </Watermark>
     </div>

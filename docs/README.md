@@ -21,8 +21,5 @@
 | Find project logo assets and variants | [Brand assets](brand.md) |
 | Contribute a change | [Contributing](../CONTRIBUTING.md) |
 
-The root README is the first-visitor entry. Detailed contracts and API references
-live in their guides. `evidence/` contains development records from specific
-runs, some under the project's former Nova name. Those records describe their
-own dates and tested scopes; they are not a guarantee for the current checkout.
-Locally generated evidence is ignored and is not included in release archives.
+`evidence/` stores ignored screenshots and reports for individual checkouts and
+test runs. Release archives exclude these generated files.

@@ -16,10 +16,11 @@
   .ds-button-group[data-orientation='vertical'] > :last-child { border-end-start-radius: var(--radius); border-end-end-radius: var(--radius); }
   .ds-button-group[data-orientation='vertical'] > :not(:first-child) { margin-block-start: calc(-1 * var(--ds-border-width)); }
   .ds-button-group-text { display: inline-flex; align-items: center; justify-content: center; min-height: var(--ds-control-height); padding-inline: var(--ds-control-padding-x); border: var(--ds-border-width) solid var(--input); background: var(--muted); font-size: var(--ds-text-label); }
-  .ds-input-group { display: flex; align-items: center; gap: var(--ds-control-gap); min-height: var(--ds-input-height); border: var(--ds-border-width) solid var(--input); border-radius: var(--radius); padding-inline: var(--ds-control-padding-x); }
+  .ds-input-group { display: flex; align-items: center; gap: var(--ds-control-gap); min-height: var(--ds-input-control-height, var(--ds-input-height)); border: var(--ds-border-width) solid var(--input); border-radius: var(--radius); padding-inline: var(--ds-input-padding-x, var(--ds-control-padding-x)); }
   .ds-input-group:focus-within { outline: 2px solid var(--ring); outline-offset: 2px; }
   .ds-input-group:has(input:disabled, textarea:disabled) { background: color-mix(in oklch, var(--input) 50%, transparent); }
   .ds-input-group:has([aria-invalid='true']) { border-color: var(--destructive); }
+  .ds-input-group:has([aria-invalid='true']):focus-within { outline-color: var(--destructive); }
   .ds-input-group-input { border: 0; box-shadow: none; border-radius: 0; padding-inline: 0; background: transparent; flex: 1; min-width: 0; }
   .ds-input-group > input.ds-input-group-input { height: calc(var(--ds-input-control-height, var(--ds-input-height)) - 2 * var(--ds-border-width)); }
   .ds-input-group-input:focus-visible { outline: none; box-shadow: none; }
@@ -42,6 +43,6 @@
   .ds-form-section-description { color: var(--muted-foreground); font-size: var(--ds-text-label); margin-bottom: var(--ds-panel-gap); }
   .ds-form-section-fields { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--ds-form-group-gap); }
   @container evenform-form-section (min-width: 36rem) { .ds-form-section-fields[data-columns='2'] { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-  /* Joined borders and tiny keyboard glyphs are geometry, not a separate spacing scale. */
+  /* Joined borders and keyboard glyphs use fixed geometry. */
   @media (pointer: coarse) { .ds-tag button { min-width: 28px; min-height: 28px; } .ds-pagination-link { min-height: 44px; min-width: 44px; } }
 }

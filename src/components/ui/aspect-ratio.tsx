@@ -1,7 +1,7 @@
 import type { ComponentProps } from "react"
 import { cn } from "@/lib/utils"
 
-/** Reserves media space without changing the semantics of its children. */
+/** Reserves media space at the requested aspect ratio. */
 function AspectRatio({
   ratio = 16 / 9,
   className,

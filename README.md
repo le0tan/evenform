@@ -7,11 +7,8 @@
   </a>
 </h1>
 
-An opinionated, token-driven React design system built on shadcn/ui.
-
-Evenform brings shared CSS tokens, accessible component primitives, and reusable
-layouts to React applications. It includes a component Showcase for exploration
-and a separate Starter for building your own product.
+A React design system built on shadcn/ui, with shared CSS tokens, component
+primitives and layouts. Browse the Showcase or build a product from the Starter.
 
 [Live demo](https://le0tan.github.io/evenform/) · [Appearance lab](https://le0tan.github.io/evenform/#appearance) · [Get started](docs/getting-started.md) · [Components](docs/components.md) ·
 [Design contract](DESIGN.md) · [Contributing](CONTRIBUTING.md)
@@ -24,21 +21,20 @@ Explore the application examples: [Data dashboard](https://le0tan.github.io/even
 ## What you get
 
 - **One source of design parameters.** Primitive → Semantic → Component CSS
-  variables coordinate typography, spacing, controls, and layouts. No manually
-  synchronized TypeScript or JSON token copy.
+  variables coordinate typography, spacing, controls, and layouts.
 - **Light, dark, and system themes**, with compact and comfortable density
   presets and preference restoration before React's first paint.
 - **Configurable appearance.** Choose a preset or custom theme color, Flat /
   Soft / Layered elevation, and control sizing independent of density.
   [Appearance lab](https://le0tan.github.io/evenform/#appearance) combines live
   preview, numeric tokens and CSS export; see the [appearance guide](docs/appearance.md).
-- **Purposeful motion.** Shared timing, interruptible overlays, opt-in sliding
+- **Motion.** Shared timing, interruptible overlays, opt-in sliding
   Tabs and list updates, stable action/loading feedback and reduced-motion support.
   [Motion examples](https://le0tan.github.io/evenform/#components/motion) · [Guide](docs/motion.md).
 - **Composable components and patterns.** shadcn/ui's Base UI Nova style is the
   foundation; React Aria, TanStack, Tiptap, and other focused libraries support
   dates, data, editing, and interaction.
-- **Charts that follow your tokens.** A lazy-loaded VChart adapter reads the
+- **Charts.** A lazy-loaded VChart adapter reads the
   local CSS palette and typography, with loading and error feedback.
 - **A product starting point.** The Starter shares the same components and CSS
   while keeping Showcase pages, demo data, and the token editor out of its bundle.
@@ -66,8 +62,7 @@ npm run preview:starter  # Preview the standalone product
 
 Start product work in `src/starter/App.tsx`. To adopt selected components in an
 existing application, follow the [adoption guide](docs/getting-started.md) and
-[dependency boundaries](docs/dependencies.md). This is a source-first repository;
-it does not currently publish an npm component package or a shadcn registry.
+[dependency boundaries](docs/dependencies.md). Adoption is through source; npm packages and a shadcn registry are currently unavailable.
 
 ## Repository map
 
@@ -101,21 +96,18 @@ npm run build
 npm run build:starter
 ```
 
-GitHub CI is manually triggered from **Actions → CI → Run workflow**; pushes
-and pull requests do not start it. Pages deployment is also manual; current
+Trigger GitHub CI from **Actions → CI → Run workflow**. Pages deployment is also manual; current
 availability and setup are recorded in the [release guide](docs/releasing.md).
 
 For browser verification and the theme/density matrix, see the
-[development guide](docs/development.md). Current examples use illustrative
-data and browser-local state. Authentication, API transport, authorization,
+[development guide](docs/development.md). Authentication, API transport, authorization,
 payments, and persistence belong to the consuming application. Browser-focused
 components need additional integration work and verification in SSR hosts; see
 the [React Router SSR guide](docs/react-router-ssr.md) and
 [source adoption recipes](docs/source-adoption-contracts.md).
 
 Evenform is pre-1.0; component APIs and tokens may change. Report reproducible
-bugs or propose focused improvements through this repository's issues and pull
-requests. Read [CONTRIBUTING.md](CONTRIBUTING.md) before submitting a change.
+bugs through issues. Read [CONTRIBUTING.md](CONTRIBUTING.md) before submitting a change.
 
 ## License and acknowledgments
 

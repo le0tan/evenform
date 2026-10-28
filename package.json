@@ -4,6 +4,7 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
+    "verify:quality": "node scripts/verify-quality.mjs",
     "verify:input-adoption": "node scripts/verify-input-adoption.mjs",
     "verify:ssr": "node scripts/verify-ssr.mjs",
     "analyze:adoption-size": "node scripts/analyze-adoption-size.mjs",

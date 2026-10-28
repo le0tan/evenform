@@ -241,7 +241,7 @@ export function MotionGallery() {
             <DialogContent>
               <DialogTitle>Review changes</DialogTitle>
               <DialogDescription>
-                Your changes are ready. This is a local preview.
+                Review your changes before confirming.
               </DialogDescription>
               <DialogClose render={<Button />}>Confirm</DialogClose>
             </DialogContent>

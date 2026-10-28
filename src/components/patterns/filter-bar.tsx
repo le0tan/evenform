@@ -3,8 +3,7 @@ import { X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 
-/** Caller owns query, filter state and controls. This layout adds no form or
- * toolbar role, so native input and tab order remain intact. */
+/** The caller supplies query state and controls with their native tab order. */
 export function FilterBar({ search, filters, actions, children, className, ...props }: ComponentProps<"div"> & {
   search?: ReactNode
   filters?: ReactNode

@@ -20,7 +20,7 @@
   .pattern-auth-preview { overflow: hidden; border: var(--ds-border-width) solid var(--border); border-radius: var(--radius); }
   .pattern-auth-preview [data-slot='auth-layout-primary'] { padding-block: var(--ds-section-gap); }
   .pattern-auth-brand { display: flex; align-items: center; gap: var(--ds-control-gap); font-weight: var(--ds-weight-semibold); }
-  .pattern-auth-heading h3 { font-size: var(--ds-text-page-title); font-weight: var(--ds-weight-semibold); line-height: var(--ds-leading-tight); letter-spacing: -0.025em; }
+  .pattern-auth-heading h2 { font-size: var(--ds-text-page-title); font-weight: var(--ds-weight-semibold); line-height: var(--ds-leading-tight); letter-spacing: -0.025em; }
   .pattern-auth-preview [data-slot='auth-layout-aside'] h3 { font-size: var(--ds-text-page-title); font-weight: var(--ds-weight-semibold); line-height: var(--ds-leading-tight); max-width: 16ch; }
   .pattern-auth-preview [data-slot='auth-layout-aside'] > p { color: var(--muted-foreground); max-width: 40ch; }
   .pattern-auth-preview [data-slot='auth-layout-aside'] ul { padding-left: var(--ds-space-4); list-style: disc; display: grid; gap: var(--ds-form-field-gap); }

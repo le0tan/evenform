@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useState } from "react"
 import { ChevronRight, Moon, SlidersHorizontal, Search, Sun } from "lucide-react"
-import { AppShell, PageHeader, PageSection } from "@/components/patterns/layouts"
+import { AppShell } from "@/components/patterns/layouts"
 import { Button } from "@/components/ui/button"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import { Sheet, SheetBody, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet"
@@ -10,6 +10,7 @@ import { Workspace } from "@/playground/workspace"
 import { TokenPanel } from "@/playground/token-panel"
 import { useTokens } from "@/playground/use-tokens"
 import { ShowcaseSidebar } from "@/playground/showcase-sidebar"
+import { Foundations } from "@/playground/foundations"
 import { readShowcaseRoute, showcaseGroups, type ShowcaseRoute } from "@/playground/showcase-navigation"
 import "@/playground/showcase-navigation.css"
 
@@ -51,15 +52,8 @@ export default function App() {
     <nav className="showcase-breadcrumb" aria-label="Breadcrumb"><SidebarTrigger className="md:hidden" aria-label="Open navigation" aria-keyshortcuts="Control+B Meta+B" /><a href="#foundations" className="showcase-breadcrumb-root">Library</a><ChevronRight className="showcase-breadcrumb-root" size={13} aria-hidden="true" />{group && <><a className="showcase-breadcrumb-group" href={`#${group.page}`}>{group.title}</a><ChevronRight className="showcase-breadcrumb-group" size={13} aria-hidden="true" /></>}<span aria-current="page">{pageTitle}</span></nav>
     <div className="toolbar header-actions"><Button nativeButton={false} role="link" render={<a href="https://github.com/le0tan/evenform" target="_blank" rel="noopener noreferrer" />} variant="ghost" size="icon" aria-label="Evenform on GitHub" title="View Evenform on GitHub"><img src={`${import.meta.env.BASE_URL}brand/github-mark.svg`} width="16" height="16" className="dark:invert" alt="" /></Button><Button variant="ghost" size="icon" aria-label="Search library" onClick={() => window.dispatchEvent(new Event("evenform:open-library-search"))}><Search /></Button><Button variant="ghost" size="icon" aria-label={dark ? "Switch to light theme" : "Switch to dark theme"} onClick={() => setTheme(dark ? "light" : "dark")}>{dark ? <Sun /> : <Moon />}</Button><Button variant={panelOpen ? "secondary" : "outline"} size="sm" className="showcase-token-toggle" aria-label="Design tokens" title="Design tokens" aria-expanded={panelOpen} onClick={() => setPanelOpen(value => !value)}><SlidersHorizontal aria-hidden="true" /><span className="showcase-token-label">Design tokens</span></Button></div>
   </>} aside={panelOpen && wide ? <aside className="token-panel" aria-label="Token playground"><TokenPanel tokens={tokens} onClose={() => setPanelOpen(false)} /></aside> : undefined}>
-    <Suspense fallback={<p className="quiet-meta" role="status">Loading preview…</p>}>{route.page === "appearance" && <AppearanceLab tokens={tokens} />}{route.page === "dashboard" && <DataDashboard />}{route.page === "inbox" && <SupportInbox />}{route.page === "workspace" && <Workspace />}{route.page === "settings" && <Settings tokens={tokens} />}{route.page === "components" && <Gallery />}{route.page === "patterns" && <PatternGallery />}{route.page === "foundations" && <Foundations />}{route.page === "charts" && <Charts />}</Suspense>
+    <Suspense fallback={<p className="quiet-meta" role="status">Loading preview…</p>}>{route.page === "appearance" && <AppearanceLab tokens={tokens} />}{route.page === "dashboard" && <DataDashboard />}{route.page === "inbox" && <SupportInbox />}{route.page === "workspace" && <Workspace />}{route.page === "settings" && <Settings tokens={tokens} />}{route.page === "components" && <Gallery />}{route.page === "patterns" && <PatternGallery />}{route.page === "foundations" && <Foundations tokens={tokens} />}{route.page === "charts" && <Charts />}</Suspense>
     </AppShell>
-    {!wide && <Sheet open={panelOpen} onOpenChange={setPanelOpen}><SheetContent className="mobile-token-panel py-0" showCloseButton={false}><SheetHeader className="sr-only"><SheetTitle>Design tokens</SheetTitle><SheetDescription>Configure the design system in real time.</SheetDescription></SheetHeader><SheetBody className="p-0"><TokenPanel tokens={tokens} onClose={() => setPanelOpen(false)} /></SheetBody></SheetContent></Sheet>}
+    {!wide && <Sheet open={panelOpen} onOpenChange={setPanelOpen}><SheetContent className="mobile-token-panel py-0" showCloseButton={false}><SheetHeader className="sr-only"><SheetTitle>Design tokens</SheetTitle><SheetDescription>Theme, density and token settings.</SheetDescription></SheetHeader><SheetBody className="p-0"><TokenPanel tokens={tokens} onClose={() => setPanelOpen(false)} /></SheetBody></SheetContent></Sheet>}
   </TooltipProvider>
-}
-function Foundations() {
-  return <><PageHeader title="Foundations"  description="CSS tokens for spacing, typography and color." />
-    <PageSection title="Token layers" ><div className="token-layer"><span className="layer-tag">Primitive</span><div><h3>The raw materials</h3><p>A four-pixel spacing scale, Geist typography, a neutral palette and a restrained radius scale.</p><code>--ds-space-4: 16px;</code></div></div><div className="token-layer"><span className="layer-tag">Semantic</span><div><h3>Values with a purpose</h3><p>Page insets, section rhythm and control heights. Density changes these shared decisions.</p><code>--ds-card-padding: var(--ds-space-4);</code></div></div><div className="token-layer"><span className="layer-tag">Component</span><div><h3>A single place to tune each component</h3><p>Components inherit semantic values and accept a focused override when they need one.</p><code>--ds-card-inset: var(--ds-card-padding);</code></div></div></PageSection>
-    <PageSection title="Theme colors" description="Official shadcn colors handle light and dark themes."><div className="swatch-grid">{["background", "foreground", "primary", "muted", "border"].map((name) => <div className="swatch-item" key={name}><div style={{ background: `var(--${name})` }} /><code>{name}</code></div>)}</div></PageSection>
-    <PageSection title="Try token overrides"  description="Open Design tokens and adjust Card padding to preview a shared change."><pre className="code-example">{`:root {\n  --ds-card-padding: 24px;\n  --ds-control-height: 36px;\n}`}</pre><p className="field-description">Read DESIGN.md for layout recipes, component contracts, and adoption instructions.</p></PageSection>
-  </>
 }

@@ -6,8 +6,8 @@ export const tokenControls = [
   { name: "--ds-section-gap", density: "layout", label: "Section gap", min: 16, max: 56, step: 4, note: "Between content groups" },
   { name: "--ds-card-padding", density: "layout", label: "Card padding", min: 8, max: 36, step: 4, note: "Every Card, including headers" },
   { name: "--ds-control-height", density: "control", label: "Control height", min: 28, max: 48, step: 2, note: "Buttons, inputs, selects & tabs" },
-  { name: "--ds-radius-base", label: "Border radius", min: 0, max: 14, step: 1, note: "Official shadcn radius scale" },
-  { name: "--ds-font-size-base", label: "Base font size", min: 12, max: 18, step: 1, note: "Type scale, not page zoom" },
+  { name: "--ds-radius-base", label: "Border radius", min: 0, max: 14, step: 1, note: "Corner radius scale" },
+  { name: "--ds-font-size-base", label: "Base font size", min: 12, max: 18, step: 1, note: "Typography scale" },
   { name: "--ds-sidebar-width", label: "Sidebar width", min: 192, max: 280, step: 8, note: "Desktop navigation" },
 ] satisfies TokenControl[]
 export const advancedTokenGroups: { label: string; controls: TokenControl[] }[] = [

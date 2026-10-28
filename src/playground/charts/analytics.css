@@ -1,6 +1,6 @@
 @layer components {
   .charts-page { display: flex; flex-direction: column; gap: var(--ds-section-gap); min-width: 0; container: evenform-charts / inline-size; }
-  .analytics-tabs { gap: var(--ds-panel-gap); }
+  .analytics-tabs { display: flex; flex-direction: column; gap: var(--ds-panel-gap); min-width: 0; }
   .analytics-view-toolbar { display: flex; justify-content: space-between; align-items: center; gap: var(--ds-panel-gap); flex-wrap: wrap; }
   .analytics-period-note { display: flex; justify-content: space-between; gap: var(--ds-space-2); flex-wrap: wrap; color: var(--muted-foreground); font-size: var(--ds-text-caption); }
   .analytics-overview { display: flex; flex-direction: column; gap: var(--ds-panel-gap); }

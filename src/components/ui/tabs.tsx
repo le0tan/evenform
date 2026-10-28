@@ -87,7 +87,7 @@ function TabsContent({ className, ...props }: TabsPrimitive.Panel.Props) {
   return (
     <TabsPrimitive.Panel
       data-slot="tabs-content"
-      className={(state) => cn("flex-1 text-sm outline-none", typeof className === "function" ? className(state) : className)}
+      className={(state) => cn("flex-1 text-sm outline-none focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2", typeof className === "function" ? className(state) : className)}
       {...props}
     />
   )

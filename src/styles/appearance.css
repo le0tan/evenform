@@ -91,21 +91,22 @@
   }
 }
 
+/* Missing persisted custom roles fall back to the corresponding neutral role. */
 :root[data-palette="custom"] {
-  --primary: var(--ds-custom-light-primary);
-  --primary-foreground: var(--ds-custom-light-foreground);
-  --ds-primary-hover: var(--ds-custom-light-hover);
-  --accent: var(--ds-custom-light-accent);
-  --accent-foreground: var(--ds-custom-light-accent-foreground);
-  --ring: var(--ds-custom-light-ring);
+  --primary: var(--ds-custom-light-primary, var(--ds-neutral-900));
+  --primary-foreground: var(--ds-custom-light-foreground, var(--ds-neutral-50));
+  --ds-primary-hover: var(--ds-custom-light-hover, color-mix(in srgb, var(--ds-neutral-900) 80%, transparent));
+  --accent: var(--ds-custom-light-accent, var(--ds-neutral-100));
+  --accent-foreground: var(--ds-custom-light-accent-foreground, var(--ds-neutral-900));
+  --ring: var(--ds-custom-light-ring, var(--ds-neutral-400));
 }
 :root.dark[data-palette="custom"] {
-  --primary: var(--ds-custom-dark-primary);
-  --primary-foreground: var(--ds-custom-dark-foreground);
-  --ds-primary-hover: var(--ds-custom-dark-hover);
-  --accent: var(--ds-custom-dark-accent);
-  --accent-foreground: var(--ds-custom-dark-accent-foreground);
-  --ring: var(--ds-custom-dark-ring);
+  --primary: var(--ds-custom-dark-primary, var(--ds-neutral-200));
+  --primary-foreground: var(--ds-custom-dark-foreground, var(--ds-neutral-900));
+  --ds-primary-hover: var(--ds-custom-dark-hover, color-mix(in srgb, var(--ds-neutral-200) 80%, transparent));
+  --accent: var(--ds-custom-dark-accent, var(--ds-neutral-800));
+  --accent-foreground: var(--ds-custom-dark-accent-foreground, var(--ds-neutral-50));
+  --ring: var(--ds-custom-dark-ring, var(--ds-neutral-500));
 }
 :root[data-palette="custom"] {
   --sidebar-primary: var(--primary);

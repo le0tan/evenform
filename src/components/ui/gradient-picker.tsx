@@ -1,4 +1,4 @@
-import { useId, type ComponentProps } from "react"
+import { useId, useRef, type ComponentProps } from "react"
 import { Plus, Trash2, ArrowLeftRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -59,6 +59,7 @@ export function GradientPicker({
   ...props
 }: GradientPickerProps) {
   const id = useId()
+  const addButton = useRef<HTMLButtonElement>(null)
   function updateStop(stopId: string, patch: Partial<GradientStop>) {
     onValueChange({
       ...value,
@@ -179,6 +180,7 @@ export function GradientPicker({
           size="sm"
           disabled={disabled}
           onClick={addStop}
+          ref={addButton}
         >
           <Plus />
           Add stop
@@ -238,22 +240,19 @@ export function GradientPicker({
               variant="ghost"
               aria-label={`Remove stop ${index + 1}`}
               disabled={disabled || value.stops.length <= 2}
-              onClick={() =>
+              onClick={() => {
                 onValueChange({
                   ...value,
                   stops: value.stops.filter((item) => item.id !== stop.id),
                 })
-              }
+                addButton.current?.focus()
+              }}
             >
               <Trash2 />
             </Button>
           </li>
         ))}
       </ol>
-      <p data-slot="design-tool-description">
-        Use arrow keys to adjust positions by 1%. At least two color stops are
-        required.
-      </p>
     </fieldset>
   )
 }

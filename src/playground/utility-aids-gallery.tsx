@@ -32,7 +32,7 @@ function LoadingExample() {
           }}
         >
           {busy && <Spinner />}
-          {busy ? "Refreshing preview…" : "Refresh local preview"}
+          {busy ? "Refreshing preview…" : "Refresh summary"}
         </Button>
 
       </div>
@@ -43,7 +43,7 @@ function LoadingExample() {
         loadingContent={
           <LoadingState
             label="Refreshing reference summary…"
-            description="The current summary remains available while this preview updates."
+
           />
         }
       >
@@ -53,12 +53,12 @@ function LoadingExample() {
             Sam is coordinating the handover. Account access is confirmed; the support rota and first reporting date still need review.
           </Text>
           <Text as="span" size="caption" tone="muted">
-            Local sample · Updated 21 October
+            Updated 21 October
           </Text>
         </div>
       </BusyRegion>
-      <Text role="status" tone="muted" size="caption">
-        {completed ? "Local preview refreshed." : ""}
+      <Text role="status" tone="muted" size="caption" className={completed ? undefined : "sr-only"}>
+        {completed ? "Summary refreshed." : ""}
       </Text>
     </div>
   )
@@ -118,7 +118,7 @@ function ReadingExample() {
           <p>
             Keep one review queue for questions that remain open. Each entry should name the project, describe the question and identify who will respond. Close an entry only after the answer is recorded where the next reviewer can find it.
           </p>
-          <Blockquote attribution="Illustrative handover note">
+          <Blockquote attribution="Handover note">
             <p>
               Every open question needs an owner and a date for the next update.
             </p>
@@ -127,10 +127,7 @@ function ReadingExample() {
           <p>
             The next checkpoint is Thursday at 10:00 Singapore time. Review the outstanding items, confirm the release schedule and send any remaining questions to the handover owner before the meeting.
           </p>
-          <p>
-            Return to the document title when you are ready to begin another
-            pass.
-          </p>
+
         </Prose>
       </div>
       <div className="flex justify-end">
@@ -168,7 +165,7 @@ function UtilityAidsGallery() {
             <InlineCode>handover-october</InlineCode> before Thursday’s checkpoint.
           </Text>
           <Text tone="muted" size="caption">
-            Illustrative project note · Updated 21 October 2026
+            Updated 21 October 2026
           </Text>
           <Blockquote
             attribution={

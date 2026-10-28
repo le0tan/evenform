@@ -37,8 +37,7 @@ export interface StepFormProps extends Omit<
   actions?: ReactNode
   focusOnStepChange?: boolean
 }
-/** A controlled workflow frame. Navigation requests never auto-submit a form,
- * run validation, or advance state; the application approves every transition. */
+/** Controlled workflow. The application validates navigation and advances state. */
 export function StepForm({
   steps,
   currentStep,
