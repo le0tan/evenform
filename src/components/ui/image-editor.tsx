@@ -39,7 +39,7 @@ export interface ImageEditorProps extends Omit<
 function clamp(value: number, min: number, max: number) {
   return Math.max(min, Math.min(max, Number.isFinite(value) ? value : min))
 }
-/** Converts configuration to CSS filters; this is a rendering model, not a pixel export. */
+/** Converts image adjustments to CSS preview filters. */
 export function imageEditorFilter(value: ImageEditorValue) {
   return `brightness(${clamp(value.brightness, 0, 2)}) contrast(${clamp(value.contrast, 0, 2)}) saturate(${clamp(value.saturation, 0, 2)}) blur(${clamp(value.blur, 0, 20)}px)`
 }
@@ -153,7 +153,6 @@ export function ImageEditor({
           disabled={disabled}
           buttonLabel="Choose image"
           label="Drop an image here"
-          description="Image selection stays in your application."
           onFilesAccepted={(files) => {
             if (files[0]) onFileSelect(files[0])
           }}
@@ -408,10 +407,6 @@ export function ImageEditor({
           <span data-slot="design-tool-unit">%</span>
         </div>
       )}
-      <p data-slot="design-tool-description">
-        Configuration updates the CSS preview. Source files, object URLs,
-        persistence, and pixel export belong to your application.
-      </p>
     </fieldset>
   )
 }

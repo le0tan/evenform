@@ -39,7 +39,7 @@ export function AgendaDay({
         <h3 id={id}>{date}</h3>
         {actions}
       </header>
-      {empty ?? <ol data-slot="agenda-events">{children}</ol>}
+      {empty ?? <ol role="list" data-slot="agenda-events">{children}</ol>}
     </section>
   )
 }

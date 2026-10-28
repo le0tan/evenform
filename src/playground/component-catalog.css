@@ -2,20 +2,28 @@
   .catalog { container: evenform-catalog / inline-size; }
   .component-browser { min-width: 0; }
   .component-browser > .showcase-page-panel { display: flex; flex-direction: column; gap: var(--ds-section-gap); }
-  /* Documentation occupies a muted header; the live example stays on the canvas. */
+  /* A quiet frame keeps each live example distinct; headings share its canvas
+     so controls, rather than repeated header bands, carry the visual emphasis. */
   .component-browser .page-section {
-    padding: var(--ds-panel-gap);
+    --_catalog-inset: calc(var(--ds-panel-gap) + var(--ds-space-2));
+    padding: var(--_catalog-inset);
+    gap: var(--ds-form-group-gap);
     border: var(--ds-border-width) solid var(--border);
     border-radius: var(--radius-lg);
+    background: var(--card);
+    color: var(--card-foreground);
   }
   .component-browser .page-section > .section-header {
-    margin: calc(-1 * var(--ds-panel-gap)) calc(-1 * var(--ds-panel-gap)) 0;
-    padding: var(--ds-space-4) var(--ds-panel-gap);
-    border-bottom: var(--ds-border-width) solid var(--border);
-    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-    background: var(--muted);
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: var(--ds-control-gap);
   }
-  .catalog-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--ds-panel-gap); }
+  .component-browser .section-header > div { min-width: 0; }
+  .component-browser .section-header p {
+    max-width: 65ch;
+    line-height: var(--ds-line-height-body);
+  }
+  .catalog-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--ds-section-gap); align-items: start; }
   .catalog-example { display: flex; flex-direction: column; align-items: stretch; min-width: 0; gap: var(--ds-form-group-gap); }
   .catalog-fieldset { border: 0; min-width: 0; padding: 0; margin: 0; }
   .catalog-fieldset legend, .catalog-label { display: block; font-size: var(--ds-text-label); font-weight: var(--ds-weight-medium); margin-bottom: var(--ds-form-field-gap); }
@@ -29,4 +37,7 @@
   .catalog [data-slot='combobox-chips'] input { width: 8rem; flex: 1; }
   @container evenform-catalog (max-width: 42rem) { .catalog-grid { grid-template-columns: minmax(0, 1fr); gap: var(--ds-section-gap); } }
   @media (max-width: 760px) { .catalog-grid { grid-template-columns: minmax(0, 1fr); gap: var(--ds-section-gap); } }
+  @media (max-width: 600px) {
+    .component-browser .page-section { --_catalog-inset: var(--ds-panel-gap); }
+  }
 }

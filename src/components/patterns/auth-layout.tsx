@@ -1,8 +1,7 @@
 import { type ComponentProps, type ReactNode } from "react"
 import { cn } from "@/lib/utils"
 
-/** Full-page centered or split composition. Forms, headings, authentication,
- * loading and error state belong to the application. */
+/** Centered or split layout. The application supplies content and state. */
 export function AuthLayout({ brand, aside, footer, children, className, ...props }: ComponentProps<"div"> & {
   brand?: ReactNode
   aside?: ReactNode

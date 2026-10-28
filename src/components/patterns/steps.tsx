@@ -8,8 +8,7 @@ export function Steps({ orientation = "horizontal", className, ...props }: Compo
   return <div data-slot="steps-container"><ol role="list" data-slot="steps" data-orientation={orientation} className={cn(className)} {...props} /></div>
 }
 
-/** A progress indicator, not a navigation widget. Compose a link or button in
- * title only when the application supports jumping to that step. */
+/** Progress indicator. Supply title links or buttons for navigable steps. */
 export function Step({ title, description, status = "upcoming", statusLabel, marker, children, className, ...props }: Omit<ComponentProps<"li">, "title"> & {
   title: ReactNode
   description?: ReactNode

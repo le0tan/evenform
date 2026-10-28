@@ -22,7 +22,7 @@ export interface PlanPickerProps {
   className?: string
   orientation?: "vertical" | "horizontal"
 }
-/** Selects a plan only; purchasing and billing belong to the application. */
+/** Plan selection. The application handles purchasing and billing. */
 export function PlanPicker({
   options,
   value,

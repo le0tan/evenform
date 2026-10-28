@@ -310,7 +310,6 @@ function HierarchicalTableExample() {
   return (
     <PageSection id="example-tree-table"
       title="Tree rows and column sizing"
-      description="Expand work streams, keep a column in view, and resize headers by dragging or with the arrow keys."
     >
       <div className="evenform-data-table-example">
         <div className="evenform-data-forms-toolbar">
@@ -336,8 +335,7 @@ function HierarchicalTableExample() {
         </div>
         <DataTable table={table} resizableColumns aria-label="Work streams" />
         <p className="evenform-data-forms-caption">
-          Scroll horizontally on smaller screens. Focus a header divider and use
-          arrow keys to resize; Enter restores its width.
+          Drag a column divider to resize, or focus it and use arrow keys. Enter resets the width.
         </p>
       </div>
     </PageSection>
@@ -390,7 +388,7 @@ export function DataFormsGallery() {
     <div className="evenform-data-forms-gallery">
       <PageSection id="example-data-table"
         title="Data table"
-        description="Scan projects, narrow the results, and select records across pages."
+
       >
         <div className="evenform-data-table-example">
           <div className="evenform-data-forms-toolbar">
@@ -561,14 +559,14 @@ export function DataFormsGallery() {
             </div>
             {saved && (
               <p className="evenform-data-forms-caption" role="status">
-                Preferences saved for this preview.
+                Preferences saved locally.
               </p>
             )}
           </Form>
         </PageSection>
         <PageSection id="example-autocomplete"
           title="Free text suggestions"
-          description="Pick a suggestion or enter your own area of interest."
+
         >
           <div className="evenform-form">
             <div className="evenform-form-field">

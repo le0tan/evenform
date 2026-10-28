@@ -281,6 +281,8 @@ Button 的默认圆角与尺寸一起放在 components 层，ButtonGroup 的连�
 
 Showcase 默认进入 Foundations。Components 默认展示 Core controls；In context 与既有验证例子继续保留。Patterns 为独立按需加载页面（`/#patterns`），提供数据工作台、记录详情和账号布局。它们的模拟数据、校验与审核状态均在 playground 页面，Starter 不导入这些内容。
 
+Foundations 使用真实组件组合展示清单、邀请预览和偏好设置；清单与表单状态仅保留在当前页面，邀请明确说明不发送邮件。主题色和密度入口复用全局 `useTokens` 状态，与 Appearance lab / Design tokens 同步并沿用原有持久化、重置契约。字体、颜色、间距示例直接读取 CSS 参数；Token 分层和复制示例收在可展开说明中。示例布局在自身容器变窄时重新排列，保持产品组件与 Showcase 样式的边界。
+
 ## Source adoption compositions
 
 Select 的 items 与延迟挂载标签、OptionSelect、HeaderShell workspace、菜单 GroupLabel、Card 滚动流与公共表面参数见 [Source adoption contracts](docs/source-adoption-contracts.md)。Card 默认不参与 flex 压缩；确需压缩的布局通过 shrink utility 或 --ds-card-shrink 显式选择并提供内容滚动边界。浮层 tint / opacity / blur 共享语义参数，继续保留原有 presence 与 reduced-motion。

@@ -19,11 +19,11 @@ function NotificationExamples() {
   const [completed, setCompleted] = useState(false)
   return <div className="catalog-example">
     <div className="toolbar">
-      <Button variant="outline" onClick={() => toast.add({ title: "Preview saved", description: "Your draft is available in this example.", type: "success" })}>Show notification</Button>
-      <Button variant="outline" onClick={() => toast.add({title: "Example archived", description: "This preview changes no real data.", actionProps: {children: "Undo archive", onClick: () => {setCompleted(true); toast.close()} }})}>Notification with undo</Button>
+      <Button variant="outline" onClick={() => toast.add({ title: "Preview saved", type: "success" })}>Show notification</Button>
+      <Button variant="outline" onClick={() => toast.add({title: "Example archived", actionProps: {children: "Undo archive", onClick: () => {setCompleted(true); toast.close()} }})}>Notification with undo</Button>
       <Button variant="ghost" onClick={() => {toast.close(); setCompleted(false)}}>Dismiss all</Button>
     </div>
-    <p className="field-description" role="status">{completed ? "Archive undone in this preview." : "Up to three notices remain visible. Hover or focus pauses dismissal; Escape and dismiss buttons close a notice."}</p>
+    <p className="field-description" role="status">{completed ? "Archive undone in this preview." : ""}</p>
   </div>
 }
 
@@ -50,19 +50,19 @@ export function AdvancedControlsGallery() {
           <div className="toolbar"><div role="group" aria-label="Toggle example" id="example-toggle" className="showcase-example"><Toggle pressed={pinned} onPressedChange={setPinned}>Pin document</Toggle></div><Badge variant={guides ? "secondary" : "outline"}>Guides {guides ? "visible" : "hidden"}</Badge></div>
         </div>
         <div className="catalog-example">
-          <div role="group" aria-label="Navigation menu example" id="example-navigation-menu" className="showcase-example"><NavigationMenu aria-label="Library navigation"><NavigationMenuList><NavigationMenuItem value="library"><NavigationMenuTrigger>Explore library<NavigationMenuIcon><ChevronDown size={14} /></NavigationMenuIcon></NavigationMenuTrigger><NavigationMenuContent><NavigationMenuLink href="#components"><strong>Components</strong><span className="text-muted-foreground text-label">Inputs, navigation, overlays and feedback.</span></NavigationMenuLink><NavigationMenuLink href="#patterns"><strong>Application patterns</strong><span className="text-muted-foreground text-label">Workspaces, details, settings and account access.</span></NavigationMenuLink><NavigationMenuLink href="#charts"><strong>Charts</strong><span className="text-muted-foreground text-label">Interactive data visualization with VChart.</span></NavigationMenuLink></NavigationMenuContent></NavigationMenuItem><NavigationMenuItem value="guides"><NavigationMenuTrigger>Guides<NavigationMenuIcon><ChevronDown size={14} /></NavigationMenuIcon></NavigationMenuTrigger><NavigationMenuContent><NavigationMenuLink href="#appearance">Appearance lab</NavigationMenuLink><NavigationMenuLink href="#components/motion">Motion examples</NavigationMenuLink></NavigationMenuContent></NavigationMenuItem><NavigationMenuItem><NavigationMenuLink href="#foundations">Foundations</NavigationMenuLink></NavigationMenuItem></NavigationMenuList><NavigationMenuOverlay /></NavigationMenu></div>
-          <p className="field-description">Arrow keys move between menu triggers; Escape closes the panel.</p>
+          <div role="group" aria-label="Navigation menu example" id="example-navigation-menu" className="showcase-example"><NavigationMenu aria-label="Library navigation"><NavigationMenuList><NavigationMenuItem value="library"><NavigationMenuTrigger>Explore library<NavigationMenuIcon><ChevronDown size={14} /></NavigationMenuIcon></NavigationMenuTrigger><NavigationMenuContent><NavigationMenuLink href="#components"><strong>Components</strong><span className="text-muted-foreground text-label">Inputs, navigation, overlays and feedback.</span></NavigationMenuLink><NavigationMenuLink href="#patterns"><strong>Application patterns</strong><span className="text-muted-foreground text-label">Workspaces, details, settings and account access.</span></NavigationMenuLink><NavigationMenuLink href="#charts"><strong>Charts</strong><span className="text-muted-foreground text-label">Charts and source data.</span></NavigationMenuLink></NavigationMenuContent></NavigationMenuItem><NavigationMenuItem value="guides"><NavigationMenuTrigger>Guides<NavigationMenuIcon><ChevronDown size={14} /></NavigationMenuIcon></NavigationMenuTrigger><NavigationMenuContent><NavigationMenuLink href="#appearance">Appearance lab</NavigationMenuLink><NavigationMenuLink href="#components/motion">Motion examples</NavigationMenuLink></NavigationMenuContent></NavigationMenuItem><NavigationMenuItem><NavigationMenuLink href="#foundations">Foundations</NavigationMenuLink></NavigationMenuItem></NavigationMenuList><NavigationMenuOverlay /></NavigationMenu></div>
+
           <p className="text-body">Built with <span role="group" aria-label="Preview card example" id="example-preview-card" className="showcase-example"><PreviewCard><PreviewCardTrigger href="#patterns" className="font-medium underline underline-offset-4">reusable application patterns</PreviewCardTrigger><PreviewCardContent><strong>Application patterns</strong><p className="text-label text-muted-foreground">Workspaces, detail pages, settings and account access.</p><a href="#patterns" className="text-label underline underline-offset-4">Browse the patterns</a></PreviewCardContent></PreviewCard></span>.</p>
-          <p className="field-description">Hover or focus the link for a preview.</p>
+
         </div>
       </div>
-      <p className="field-description" role="status">{notice || "Choose a document command to see feedback here."}</p>
+      <p className={notice ? "field-description" : "sr-only"} role="status">{notice}</p>
     </PageSection>
     <PageSection title="Editing & contained content" >
       <div className="catalog-grid">
         <div className="catalog-example">
           <div role="group" aria-label="Editor toolbar example" id="example-editor-toolbar" className="showcase-example"><EditorToolbar aria-label="Text formatting"><EditorToolbarGroup aria-label="Formatting"><Toggle pressed={format.bold} onPressedChange={bold => setFormat({...format, bold})} render={<EditorToolbarButton />} aria-label="Bold"><Bold /></Toggle><Toggle pressed={format.italic} onPressedChange={italic => setFormat({...format, italic})} render={<EditorToolbarButton />} aria-label="Italic"><Italic /></Toggle><Toggle pressed={format.underline} onPressedChange={underline => setFormat({...format, underline})} render={<EditorToolbarButton />} aria-label="Underline"><Underline /></Toggle></EditorToolbarGroup><EditorToolbarSeparator /><EditorToolbarGroup aria-label="Document actions"><EditorToolbarButton onClick={() => setNotice("Link insertion selected in this preview.")} aria-label="Insert link"><Link /></EditorToolbarButton><EditorToolbarButton disabled aria-label="Undo formatting"><Undo /></EditorToolbarButton></EditorToolbarGroup></EditorToolbar></div>
-          <p className="rounded-lg bg-muted p-card text-body" style={{fontWeight: format.bold ? 600 : undefined, fontStyle: format.italic ? "italic" : undefined, textDecoration: format.underline ? "underline" : undefined}}>Select a formatting control to change this preview. Arrow keys move through the toolbar; Tab continues to the next task.</p>
+          <p className="rounded-lg bg-muted p-card text-body" style={{fontWeight: format.bold ? 600 : undefined, fontStyle: format.italic ? "italic" : undefined, textDecoration: format.underline ? "underline" : undefined}}>October design review</p>
           <div role="group" aria-label="Meter example" id="example-meter" className="showcase-example"><Meter value={usage} getAriaValueText={(_, value) => `${value} GB of 100 GB used`}><MeterLabel>Storage used</MeterLabel><MeterValue>{(_, value) => `${value} / 100 GB`}</MeterValue><MeterTrack><MeterIndicator /></MeterTrack></Meter></div>
           <div className="toolbar"><Button variant="outline" size="sm" disabled={usage <= 0} onClick={() => setUsage(Math.max(0, usage - 8))}>Free 8 GB</Button><Button variant="outline" size="sm" disabled={usage >= 100} onClick={() => setUsage(Math.min(100, usage + 8))}>Use 8 GB</Button></div>
         </div>
@@ -76,8 +76,8 @@ export function AdvancedControlsGallery() {
       <div className="catalog-grid"><div className="catalog-example">
         <label htmlFor="advanced-verification-code" className="catalog-label">Verification code</label>
         <div role="group" aria-label="OTP field example" id="example-otp-field" className="showcase-example"><OTPField id="advanced-verification-code" length={6} value={otp} onValueChange={setOtp} aria-describedby="advanced-code-description" /></div>
-        <p id="advanced-code-description" className="field-description">Enter or paste any six digits. No authentication request is sent.</p>
-        <p className="field-description" role="status">{otp.length === 6 ? "Code complete. No verification request was sent." : `${otp.length} of 6 digits entered.`}</p>
+        <p id="advanced-code-description" className="field-description">Enter or paste six digits.</p>
+        <p className="field-description" role="status">{otp.length === 6 ? "Code complete." : `${otp.length} of 6 digits entered.`}</p>
         <div><Button variant="outline" size="sm" disabled={!otp} onClick={() => setOtp("")}>Clear code</Button></div>
       </div><div role="group" aria-label="Toast example" id="example-toast" className="showcase-example"><NotificationExamples /></div></div>
     </PageSection>

@@ -73,7 +73,7 @@
     --secondary: var(--ds-neutral-100);
     --secondary-foreground: var(--ds-neutral-900);
     --muted: var(--ds-neutral-100);
-    --muted-foreground: var(--ds-neutral-500);
+    --muted-foreground: color-mix(in oklab, var(--ds-neutral-500) 90%, var(--ds-neutral-600));
     --ds-reading-muted-foreground: var(--ds-neutral-600);
     --accent: var(--ds-neutral-100);
     --accent-foreground: var(--ds-neutral-900);
@@ -125,7 +125,7 @@
     --sidebar: var(--ds-neutral-900);
     --sidebar-foreground: var(--ds-neutral-50);
     --sidebar-primary: var(--primary);
-    --sidebar-primary-foreground: var(--ds-neutral-50);
+    --sidebar-primary-foreground: var(--primary-foreground);
     --sidebar-accent: var(--ds-neutral-800);
     --sidebar-accent-foreground: var(--ds-neutral-50);
     --sidebar-border: oklch(1 0 0 / 10%);

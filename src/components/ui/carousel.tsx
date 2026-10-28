@@ -9,6 +9,7 @@ import {
   ArrowUpIcon,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { prefersReducedMotion } from "@/lib/motion"
 import { Button } from "@/components/ui/button"
 
 type CarouselApi = UseEmblaCarouselType[1]
@@ -39,7 +40,7 @@ function useCarousel() {
   return context
 }
 
-/** Embla supplies drag, touch, focus tracking and snap positions. No autoplay is installed. */
+/** Embla supplies drag, touch, focus tracking and snap positions. */
 function Carousel({
   orientation = "horizontal",
   opts,
@@ -58,8 +59,36 @@ function Carousel({
   const [canNext, setCanNext] = React.useState(false)
   const [selectedIndex, setSelectedIndex] = React.useState(0)
   const [slideCount, setSlideCount] = React.useState(0)
-  const previous = React.useCallback(() => api?.scrollPrev(), [api])
-  const next = React.useCallback(() => api?.scrollNext(), [api])
+  const previous = React.useCallback(() => {
+    if (api) api.scrollPrev(prefersReducedMotion(api.rootNode()))
+  }, [api])
+  const next = React.useCallback(() => {
+    if (api) api.scrollNext(prefersReducedMotion(api.rootNode()))
+  }, [api])
+  React.useEffect(() => {
+    if (!api) return
+    const preference = window.matchMedia("(prefers-reduced-motion: reduce)")
+    const settle = () => {
+      if (prefersReducedMotion(api.rootNode()))
+        api.scrollTo(api.selectedScrollSnap(), true)
+    }
+    preference.addEventListener("change", settle)
+    const localPreference = new MutationObserver(settle)
+    for (
+      let ancestor: HTMLElement | null = api.rootNode();
+      ancestor;
+      ancestor = ancestor.parentElement
+    ) {
+      localPreference.observe(ancestor, {
+        attributes: true,
+        attributeFilter: ["data-motion"],
+      })
+    }
+    return () => {
+      preference.removeEventListener("change", settle)
+      localPreference.disconnect()
+    }
+  }, [api])
   React.useEffect(() => {
     if (!api) return
     const sync = () => {

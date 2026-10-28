@@ -1,4 +1,4 @@
-import { useId, useState, type ComponentProps, type ReactNode } from "react"
+import { useId, useRef, useState, type ComponentProps, type ReactNode } from "react"
 import { Button, Dialog, DialogTrigger, ListBox, ListBoxItem, Popover, useLocale } from "react-aria-components"
 import { CalendarDate, endOfMonth, endOfWeek, getLocalTimeZone, startOfMonth, startOfWeek, today, type DayOfWeek } from "@internationalized/date"
 import { CalendarDays, ChevronLeft, ChevronRight, X } from "lucide-react"
@@ -49,11 +49,11 @@ function periodKey(value: PeriodValue) {
   return `${value.type}:${getPeriodRange(value).start.toString()}`
 }
 
-/** Genuine period selection, rather than a day calendar with renamed headings.
- * RAC owns popover dismissal, focus return, listbox arrows and typeahead. */
+/** RAC owns popover dismissal, focus return, listbox arrows and typeahead. */
 export function PeriodPicker({ mode, label, value, defaultValue = null, onChange, placeholderValue, minValue, maxValue, isPeriodUnavailable, isDisabled = false, isReadOnly = false, isInvalid = false, isClearable = false, description, errorMessage, name, firstDayOfWeek, formatPeriod, labels, className, ...props }: PeriodPickerProps) {
   const { locale, direction } = useLocale()
   const id = useId()
+  const trigger = useRef<HTMLButtonElement>(null)
   const [internalValue, setInternalValue] = useState(defaultValue)
   const selected = value !== undefined ? value : internalValue
   // A controlled value from another mode is empty, never silently reinterpreted.
@@ -109,7 +109,7 @@ export function PeriodPicker({ mode, label, value, defaultValue = null, onChange
     <span id={`${id}-label`} className="evenform-field-label">{label}</span>
     <div className="evenform-period-control">
       <DialogTrigger isOpen={open && !isDisabled && !isReadOnly} onOpenChange={next => { if (isDisabled || isReadOnly) return; if (next) setPage(initialDate); setOpen(next) }}>
-        <Button className="evenform-period-trigger" isDisabled={isDisabled} aria-disabled={isReadOnly || undefined} aria-labelledby={`${id}-label ${id}-value`} aria-describedby={describedBy} aria-invalid={isInvalid || undefined}>
+        <Button ref={trigger} className="evenform-period-trigger" isDisabled={isDisabled} aria-disabled={isReadOnly || undefined} aria-labelledby={`${id}-label ${id}-value`} aria-describedby={describedBy} aria-invalid={isInvalid || undefined}>
           <span id={`${id}-value`} data-placeholder={!current || undefined}>{current ? display(current) : labels?.placeholder ?? "Choose a period…"}</span><CalendarDays size={16} aria-hidden="true" />
         </Button>
         <Popover className="evenform-period-popover" placement="bottom start" offset={4}>
@@ -125,7 +125,7 @@ export function PeriodPicker({ mode, label, value, defaultValue = null, onChange
           </Dialog>
         </Popover>
       </DialogTrigger>
-      {isClearable && current && <Button className="evenform-period-clear" aria-label={labels?.clear ?? "Clear period"} isDisabled={isDisabled || isReadOnly} onPress={() => change(null)}><X size={14} aria-hidden="true" /></Button>}
+      {isClearable && current && <Button className="evenform-period-clear" aria-label={labels?.clear ?? "Clear period"} isDisabled={isDisabled || isReadOnly} onPress={() => { change(null); trigger.current?.focus() }}><X size={14} aria-hidden="true" /></Button>}
     </div>
     {description && <span id={`${id}-description`} className="evenform-field-description">{description}</span>}
     {isInvalid && errorMessage && <span id={`${id}-error`} className="evenform-field-error">{errorMessage}</span>}

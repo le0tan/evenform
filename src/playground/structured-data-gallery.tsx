@@ -123,8 +123,8 @@ export function StructuredDataGallery() {
             <p className="evenform-data-caption" aria-live="polite">
               {treeSelection === "all"
                 ? "All items"
-                : `${treeSelection.size} items`}{" "}
-              selected. Selecting a parent does not select its children.
+                : `${treeSelection.size} ${treeSelection.size === 1 ? "item" : "items"}`}{" "}
+              selected. Each folder is selected individually.
             </p>
           </div>
           <div className="evenform-structured-example">
@@ -167,7 +167,6 @@ export function StructuredDataGallery() {
       </PageSection>
       <PageSection id="example-file-upload"
         title="File picker & drop target"
-        description="Files stay in this browser; nothing is uploaded."
       >
         <div className="evenform-structured-grid">
           <FileUpload
@@ -201,12 +200,6 @@ export function StructuredDataGallery() {
                 )
               }
             />
-            {files.length === 0 && (
-              <p className="evenform-data-caption">
-                Accepted files appear here. Their contents stay in this page’s
-                memory.
-              </p>
-            )}
             {rejections.length > 0 && (
               <ul
                 className="evenform-structured-feedback evenform-data-error"
@@ -220,7 +213,7 @@ export function StructuredDataGallery() {
               </ul>
             )}
             <p className="evenform-data-caption" role="status">
-              {files.length} local files ready. No upload has started.
+              {files.length ? `${files.length} ${files.length === 1 ? "file" : "files"} selected.` : "No files selected."}
             </p>
           </div>
         </div>

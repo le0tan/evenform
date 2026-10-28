@@ -35,7 +35,7 @@ export function PageSection({ title, description, actions, children, className, 
 }) {
   const id = useId()
   return <section className={cn("page-section", className)} aria-labelledby={title ? id : undefined} {...props}>
-    {title && <div className="section-header"><div><h2 id={id}>{title}</h2>{description && <p>{description}</p>}</div>{actions}</div>}
+    {(title || description || actions) && <div className="section-header">{(title || description) && <div>{title && <h2 id={id}>{title}</h2>}{description && <p>{description}</p>}</div>}{actions}</div>}
     {children}
   </section>
 }

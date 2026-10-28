@@ -45,6 +45,7 @@
   }
 
   .evenform-floating-panel {
+    overflow-wrap: anywhere;
     max-width: min(
       var(--available-width, 100vw),
       calc(100vw - var(--ds-space-4))
@@ -73,7 +74,7 @@
     padding: var(--ds-popover-inset, var(--ds-overlay-gap));
   }
   .evenform-menu {
-    min-width: var(--ds-menu-min-width, 11rem);
+    min-width: min(var(--ds-menu-min-width, 11rem), var(--available-width, 100vw));
     padding: var(--ds-space-1);
   }
   .evenform-menu-item {
@@ -134,7 +135,7 @@
   .evenform-alert-dialog {
     position: fixed;
     inset-block-start: 50%;
-    inset-inline-start: 50%;
+    left: 50%;
     z-index: 50;
     display: grid;
     gap: var(--ds-overlay-gap);

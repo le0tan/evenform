@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils"
 type WatermarkProps = ComponentProps<"div"> &
   ({ text: string | string[]; image?: never } | { image: string; text?: never })
 
-/** A visual repeated mark only. Identity and permissions belong to the application. */
+/** Repeats text or an image over the content. */
 function Watermark({
   text,
   image,

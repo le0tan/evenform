@@ -72,9 +72,11 @@ export function TreeSelect({
   const treeRef = useRef<HTMLDivElement>(null)
   const [open, setOpen] = useState(false)
   const labels = new Map<string, string>()
+  const selectableKeys: string[] = []
   const collect = (nodes: readonly TreeSelectNode[]) => {
     for (const node of nodes) {
       labels.set(node.id, node.label)
+      if (!node.disabled) selectableKeys.push(node.id)
       if (node.children) collect(node.children)
     }
   }
@@ -158,7 +160,7 @@ export function TreeSelect({
             onSelectionChange={(keys) => {
               if (disabled) return
               onSelectionChange(
-                keys === "all" ? [...labels.keys()] : [...keys].map(String)
+                keys === "all" ? selectableKeys : [...keys].map(String)
               )
               if (selectionMode === "single") setOpen(false)
             }}

@@ -1,6 +1,7 @@
 import {
   useEffect,
   useId,
+  useRef,
   useState,
   type ComponentProps,
   type ReactNode,
@@ -34,7 +35,7 @@ export interface RichTextEditorProps extends Omit<
   ComponentProps<"div">,
   "content" | "onChange" | "defaultValue"
 > {
-  /** A Tiptap document, rather than untrusted HTML. Pass content to control it. */
+  /** A Tiptap document. Pass content to control it. */
   content?: JSONContent
   defaultContent?: JSONContent
   onUpdate?: (document: JSONContent, editor: Editor) => void
@@ -53,7 +54,14 @@ function RichTextToolbar({ editor }: { editor: Editor }) {
   const [linkOpen, setLinkOpen] = useState(false)
   const [url, setUrl] = useState("")
   const [linkError, setLinkError] = useState(false)
+  const linkTrigger = useRef<HTMLButtonElement>(null)
   const linkErrorId = useId()
+  function closeLink() {
+    // Keep focus on a mounted control while the editor restores its selection.
+    linkTrigger.current?.focus()
+    setLinkOpen(false)
+    editor.commands.focus()
+  }
   function applyLink() {
     if (!/^(https?:\/\/\S+|mailto:\S+@\S+)$/i.test(url.trim())) {
       setLinkError(true)
@@ -65,7 +73,7 @@ function RichTextToolbar({ editor }: { editor: Editor }) {
       .extendMarkRange("link")
       .setLink({ href: url.trim() })
       .run()
-    setLinkOpen(false)
+    closeLink()
     setLinkError(false)
   }
   const state = useEditorState({
@@ -139,6 +147,7 @@ function RichTextToolbar({ editor }: { editor: Editor }) {
           variant={state.link ? "secondary" : "ghost"}
           size="icon-sm"
           aria-label="Edit link"
+          ref={linkTrigger}
           title="Edit link"
           aria-pressed={state.link}
           aria-expanded={linkOpen}
@@ -196,18 +205,22 @@ function RichTextToolbar({ editor }: { editor: Editor }) {
             aria-label="Link URL"
             placeholder="https://example.com"
             value={url}
-            onChange={(event) => setUrl(event.target.value)}
+            onChange={(event) => {
+              setUrl(event.target.value)
+              setLinkError(false)
+            }}
             aria-invalid={linkError || undefined}
             aria-describedby={linkError ? linkErrorId : undefined}
             onKeyDown={(event) => {
+              if (event.nativeEvent.isComposing) return
               if (event.key === "Enter") {
                 event.preventDefault()
                 applyLink()
               }
               if (event.key === "Escape") {
                 event.preventDefault()
-                setLinkOpen(false)
-                editor.commands.focus()
+                event.stopPropagation()
+                closeLink()
               }
             }}
           />
@@ -218,10 +231,7 @@ function RichTextToolbar({ editor }: { editor: Editor }) {
             size="sm"
             type="button"
             variant="ghost"
-            onClick={() => {
-              setLinkOpen(false)
-              editor.commands.focus()
-            }}
+            onClick={closeLink}
           >
             Cancel
           </Button>

@@ -214,13 +214,15 @@ export function FileUploadList<T extends FileUploadItem>({
   className,
   ...props
 }: FileUploadListProps<T>) {
+  const removeButtons = useRef(new Map<string, HTMLElement>())
   return (
     <ul
       className={cn("evenform-file-list", className)}
       aria-label="Files"
+      tabIndex={-1}
       {...props}
     >
-      {files.map((file) => (
+      {files.map((file, index) => (
         <li key={file.id} className="evenform-file-list-item">
           <File size={18} aria-hidden="true" />
           <div className="evenform-file-list-copy">
@@ -263,7 +265,20 @@ export function FileUploadList<T extends FileUploadItem>({
               size="icon-sm"
               disabled={disabled}
               aria-label={`Remove ${file.name}`}
-              onClick={() => onRemove(file)}
+              ref={element => {
+                if (element) removeButtons.current.set(file.id, element)
+                else removeButtons.current.delete(file.id)
+              }}
+              onClick={event => {
+                const list = event.currentTarget.closest("ul")
+                const next = files[index + 1] ?? files[index - 1]
+                onRemove(file)
+                requestAnimationFrame(() => {
+                  const target = next && removeButtons.current.get(next.id)
+                  if (target?.isConnected) target.focus()
+                  else if (list?.isConnected) list.focus()
+                })
+              }}
             >
               <X aria-hidden="true" />
             </Button>

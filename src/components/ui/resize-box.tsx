@@ -44,7 +44,7 @@ type ResizeBoxProps = Omit<ComponentProps<"div">, "onResize" | "ref"> & {
   contentClassName?: string
 }
 
-/** A standalone sized surface; unlike Resizable it does not divide adjacent panels. */
+/** A standalone surface with pointer and keyboard resizing. */
 function ResizeBox({
   ref,
   label,

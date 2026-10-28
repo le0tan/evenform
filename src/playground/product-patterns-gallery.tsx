@@ -37,12 +37,12 @@ const initialDocument: JSONContent = {
       content: [
         {
           type: "text",
-          text: "Use the toolbar or keyboard shortcuts to format this document. ",
+          text: "The handover is ready for review. ",
         },
         {
           type: "text",
           marks: [{ type: "bold" }],
-          text: "Changes stay in this preview.",
+          text: "Resolve open questions before Thursday.",
         },
       ],
     },
@@ -74,9 +74,7 @@ function EditorExample() {
   const [updated, setUpdated] = useState(false)
   return (
     <div className="product-patterns-example">
-      <p className="product-patterns-note">
-        Changes stay in this page and are not saved to a server.
-      </p>
+
       <div className="toolbar">
         <Button
           variant="outline"
@@ -102,7 +100,7 @@ function EditorExample() {
           Reset document
         </Button>
         <span role="status" className="product-patterns-note">
-          {updated ? "Document changed in this preview" : "Original document"}
+          {updated ? "Document updated" : "Original document"}
         </span>
       </div>
       <RichTextEditor
@@ -141,9 +139,7 @@ function ReorderExample() {
   return (
     <div className="product-patterns-example">
       <p className="product-patterns-note">
-        Drag a handle, or focus it and press Enter to start keyboard reordering.
-        Follow the announced instructions and press Escape to cancel. Move
-        buttons offer a direct alternative.
+        Drag a handle to reorder. For keyboard controls, focus a handle and press Enter.
       </p>
       <SortableList
         label="Review checklist order"
@@ -304,9 +300,7 @@ function PeopleExample() {
             )}
           </Comment>
         </Comments>
-        <p className="product-patterns-note">
-          Comments and replies stay in this page.
-        </p>
+
       </div>
       <div className="product-patterns-example">
         <h3 className="font-medium">Activity</h3>
@@ -340,9 +334,7 @@ function ConversationExample() {
   const [messages, setMessages] = useState<string[]>([])
   return (
     <Conversation aria-label="Handover conversation">
-      <p className="product-patterns-note">
-        Add a message to this local conversation. No message is sent.
-      </p>
+
       <ConversationList aria-label="Conversation history">
         <ConversationDaySeparator>
           <time dateTime="2026-10-21">Today, 21 October</time>
@@ -461,7 +453,7 @@ function NotificationsExample() {
       </NotificationList>
       <p role="status" className="product-patterns-note">
         <Bell className="inline size-3.5" aria-hidden="true" /> {unread.length}{" "}
-        unread in this preview. Read state is local to this page.
+        unread.
       </p>
     </div>
   )
@@ -473,7 +465,6 @@ function PlansExample() {
       <PlanPicker
         name="preview-plan"
         label="Choose a workspace plan"
-        description="Choose a plan to preview its selection. No subscription is started."
         value={plan}
         onValueChange={setPlan}
         options={[
@@ -494,7 +485,7 @@ function PlansExample() {
             name: "Team",
             description: "For shared review and handover.",
             price: "$12 / member / month",
-            badge: <Badge variant="secondary">Current preview</Badge>,
+            badge: <Badge variant="secondary">Current plan</Badge>,
             features: (
               <ul>
                 <li>Shared workspaces</li>
@@ -518,8 +509,7 @@ function PlansExample() {
         ]}
       />
       <p role="status" className="product-patterns-note">
-        Selected option: {plan === "team" ? "Team" : "Personal"}. Use arrow keys
-        to change the selected plan.
+        Selected option: {plan === "team" ? "Team" : "Personal"}.
       </p>
     </div>
   )

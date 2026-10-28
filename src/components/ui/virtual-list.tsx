@@ -43,7 +43,7 @@ export type VirtualListProps<T> = Omit<
   ref?: Ref<VirtualListHandle>
 }
 
-/** A vertical semantic list. It does not impose selection or listbox keyboard behavior.
+/** A vertical semantic list with native keyboard behavior.
  * The row containing focus stays mounted while scrolling; removing that data row is
  * the consumer's responsibility. Set virtualized=false for small lists or full DOM access.
  */

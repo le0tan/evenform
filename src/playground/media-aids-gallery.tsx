@@ -67,7 +67,7 @@ function LocalVideoExample() {
   return (
     <div className="evenform-media-stack">
       <p className="text-muted-foreground">
-        Choose a local video to play. Add a WebVTT track for captions. Files stay in this browser.
+        Add captions in WebVTT format.
       </p>
       <div className="evenform-media-grid">
         <label className="evenform-media-stack">
@@ -153,7 +153,7 @@ function MediaAidsGallery() {
                 trigger={<Button variant="outline">Inspect diagrams</Button>}
               />
               <span className="text-caption text-muted-foreground">
-                Local SVG · 800 × 450
+                SVG · 800 × 450
               </span>
             </div>
           </div>
@@ -173,7 +173,7 @@ function MediaAidsGallery() {
       </PageSection>
       <PageSection id="example-carousel"
         title="Browse a sequence"
-        description="Drag or swipe, use the navigation buttons, or focus the viewport and use arrow keys."
+
       >
         <Carousel
           aria-label="Process reference diagrams"
@@ -312,10 +312,7 @@ function MediaAidsGallery() {
                 disabled={!qrValue}
               /></div>
             </div>
-            <p className="text-caption text-muted-foreground">
-              The example address uses example.com. Replace it with your own
-              destination.
-            </p>
+
           </div>
         </div>
       </PageSection>

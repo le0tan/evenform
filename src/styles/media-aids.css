@@ -4,8 +4,9 @@
   .evenform-image { position: relative; display: inline-block; overflow: hidden; vertical-align: middle; background: var(--muted); border-radius: var(--ds-image-radius, var(--ds-radius-base)); }
   .evenform-image-element { display: block; width: 100%; height: 100%; object-fit: var(--ds-image-fit, cover); }
   .evenform-image-element[hidden] { display: none; }
+  .evenform-image[data-status=error] .evenform-image-element { visibility: hidden; }
   .evenform-image[data-status=loading] .evenform-image-element { opacity: 0; }
-  .evenform-image-placeholder { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: var(--ds-control-padding-x); color: var(--muted-foreground); }
+  .evenform-image-placeholder { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: var(--ds-control-padding-x); color: var(--ds-reading-muted-foreground); }
   .evenform-image-error { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--ds-control-gap); font-size: var(--ds-text-caption); }
   .evenform-image-error svg { width: 1rem; height: 1rem; flex-shrink: 0; }
   .evenform-image-loading { width: 100%; height: 100%; background: var(--muted); }
@@ -40,7 +41,7 @@
   .evenform-code-block { margin: 0; min-width: 0; overflow: hidden; background: var(--ds-code-block-background, var(--muted)); border-radius: var(--ds-code-block-radius, var(--ds-radius-base)); }
   .evenform-code-block-header { display: flex; align-items: center; flex-wrap: wrap; justify-content: space-between; gap: var(--ds-control-gap); padding: var(--ds-space-2) var(--ds-code-block-inset, var(--ds-card-padding)); font-size: var(--ds-text-label); }
   .evenform-code-block-header .evenform-copy-button { margin-inline-start: auto; }
-  .evenform-code-language { margin-inline-start: var(--ds-control-gap); color: var(--muted-foreground); }
+  .evenform-code-language { margin-inline-start: var(--ds-control-gap); color: var(--ds-reading-muted-foreground); }
   .evenform-code-block pre { margin: 0; overflow: auto; padding: var(--ds-code-block-inset, var(--ds-card-padding)); font-family: var(--font-mono, monospace); font-size: var(--ds-text-label); line-height: var(--ds-line-height-body); tab-size: 2; }
   .evenform-code-block pre:focus-visible { outline: 2px solid var(--ring); outline-offset: -2px; }
   .evenform-carousel { position: relative; min-width: 0; }

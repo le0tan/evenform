@@ -40,6 +40,8 @@
 
 `patterns/layouts` 的 `FormField { id, label, description?, error?, children }` 是轻量标签排版：生成 `${id}-description` 和 `${id}-error`，应用把 `aria-describedby` / `aria-invalid` 传给控件；它不克隆 children。需要 primitive 自动关联时选 `ui/form`，同时使用两个同名导出时在 import 处起别名。`ui/field` 的 FieldSet 与 `ui/fieldset` 的 Fieldset 也有不同语义契约，按任务选择。
 
+Select 的触发器限制在可用容器内，长纯文本选中值单行省略，带图标等元素的标签保留同行对齐与间距；展开后的完整选项允许换行，包括无空格的长标识符，弹层宽度不超过可用视口。Textarea 默认只允许纵向拖动调整，避免拉宽窄屏表单；调用方仍可用 `resize-*` utility 显式覆盖。InputGroup 内的无效字段在获得焦点时继续使用 destructive 颜色，错误状态不会被普通焦点色掩盖。`node scripts/verify-control-resilience.mjs` 在本地开发服务上检查长标签、富标签对齐、键盘选择、窄屏边界与错误焦点；浏览器可通过 `PLAYWRIGHT_EXECUTABLE_PATH` 指定。
+
 在 Base UI FormField 上下文内组合 CheckboxGroup 时，组标题留在 FormField Root 层，用 `nativeLabel={false}` 的 FormFieldLabel 给 CheckboxGroup 命名；每个选项放进独立 FormFieldItem，再用各自 FormFieldLabel 包住 Checkbox 和文字。FormFieldItem 隔离选项的 label/description scope；仅在共享 Field 上下文里使用普通原生 label，可能让组选项都被组标题命名。
 
 ## 日期、层级、文件和颜色

@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils"
 export function Comments({ className, ...props }: ComponentProps<"ol">) {
   return (
     <ol
+      role="list"
       data-slot="comments"
       className={cn("evenform-comments", className)}
       {...props}

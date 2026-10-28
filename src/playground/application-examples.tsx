@@ -106,7 +106,7 @@ export function DataDashboard() {
   return (
     <div className="application-example">
       <PageHeader
-        title="Acquisition dashboard"
+        title="Data dashboard"
         actions={
           <Button variant="outline" onClick={exportData}>
             <Download />
@@ -115,7 +115,7 @@ export function DataDashboard() {
         }
       />
       <div className="application-filter">
-        <p className="quiet-meta">Illustrative data · October 2026 · UTC</p>
+        <p className="quiet-meta">Sample data · October 2026 · UTC</p>
         <div className="toolbar">
           <label htmlFor="dashboard-period">Reporting period</label>
           <Select
@@ -327,10 +327,7 @@ export function SupportInbox() {
       <PageHeader
         title="Support inbox"
       />
-      <p className="quiet-meta">
-        Demo workspace · Replies and status changes stay in this page. No
-        messages are sent.
-      </p>
+
       <SplitLayout
         activePane={selected === null ? "list" : "detail"}
         listLabel="Support requests"
@@ -424,7 +421,7 @@ export function SupportInbox() {
             {current.replies.map((message, index) => (
               <article className="application-message" key={index}>
                 <h3>
-                  You <span className="quiet-meta">· Local draft reply</span>
+                  You <span className="quiet-meta">· Draft reply</span>
                 </h3>
                 <p>{message}</p>
               </article>
@@ -440,7 +437,7 @@ export function SupportInbox() {
                 })
                 setReply("")
                 setNotice(
-                  "Reply added to this local preview. No message was sent."
+                  "Reply draft added."
                 )
               }}
             >
@@ -456,7 +453,7 @@ export function SupportInbox() {
               <div className="toolbar">
                 <Button type="submit" disabled={!reply.trim()}>
                   <Send />
-                  Add preview reply
+                  Add draft reply
                 </Button>
                 <Button
                   type="button"

@@ -1,8 +1,7 @@
 import { type ComponentProps, type ReactNode } from "react"
 import { cn } from "@/lib/utils"
 
-/** Static by default. Set role="status" for asynchronous updates or role="alert"
- * for urgent changes; choosing a tone alone never creates a live announcement. */
+/** Set role="status" for asynchronous announcements or role="alert" for urgent changes. */
 export function StatusMessage({ tone = "neutral", icon, title, actions, children, className, ...props }: Omit<ComponentProps<"div">, "title"> & {
   tone?: "neutral" | "info" | "success" | "warning" | "error"
   icon?: ReactNode

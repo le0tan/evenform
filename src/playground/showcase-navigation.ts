@@ -1,6 +1,6 @@
 import { showcaseExamples, type ShowcaseExample } from "./showcase-examples"
 
-// Showcase information architecture. Appearance remains in CSS; consumers do not import this registry.
+// Shared Showcase routes and search entries.
 export type ShowcasePage = "foundations" | "components" | "patterns" | "charts" | "workspace" | "settings" | "dashboard" | "inbox" | "appearance"
 export type ShowcaseEntry = { id: string; title: string; description: string; keywords: string; examples?: readonly ShowcaseExample[] }
 

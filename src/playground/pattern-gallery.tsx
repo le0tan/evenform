@@ -1,5 +1,5 @@
 import { lazy, Suspense, useState, type FormEvent } from "react"
-import { ArrowRight, Check, CircleCheck, Clock, Layers, Plus, Search, ShieldCheck, SlidersHorizontal, UserRound } from "lucide-react"
+import { ArrowRight, Check, CircleCheck, Clock, Layers, Plus, Search, SlidersHorizontal, UserRound } from "lucide-react"
 import { AuthLayout } from "@/components/patterns/auth-layout"
 import { DetailLayout } from "@/components/patterns/detail-layout"
 import { DescriptionItem, DescriptionList } from "@/components/patterns/description-list"
@@ -69,7 +69,7 @@ function DataWorkspace({ onInspect }: { onInspect: (project: Project) => void })
     setProjects((previous) => [next, ...previous]); clearFilters(); setNotice(`${next.name} created.`)
   }
   return <div className="pattern-scenario">
-    <div className="pattern-example-heading"><div><h2>Projects</h2><p>Keep work visible, find the right record, and act on a selection.</p></div><Button onClick={createProject}><Plus />Create project</Button></div>
+    <div className="pattern-example-heading"><div><h2>Projects</h2></div><Button onClick={createProject}><Plus />Create project</Button></div>
     <StatGroup className="pattern-workspace-stats"><Stat label="Total projects" value={projects.length} /><Stat label="Active" value={projects.filter((project) => project.status === "Active").length} /><Stat label="Awaiting review" value={projects.filter((project) => project.status === "In review").length} /></StatGroup>
     {notice && <StatusMessage tone="success" role="status" icon={<CircleCheck />} actions={<Button size="sm" variant="ghost" onClick={() => setNotice("")}>Dismiss</Button>}>{notice}</StatusMessage>}
     <FilterBar
@@ -100,13 +100,13 @@ function RecordDetail({ project }: { project: Project }) {
   return <div className="pattern-scenario">
     <BreadcrumbPath items={[{ label: "Patterns", href: "#patterns" }, { label: "Projects", href: "#patterns" }, { label: project.id }]} />
     <DetailLayout
-      header={<div className="pattern-example-heading"><div><h2>{name}</h2><p>Review configuration, understand activity, and move work forward.</p></div><div className="toolbar"><Badge variant="secondary">{["Draft", "In review", "Approved"][stage]}</Badge>{stage > 0 && <Button variant="ghost" onClick={() => setStage(0)}>Reset review</Button>}<Button disabled={stage === 2} onClick={() => setStage((previous) => Math.min(2, previous + 1))}>{["Request review", "Approve record", "Approved"][stage]}</Button></div></div>}
+      header={<div className="pattern-example-heading"><div><h2>{name}</h2></div><div className="toolbar"><Badge variant="secondary">{["Draft", "In review", "Approved"][stage]}</Badge>{stage > 0 && <Button variant="ghost" onClick={() => setStage(0)}>Reset review</Button>}<Button disabled={stage === 2} onClick={() => setStage((previous) => Math.min(2, previous + 1))}>{["Request review", "Approve record", "Approved"][stage]}</Button></div></div>}
       aside={<><PageSection title="Record information"><DescriptionList divided><DescriptionItem label="Project ID">{project.id}</DescriptionItem><DescriptionItem label="Owner">{owner}</DescriptionItem><DescriptionItem label="Environment">Production</DescriptionItem><DescriptionItem label="Created"><time dateTime="2026-10-14">14 Oct 2026</time></DescriptionItem><DescriptionItem label="Visibility">Workspace members</DescriptionItem></DescriptionList></PageSection><PageSection title="Activity"><Timeline aria-label="Record activity">{stage === 2 && <TimelineItem title="Review approved" time="Just now" icon={<CircleCheck />}>The record is ready for release.</TimelineItem>}{stage > 0 && <TimelineItem title="Review requested" time={stage === 1 ? "Just now" : "A moment ago"} icon={<UserRound />}>A workspace owner was asked to review.</TimelineItem>}<TimelineItem title="Configuration updated" time="2 hours ago" icon={<SlidersHorizontal />}>Retention and ownership were confirmed.</TimelineItem><TimelineItem title="Project created" time="14 Oct" icon={<Plus />}>Created by {project.owner}.</TimelineItem></Timeline></PageSection></>}
     >
-      <Steps aria-label="Record review progress"><Step title="Configure" status={stage === 0 ? "current" : "complete"} description="Define the record" /><Step title="Review" status={stage === 0 ? "upcoming" : stage === 1 ? "current" : "complete"} description="Confirm the details" /><Step title="Approved" status={stage === 2 ? "current" : "upcoming"} description="Ready for release" /></Steps>
-      <StatusMessage tone={stage === 2 ? "success" : stage === 1 ? "info" : "neutral"} role="status" icon={stage === 2 ? <CircleCheck /> : <Clock />} title={["Ready for review", "Review in progress", "Review complete"][stage]}>{["Confirm the configuration, then request a review.", "Check the details and approve when everything is ready.", "The configuration has been approved for this preview."][stage]}</StatusMessage>
+      <Steps aria-label="Record review progress"><Step title="Configure" status={stage === 0 ? "current" : "complete"} /><Step title="Review" status={stage === 0 ? "upcoming" : stage === 1 ? "current" : "complete"} /><Step title="Approved" status={stage === 2 ? "current" : "upcoming"} /></Steps>
+      <StatusMessage tone={stage === 2 ? "success" : stage === 1 ? "info" : "neutral"} role="status" icon={stage === 2 ? <CircleCheck /> : <Clock />} title={["Ready for review", "Review in progress", "Review complete"][stage]}>{["Confirm the configuration, then request a review.", "Check the details and approve when everything is ready.", "Configuration approved."][stage]}</StatusMessage>
       <StatGroup className="pattern-detail-stats"><Stat label="Monthly requests" value="128,450" change={{ label: "↑ 12.8% from last month", tone: "neutral" }} /><Stat label="Error rate" value="0.08%" change={{ label: "↓ 0.03 points, improved", tone: "beneficial" }} help="Illustrative data" /></StatGroup>
-      <form onSubmit={saveRecord} className="pattern-form"><FormSection title="Configuration" description="Edit the local record preview. Changes remain on this page." columns={2}><FormField id="pattern-record-name" label="Project name"><Input id="pattern-record-name" value={name} required onChange={(event) => { setName(event.target.value); setSaved(false) }} /></FormField><FormField id="pattern-record-owner" label="Owner"><Input id="pattern-record-owner" value={owner} required onChange={(event) => { setOwner(event.target.value); setSaved(false) }} /></FormField></FormSection><div className="toolbar"><Button type="submit" variant="outline">Save configuration</Button>{saved && <span role="status" className="pattern-save-status"><Check size={14} aria-hidden="true" />Saved in this preview</span>}</div></form>
+      <form onSubmit={saveRecord} className="pattern-form"><FormSection title="Configuration" columns={2}><FormField id="pattern-record-name" label="Project name"><Input id="pattern-record-name" value={name} required onChange={(event) => { setName(event.target.value); setSaved(false) }} /></FormField><FormField id="pattern-record-owner" label="Owner"><Input id="pattern-record-owner" value={owner} required onChange={(event) => { setOwner(event.target.value); setSaved(false) }} /></FormField></FormSection><div className="toolbar"><Button type="submit" variant="outline">Save configuration</Button>{saved && <span role="status" className="pattern-save-status"><Check size={14} aria-hidden="true" />Saved in this preview</span>}</div></form>
     </DetailLayout>
 
   </div>
@@ -120,20 +120,18 @@ function AccountAccess() {
   const [passwordError, setPasswordError] = useState("")
   function signIn(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    if (password.length < 8) { setPasswordError("Use at least 8 characters for this preview."); return }
+    if (password.length < 8) { setPasswordError("Use at least 8 characters."); return }
     setPasswordError(""); setSubmitted(true); setPassword("")
   }
   return <div className="pattern-scenario">
-    <div className="pattern-example-heading"><div><h2>Account access</h2></div></div>
     <AuthLayout className="pattern-auth-preview min-h-0" brand={<div className="pattern-auth-brand"><Layers size={20} aria-hidden="true" /><span>Evenform workspace</span></div>}
-      aside={<><ShieldCheck size={28} aria-hidden="true" /><h3>A shared place for focused work.</h3><p>Keep projects, people, and decisions connected in one workspace.</p><ul><li>Clear ownership across projects</li><li>Consistent workflows for your team</li><li>Accessible from every device</li></ul></>}
-      footer={<p>This is a local interaction preview. Use example credentials; no sign-in request is sent.</p>}
+      footer={<p>Use sample credentials.</p>}
     >
-      {submitted ? <div role="status"><EmptyState icon={<CircleCheck />} title="Preview complete" headingLevel={3} description={<>The form was validated for <strong>{email}</strong>.{remember ? " Remember-me preference is selected for this preview." : ""}</>} actions={<Button variant="outline" onClick={() => setSubmitted(false)}>Return to sign in</Button>} /></div> : <>
-        <div className="pattern-auth-heading"><h3>Welcome back</h3><p>Enter example details to preview the form.</p></div>
+      {submitted ? <div role="status"><EmptyState icon={<CircleCheck />} title="Preview complete" headingLevel={2} description={<>The form was validated for <strong>{email}</strong>.{remember ? " Remember me selected." : ""}</>} actions={<Button variant="outline" onClick={() => setSubmitted(false)}>Return to sign in</Button>} /></div> : <>
+        <div className="pattern-auth-heading"><h2>Welcome back</h2></div>
         <form onSubmit={signIn} className="pattern-form">
-          <FormSection title="Sign-in details"><FormField id="pattern-auth-email" label="Email address"><Input id="pattern-auth-email" type="email" autoComplete="off" value={email} onChange={(event) => setEmail(event.target.value)} required /></FormField><FormField id="pattern-auth-password" label="Password" error={passwordError || undefined} description="Use any example password with at least 8 characters."><Input id="pattern-auth-password" type="password" autoComplete="new-password" value={password} onChange={(event) => { setPassword(event.target.value); setPasswordError("") }} aria-invalid={Boolean(passwordError)} aria-describedby={`pattern-auth-password-description${passwordError ? " pattern-auth-password-error" : ""}`} required /></FormField></FormSection>
-          <label className="pattern-remember"><Checkbox checked={remember} onCheckedChange={setRemember} />Remember me in this preview</label>
+          <FormSection title="Sign-in details"><FormField id="pattern-auth-email" label="Email address"><Input id="pattern-auth-email" type="email" autoComplete="off" value={email} onChange={(event) => setEmail(event.target.value)} required /></FormField><FormField id="pattern-auth-password" label="Password" error={passwordError || undefined} description="At least 8 characters."><Input id="pattern-auth-password" type="password" autoComplete="new-password" value={password} onChange={(event) => { setPassword(event.target.value); setPasswordError("") }} aria-invalid={Boolean(passwordError)} aria-describedby={`pattern-auth-password-description${passwordError ? " pattern-auth-password-error" : ""}`} required /></FormField></FormSection>
+          <label className="pattern-remember"><Checkbox checked={remember} onCheckedChange={setRemember} />Remember me</label>
           <Button type="submit">Preview sign in<ArrowRight /></Button>
         </form>
       </>}
@@ -153,11 +151,11 @@ const ProductPatternsGallery = lazy(() => import("./product-patterns-gallery").t
 const WorkflowAidsGallery = lazy(() => import("./workflow-aids-gallery").then(m => ({default: m.WorkflowAidsGallery})))
 
 export function PatternGallery() {
-  const [tab, setTab] = useShowcaseSection("patterns", patternValues, "workspace")
+  const [tab, setTab] = useShowcaseSection("patterns", patternValues, patternValues[0])
   const [project, setProject] = useState(initialProjects[0])
   const current = patternEntries.find(item => item.id === tab) ?? patternEntries[0]
   return <div className="pattern-gallery">
-    <PageHeader title={current.title} description={current.description} />
+    <PageHeader title={current.title} />
     <div>
       <ShowcasePagePanel active={tab === "operations"}><Suspense fallback={<p role="status">Loading review…</p>}><OperationsExample /></Suspense></ShowcasePagePanel>
       <ShowcasePagePanel active={tab === "records"}><Suspense fallback={<p role="status">Loading documents…</p>}><RecordBrowser /></Suspense></ShowcasePagePanel>

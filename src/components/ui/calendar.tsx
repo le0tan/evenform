@@ -2,14 +2,15 @@ import type { RefAttributes } from "react"
 import {
   Calendar as AriaCalendar, RangeCalendar as AriaRangeCalendar, CalendarGrid as AriaCalendarGrid,
   CalendarGridHeader, CalendarGridBody, CalendarHeaderCell, CalendarCell, Heading, Button,
-  composeRenderProps, type CalendarProps, type RangeCalendarProps, type CalendarGridProps,
+  composeRenderProps, useLocale, type CalendarProps, type RangeCalendarProps, type CalendarGridProps,
 } from "react-aria-components"
 import type { DateValue } from "@internationalized/date"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 export function CalendarHeader() {
-  return <header className="evenform-calendar-header"><Button slot="previous" className="evenform-calendar-nav"><ChevronLeft size={16} aria-hidden="true" /></Button><Heading /><Button slot="next" className="evenform-calendar-nav"><ChevronRight size={16} aria-hidden="true" /></Button></header>
+  const { direction } = useLocale()
+  return <header className="evenform-calendar-header"><Button slot="previous" className="evenform-calendar-nav">{direction === "rtl" ? <ChevronRight size={16} aria-hidden="true" /> : <ChevronLeft size={16} aria-hidden="true" />}</Button><Heading /><Button slot="next" className="evenform-calendar-nav">{direction === "rtl" ? <ChevronLeft size={16} aria-hidden="true" /> : <ChevronRight size={16} aria-hidden="true" />}</Button></header>
 }
 export function CalendarGrid({ className, ...props }: Omit<CalendarGridProps, "children"> & RefAttributes<HTMLTableElement>) {
   return <AriaCalendarGrid className={cn("evenform-calendar-grid", className)} {...props}>

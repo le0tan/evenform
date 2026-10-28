@@ -12,8 +12,7 @@ export type Palette = typeof palettes[number]
 export type Elevation = typeof elevations[number]
 type Config = { customColor: string; controlSize: ControlSize; palette: Palette; elevation: Elevation; density: Density; overrides: Partial<Record<TokenName, number>> }
 const storageKey = "evenform-tokens-v1"
-// Editor scope policy, not visual defaults. Explicit control size is independent
-// of density; CSS still owns the value and dependency chain of every token.
+// Explicit control sizes persist across density changes.
 const controlSizeTokens = new Set([
   "--ds-control-height", "--ds-input-height", "--ds-button-height-xs",
   "--ds-button-height-sm", "--ds-button-height-md", "--ds-button-height-lg",
@@ -46,7 +45,7 @@ function readValues(controls = allTokenControls) {
   for (const { name, unit } of controls) {
     probe.style.width = unit === "" || unit === "ms" ? "0" : `var(${name})`
     probe.style.lineHeight = unit === "" ? `var(${name})` : "normal"
-    // Read the token, not ThemeProvider’s temporary transition blocker or reduced-motion override.
+    // Measure the configured duration independently of temporary motion overrides.
     probe.style.setProperty("transition-duration", unit === "ms" ? `var(${name})` : "0s", "important")
     const style = getComputedStyle(probe)
     values[name] = unit === "ms" ? Number.parseFloat(style.transitionDuration) * 1000 : Number.parseFloat(unit === "" ? style.lineHeight : style.width)

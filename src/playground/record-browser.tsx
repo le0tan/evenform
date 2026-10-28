@@ -44,13 +44,13 @@ function RecordReport({ record }: { record: RecordEntry }) {
   return <article className="record-report" aria-label="Full report">
     <h3>Summary</h3><p>{record.summary}</p>
     <h3>What we observed</h3>
-    <p>Participants moved between the collection and individual documents several times. The useful context was usually a combination of the title, owner and a short excerpt, rather than any single field.</p>
+    <p>Participants moved between the collection and individual documents several times. Readers compared the title, owner and a short excerpt.</p>
     <ul><li>Keep collection controls in one predictable place.</li><li>Let long titles wrap without squeezing the actions.</li><li>Keep the report readable independently of its metadata.</li></ul>
     <div className="record-report-table [&_[data-slot=table-container]]:overflow-visible" tabIndex={0} role="region" aria-label="Findings and recommendations; scroll horizontally for all columns">
       <Table><caption className="sr-only">Research observations and proposed changes</caption><TableHeader><TableRow><TableHead className="whitespace-normal align-top">Topic</TableHead><TableHead className="whitespace-normal align-top">Observation</TableHead><TableHead className="whitespace-normal align-top">Recommendation</TableHead></TableRow></TableHeader><TableBody>{findings.map(([topic, observation, recommendation]) => <TableRow key={topic}><TableCell className="whitespace-normal align-top">{topic}</TableCell><TableCell className="whitespace-normal align-top">{observation}</TableCell><TableCell className="whitespace-normal align-top">{recommendation}</TableCell></TableRow>)}</TableBody></Table>
     </div>
     <h3>Next steps</h3><p>Review the collection with the people who use it most often. Compare a compact list with a card view, then check that both lead to the same report and preserve the same reading position.</p>
-    <p className="text-muted-foreground">Illustrative research content for this local preview.</p>
+
   </article>
 }
 
@@ -77,7 +77,7 @@ function RecordCard({ record, view }: { record: RecordEntry; view: string }) {
         <DescriptionList columns={2}><DescriptionItem label="Owner">{record.owner}</DescriptionItem><DescriptionItem label="Updated">{record.updated}</DescriptionItem></DescriptionList>
         <Accordion defaultValue={["report"]}>
           <AccordionItem value="report"><AccordionTrigger>Full report</AccordionTrigger><AccordionContent><RecordReport record={record} /></AccordionContent></AccordionItem>
-          <AccordionItem value="notes"><AccordionTrigger>About this preview</AccordionTrigger><AccordionContent className="text-muted-foreground"><p>These documents are illustrative. Search, view selection and panel expansion stay in this example. Copy and download use your browser.</p></AccordionContent></AccordionItem>
+
         </Accordion>
       </SheetBody>
     </SheetContent>

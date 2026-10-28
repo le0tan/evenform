@@ -12,15 +12,15 @@ export interface HeaderShellProps extends Omit<
   footer?: ReactNode
   mainId?: string
   skipLabel?: string
-  /** Use div only when embedding the shell inside an existing main landmark.
-   * With the default main, children must be content rather than another main. */
+  /** Use div when embedding in an existing main landmark.
+   * The default main wraps page content. */
   contentAs?: "main" | "div"
   variant?: "page" | "workspace"
   headerClassName?: string
   footerClassName?: string
   contentClassName?: string
 }
-/** A page shell without persistent sidebar navigation. Owns one main landmark. */
+/** Header-based page shell with one main landmark. */
 export function HeaderShell({
   header,
   children,

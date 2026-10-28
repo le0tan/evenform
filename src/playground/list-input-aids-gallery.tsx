@@ -42,7 +42,7 @@ export function ListInputAidsGallery() {
     <div className="evenform-list-input-gallery">
       <PageSection id="example-virtual-list"
         title="Virtual list"
-        description="10,000 records. Jump to a record or scroll the list."
+        description="10,000 records."
       >
         <div className="evenform-list-input-stack">
           <SearchField
@@ -140,7 +140,7 @@ export function ListInputAidsGallery() {
       </PageSection>
       <PageSection id="example-input-tag"
         title="Free-form input tags"
-        description="Enter your own labels or paste a comma, semicolon, or line-separated list. Rejected text stays available for editing."
+        description="Paste labels separated by commas, semicolons or line breaks."
       >
         <form
           className="evenform-list-input-stack"
@@ -154,7 +154,7 @@ export function ListInputAidsGallery() {
           <FormField
             id="list-input-topics"
             label="Review topics"
-            description="Add up to 6 unique topics, at most 30 characters each. Enter commits a topic; empty-input Backspace focuses the last tag."
+            description="Up to 6 unique topics, 30 characters each. Press Enter to add."
           >
             <InputTag
               id="list-input-topics"
@@ -198,7 +198,7 @@ export function ListInputAidsGallery() {
           <FormField
             id="list-input-keywords"
             label="Repeated keywords"
-            description="Duplicate labels are allowed. Moving focus out of the field adds the draft label."
+            description="Labels are added when you leave the field. Duplicates allowed."
           >
             <InputTag
               id="list-input-keywords"

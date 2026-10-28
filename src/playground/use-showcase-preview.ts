@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { navigateShowcase, type ShowcasePage } from "./showcase-navigation"
 
-// Local example Tabs participate in Showcase URLs, without changing the shared Tabs API.
+// Synchronize example tabs with Showcase URLs.
 export function useShowcasePreview(page: ShowcasePage, section: string, values: readonly string[], fallback: string) {
   const allowed = values.join("|")
   const read = () => {

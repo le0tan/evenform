@@ -19,9 +19,7 @@ export type MorphingPopoverContentProps = Omit<
   children: ReactNode
 }
 
-/** Optional surface morph. Base UI still owns open state, positioning and focus.
- * Only the decorative surface scales; the content never does.
- */
+/** Decorative surface morph with Base UI state, positioning, and focus. */
 export function MorphingPopoverContent({
   anchorRef,
   children,

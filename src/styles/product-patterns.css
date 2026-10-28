@@ -46,7 +46,9 @@
     display: flex;
     align-items: baseline;
     flex-wrap: wrap;
-    gap: var(--ds-control-gap);
+    gap: var(--ds-space-1) var(--ds-control-gap);
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
   [data-slot="product-author"],
   [data-slot="activity-title"],
@@ -123,6 +125,12 @@
     padding-block-start: var(--ds-card-padding);
     border-block-start: var(--ds-border-width) solid var(--border);
   }
+  [data-slot="conversation-composer-status"] {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    color: var(--muted-foreground);
+    font-size: var(--ds-text-label);
+  }
   [data-slot="conversation-composer"] [data-slot="product-actions"] {
     margin: 0;
   }
@@ -174,13 +182,18 @@
     border: var(--ds-border-width) solid var(--border);
     border-radius: var(--radius);
     cursor: pointer;
+    transition: background-color var(--ds-duration-fast) var(--ds-ease-out), border-color var(--ds-duration-fast) var(--ds-ease-out), color var(--ds-duration-fast) var(--ds-ease-out);
   }
-  [data-slot="plan-option"]:hover {
+  [data-slot="plan-option"]:where(:not([data-disabled])):hover {
     background: var(--muted);
   }
   [data-slot="plan-option"]:has([data-checked]) {
     border-color: var(--primary);
-    background: var(--secondary);
+    background: var(--accent);
+    color: var(--accent-foreground);
+  }
+  [data-slot="plan-option"]:has([data-checked]) :is([data-slot="product-content"], [data-slot="plan-features"]) {
+    color: inherit;
   }
   [data-slot="plan-option"]:has(:focus-visible) {
     outline: 2px solid var(--ring);
@@ -191,6 +204,7 @@
     cursor: default;
   }
   [data-slot="plan-body"] {
+    overflow-wrap: anywhere;
     min-width: 0;
     flex: 1;
   }
@@ -288,10 +302,10 @@
     padding: var(--ds-space-1);
     border-block-end: var(--ds-border-width) solid var(--border);
   }
-  [data-slot="rich-text-toolbar"] form {
+  [data-slot="rich-text-link"] {
     padding: var(--ds-control-padding-x);
   }
-  [data-slot="rich-text-toolbar"] form input {
+  [data-slot="rich-text-link"] input {
     flex: 1;
     width: auto;
     min-width: 9rem;

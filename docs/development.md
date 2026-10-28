@@ -46,7 +46,10 @@ Start `npm run dev -- --host 127.0.0.1 --port 5173` in another terminal, then ru
 
 ```bash
 npm run verify:ui
+npm run verify:quality
 ```
+
+`verify:quality` runs the gallery matrix and token, input, overlay, data/media, and pattern interaction checks.
 
 For checks that exercise the production bootstrap and built Starter, build both
 outputs and start `npm run preview -- --host 127.0.0.1 --port 4173`, then run:
@@ -57,12 +60,14 @@ npm run verify:details
 ```
 
 `EVENFORM_URL` overrides the target origin for these scripts. The default is
-port 5173 for `verify:ui` and port 4173 for the other scripts.
+port 5173 for `verify:ui` and `verify:quality` and port 4173 for the other scripts.
 `PLAYWRIGHT_EXECUTABLE_PATH` can point to an existing Chromium executable.
 Scripts write screenshots and results under `evidence/`. Keep results tied to
 their actual checkout and run; do not interpret historical screenshots as a
 current passing test. These scripts exercise representative flows, not every
 upstream component option.
+
+Focused dev-server checks for Foundations, library navigation, and control resilience are available as `node scripts/verify-foundations.mjs`, `node scripts/verify-library-navigation.mjs`, and `node scripts/verify-control-resilience.mjs`. They accept `EVENFORM_URL` and `PLAYWRIGHT_EXECUTABLE_PATH` and save reports under `evidence/`.
 
 `npm run verify:feedback` targets the source dev server (default port 4173). It
 generates an isolated fixture under ignored `evidence/field-feedback/`, checks

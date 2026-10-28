@@ -329,6 +329,7 @@ export function InputTag({
             key={index}
             type="hidden"
             name={name}
+            form={props.form}
             value={tag}
             disabled={disabled}
           />

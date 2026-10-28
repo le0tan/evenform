@@ -1,7 +1,7 @@
 import { useLayoutEffect, type RefObject } from "react"
 import { motionTiming, prefersReducedMotion } from "@/lib/motion"
 
-/** Optional, non-virtual collection motion. Animate translate, never DnD's transform. */
+/** Optional non-virtual collection motion uses translate alongside DnD's transform. */
 export function useListMotion(
   ref: RefObject<HTMLElement | null>,
   enabled: boolean
@@ -39,7 +39,7 @@ export function useListMotion(
       })
     }
     const update = () => {
-      // React Aria exclusively owns the active drag. Run after it releases the rows.
+      // React Aria owns active dragging; resume after it releases the rows.
       if (root.querySelector("[data-dragging]")) {
         stop()
         return
@@ -59,8 +59,7 @@ export function useListMotion(
             Math.abs(previous.y - y) > 0.5
           )
         })
-      // Text/status mutations can occur during a running reorder. If layout and
-      // row identity did not change, leave its Animation and timeline untouched.
+      // Keep the running timeline when text/status updates preserve row geometry.
       if (initialized && !changed) return
       const options = motionTiming(root)
       for (const [element, animation] of animations) {
@@ -77,7 +76,7 @@ export function useListMotion(
           Math.abs(previous.y - y) <= 0.5
         )
           continue
-        // A second reorder starts at the currently drawn position, not the old endpoint.
+        // Retarget interrupted reorders from their currently drawn positions.
         const offsetX = previous ? previous.x + dx - x : 0
         const offsetY = previous ? previous.y + dy - y : 0
         animations.get(element)?.cancel()
@@ -133,7 +132,7 @@ export function useListMotion(
       if (media.matches) stop()
     }
     media.addEventListener("change", reduce)
-    // Resizing is a new layout, not an item reorder; update the baseline without motion.
+    // Resizing updates the geometry baseline immediately.
     let width = root.getBoundingClientRect().width
     const resize = new ResizeObserver(() => {
       const nextWidth = root.getBoundingClientRect().width

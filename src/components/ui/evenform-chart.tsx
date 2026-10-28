@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import type { ISpec, ITheme } from "@visactor/vchart"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { prefersReducedMotion } from "@/lib/motion"
 import "./evenform-chart.css"
 
 /** Resolve CSS at the chart's actual location, including local token overrides.
@@ -114,7 +115,7 @@ export function EvenformChart({ spec, label, description, className, palette = "
     const fail = () => { if (!disposed) setStatus("error") }
     const themedSpec = () => {
       const theme = readTheme(host, palette)
-      return { ...spec, ...(reducedMotion.matches ? { animation: false } : {}), theme, ...(spec.color && !Array.isArray(spec.color) ? { color: { ...spec.color, range: theme.colorScheme!.default as string[] } } : {}) }
+      return { ...spec, ...(prefersReducedMotion(host) ? { animation: false } : {}), theme, ...(spec.color && !Array.isArray(spec.color) ? { color: { ...spec.color, range: theme.colorScheme!.default as string[] } } : {}) }
     }
     const sync = () => {
       cancelAnimationFrame(frame)
@@ -130,10 +131,10 @@ export function EvenformChart({ spec, label, description, className, palette = "
     const resize = new ResizeObserver(sync)
     resize.observe(host)
     const preferences = new MutationObserver(sync)
-    preferences.observe(root, { attributes: true, attributeFilter: ["class", "style", "data-density", "data-palette", "data-elevation", "data-control-size"] })
+    preferences.observe(root, { attributes: true, attributeFilter: ["class", "style", "data-density", "data-palette", "data-elevation", "data-control-size", "data-motion"] })
     // Observe ancestor attributes without watching VChart's own DOM mutations.
     for (let ancestor: HTMLElement | null = host; ancestor && ancestor !== root; ancestor = ancestor.parentElement) {
-      preferences.observe(ancestor, { attributes: true, attributeFilter: ["class", "style"] })
+      preferences.observe(ancestor, { attributes: true, attributeFilter: ["class", "style", "data-motion"] })
     }
     void import("./vchart-runtime").then(async ({ default: VChart }) => {
       await document.fonts.ready

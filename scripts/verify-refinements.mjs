@@ -86,6 +86,9 @@ try {
     assert.equal(workspace.cellX, density === 'compact' ? '12px' : '16px')
     await shot(page, `workspace-${theme}-${density}`)
     await page.getByRole('combobox', { name: 'Filter projects', exact: true }).click()
+    await page.locator('[data-slot="select-content"]').evaluate(async element => {
+      await Promise.all(element.getAnimations({ subtree: true }).map(animation => animation.finished.catch(() => {})))
+    })
     const option = await page.getByRole('option', { name: 'In review', exact: true }).evaluate(e => ({ height: e.getBoundingClientRect().height, y: getComputedStyle(e).paddingTop, x: getComputedStyle(e).paddingLeft }))
     assert.equal(option.height, density === 'compact' ? 32 : 40)
     await page.keyboard.press('Escape')
@@ -118,7 +121,7 @@ try {
     report.density[density] = { workspace, option, dialog, sheet, settings }
   }
 
-  await openLibraryPage(page, 'Override contract')
+  await openLibraryPage(page, 'Local overrides')
   for (const [id, height] of [['cascade-default', '40px'], ['cascade-token', '44px'], ['cascade-utility', '48px'], ['cascade-both', '48px'], ['cascade-inline', '52px']]) {
     report.cascade[id] = await page.getByTestId(id).evaluate(e => getComputedStyle(e).height)
     assert.equal(report.cascade[id], height)
@@ -132,7 +135,7 @@ try {
   // Advanced editor defaults resolve CSS calc(), metadata contains no default values.
   await openTokens(page)
   assert.equal(await page.locator('.token-panel-inner > .token-controls input').count(), 7)
-  await page.getByText('Advanced Tokens', { exact: true }).click()
+  await page.getByText('Advanced tokens', { exact: true }).click()
   for (const label of ['Layout', 'Controls', 'Forms', 'Data', 'Overlays', 'Typography']) await page.locator('.advanced-token-group').getByText(label, { exact: true }).click()
   assert.equal(await page.getByRole('slider', { name: 'Page title size', exact: true }).inputValue(), '28')
   await setSlider(page, 'Card padding', 28)
@@ -144,7 +147,7 @@ try {
   await page.getByRole('button', { name: 'Copy token overrides', exact: true }).click()
   const css = await page.evaluate(() => navigator.clipboard.readText())
   assert(css.includes('--ds-line-height-body: 1.7;') && !css.includes('1.7px'))
-  await page.reload(); await waitPage(page, 'Override contract'); await openTokens(page)
+  await page.reload(); await waitPage(page, 'Local overrides'); await openTokens(page)
   assert.equal(await page.locator('html').evaluate(e => e.style.getPropertyValue('--ds-line-height-body')), '1.7')
   await openLibraryPage(page, 'Workspace'); await waitPage(page, 'Workspace')
   report.advanced.applied = await metrics(page)
@@ -171,6 +174,9 @@ try {
   await mobile.goto(`${url}/#workspace`); await waitPage(mobile, 'Workspace')
   assert.equal((await metrics(mobile)).width, 390)
   await mobile.getByRole('combobox', { name: 'Filter projects', exact: true }).click()
+  await mobile.locator('[data-slot="select-content"]').evaluate(async element => {
+    await Promise.all(element.getAnimations({ subtree: true }).map(animation => animation.finished.catch(() => {})))
+  })
   assert((await mobile.getByRole('option', { name: 'In review', exact: true }).evaluate(e => e.getBoundingClientRect().height)) >= 44)
   await mobile.keyboard.press('Escape')
   await mobile.getByRole('button', { name: 'Open navigation', exact: true }).click()
@@ -180,7 +186,7 @@ try {
   await mobile.getByRole('dialog', { name: 'Design tokens', exact: true }).waitFor()
   const body = await mobile.locator('[data-slot=sheet-body]').evaluate(e => ({ padding: getComputedStyle(e).paddingLeft, scroll: getComputedStyle(e).overflowY, height: e.clientHeight, content: e.scrollHeight }))
   assert.equal(body.padding, '0px'); assert.equal(body.scroll, 'auto'); assert(body.content > body.height)
-  await mobile.getByText('Advanced Tokens', { exact: true }).click()
+  await mobile.getByText('Advanced tokens', { exact: true }).click()
   await mobile.getByRole('button', { name: 'Copy token overrides', exact: true }).scrollIntoViewIfNeeded()
   await shot(mobile, 'mobile-token-panel', false)
   report.advanced.mobileScroll = body
@@ -196,7 +202,7 @@ try {
   const assets = await readdir(new URL('../dist-starter/assets/', import.meta.url))
   assert(!assets.some(name => /showcase|gallery|settings|vchart|charts|analytics/i.test(name)))
   const scripts = await Promise.all(assets.filter(name => name.endsWith('.js')).map(name => readFile(new URL(`../dist-starter/assets/${name}`, import.meta.url), 'utf8')))
-  assert(scripts.every(source => !source.includes('evenform-tokens-v1') && !source.includes('Token verification project') && !source.includes('Website refresh') && !source.includes('Advanced Tokens')))
+  assert(scripts.every(source => !source.includes('evenform-tokens-v1') && !source.includes('Token verification project') && !source.includes('Website refresh') && !source.includes('Advanced tokens')))
   report.starter = { requests: requests.map(path => new URL(path).pathname), productionAssets: assets, showcaseAbsent: true }
   await starterContext.close()
   assert.deepEqual(report.errors, [])

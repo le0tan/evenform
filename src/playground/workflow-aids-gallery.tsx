@@ -60,7 +60,7 @@ function AgendaExample() {
   return (
     <div className="workflow-aids-example">
       <p className="workflow-aids-note">
-        Choose a date to view its events. Illustrative schedule · Singapore time (UTC+08:00).
+        Singapore time (UTC+08:00).
       </p>
       <div className="workflow-agenda-columns">
         <div>
@@ -96,8 +96,7 @@ function AgendaExample() {
             empty={
               events.length === 0 ? (
                 <p className="workflow-aids-note">
-                  No events scheduled for this date. Choose 21 or 22 October to
-                  explore the example events.
+                  No events scheduled.
                 </p>
               ) : undefined
             }
@@ -197,14 +196,12 @@ function StepFormExample() {
     {
       id: "confirm",
       title: "Confirm",
-      description: "Review the details before completing this preview.",
+      description: "Confirm the owner and scope.",
     },
   ]
   return (
     <div className="workflow-aids-example">
-      <p className="workflow-aids-note">
-        Back preserves your entries. This preview creates no workspace or invitation.
-      </p>
+
       {complete ? (
         <div className="workflow-aids-example">
           <StatusMessage
@@ -212,7 +209,7 @@ function StepFormExample() {
             role="status"
             title="Handover details confirmed"
           >
-            {name} is the owner in this preview. No data was sent.
+            {name} is the handover owner.
           </StatusMessage>
           <Button
             className="self-start"
@@ -390,7 +387,7 @@ function HeaderExample() {
         {section === "overview" ? (
           <section aria-labelledby="workflow-shell-overview">
             <h3 id="workflow-shell-overview" className="workflow-shell-heading">
-              A focused review workspace
+              Handover review
             </h3>
             <p className="workflow-shell-copy">
               Review the handover, confirm the owner, and record any open questions before the next checkpoint.

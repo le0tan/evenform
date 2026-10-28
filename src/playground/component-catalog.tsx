@@ -40,13 +40,13 @@ export function ComponentCatalog() {
     <PageSection title="Input & selection">
       <div className="catalog-grid">
         <div className="catalog-example">
-          <div role="group" aria-label="Combobox example" id="example-combobox" className="showcase-example"><FormField id="catalog-team" label="Team" description="Type to filter the available teams.">
+          <div role="group" aria-label="Combobox example" id="example-combobox" className="showcase-example"><FormField id="catalog-team" label="Team">
             <Combobox items={teams} value={team} onValueChange={setTeam}>
-              <ComboboxInputGroup><ComboboxInput id="catalog-team" aria-describedby="catalog-team-description" /><ComboboxTrigger aria-label="Show teams" /></ComboboxInputGroup>
+              <ComboboxInputGroup><ComboboxInput id="catalog-team" /><ComboboxTrigger aria-label="Show teams" /></ComboboxInputGroup>
               <ComboboxContent><ComboboxEmpty>No teams found.</ComboboxEmpty><ComboboxList>{(item: string) => <ComboboxItem key={item} value={item}>{item}</ComboboxItem>}</ComboboxList></ComboboxContent>
             </Combobox>
           </FormField></div>
-          <FormField id="catalog-reviewers" label="Reviewers" description="Choose several people; remove chips individually.">
+          <FormField id="catalog-reviewers" label="Reviewers" description="Select one or more reviewers.">
             <Combobox multiple items={people} value={reviewers} onValueChange={setReviewers}>
               <ComboboxChips>
                 <ComboboxValue>{(values: string[]) => <>{values.map(value => <ComboboxChip key={value}>{value}<ComboboxChipRemove aria-label={`Remove ${value}`} /></ComboboxChip>)}<ComboboxInput id="catalog-reviewers" placeholder="Add reviewer…" aria-describedby="catalog-reviewers-description" /></>}</ComboboxValue>
@@ -55,12 +55,12 @@ export function ComponentCatalog() {
             </Combobox>
           </FormField>
           <div role="group" aria-label="Input group example" id="example-input-group" className="showcase-example"><FormField id="catalog-search" label="Input group" >
-            <InputGroup><InputGroupAddon><Search size={16} aria-hidden="true" /></InputGroupAddon><InputGroupInput id="catalog-search" placeholder="Search projects…" aria-describedby="catalog-search-description" /><InputGroupAddon align="end"><Kbd>⌘ K</Kbd></InputGroupAddon></InputGroup>
+            <InputGroup><InputGroupAddon><Search size={16} aria-hidden="true" /></InputGroupAddon><InputGroupInput id="catalog-search" placeholder="Search projects…" /><InputGroupAddon align="end"><Kbd>⌘ K</Kbd></InputGroupAddon></InputGroup>
           </FormField></div>
         </div>
         <div className="catalog-example">
           <fieldset className="catalog-fieldset"><legend>Visibility</legend><div role="group" aria-label="Radio group example" id="example-radio-group" className="showcase-example"><RadioGroup value={visibility} onValueChange={setVisibility} aria-label="Project visibility"><label className="catalog-choice"><RadioGroupItem value="team" /><span>Team only<small>Everyone in your workspace</small></span></label><label className="catalog-choice"><RadioGroupItem value="invited" /><span>Invited people<small>Only people you add</small></span></label><label className="catalog-choice"><RadioGroupItem value="public" disabled /><span>Public<small>Unavailable on this plan</small></span></label></RadioGroup></div></fieldset>
-          <div role="group" aria-label="Number field example" id="example-number-field" className="showcase-example"><FormField id="catalog-seats" label="Seats" description="Between 1 and 50. Arrow keys adjust the value.">
+          <div role="group" aria-label="Number field example" id="example-number-field" className="showcase-example"><FormField id="catalog-seats" label="Seats" description="1–50 seats.">
             <NumberField value={seats} onValueChange={setSeats} min={1} max={50}>
               <NumberFieldGroup><NumberFieldDecrement aria-label="Remove one seat" /><NumberFieldInput id="catalog-seats" aria-describedby="catalog-seats-description" /><NumberFieldIncrement aria-label="Add one seat" /></NumberFieldGroup>
             </NumberField>
@@ -75,9 +75,9 @@ export function ComponentCatalog() {
           <div className="toolbar">
             <div role="group" aria-label="Dropdown menu example" id="example-dropdown-menu" className="showcase-example"><DropdownMenu><DropdownMenuTrigger render={<Button variant="outline" />}>Project actions<ChevronDown /></DropdownMenuTrigger><DropdownMenuContent><DropdownMenuGroup><DropdownMenuLabel>Customer experience</DropdownMenuLabel><DropdownMenuItem onClick={() => setNotice("Project duplicated in this preview.")}><Copy size={16} />Duplicate project</DropdownMenuItem><DropdownMenuItem disabled>Move to archive</DropdownMenuItem></DropdownMenuGroup><DropdownMenuSeparator /><DropdownMenuCheckboxItem checked={updates} onCheckedChange={setUpdates}>Receive updates</DropdownMenuCheckboxItem><DropdownMenuSub><DropdownMenuSubTrigger>Export as</DropdownMenuSubTrigger><DropdownMenuSubContent><DropdownMenuItem onClick={() => setNotice("CSV export selected in this preview.")}>CSV spreadsheet</DropdownMenuItem><DropdownMenuItem onClick={() => setNotice("JSON export selected in this preview.")}>JSON data</DropdownMenuItem></DropdownMenuSubContent></DropdownMenuSub></DropdownMenuContent></DropdownMenu></div>
             <div role="group" aria-label="Popover example" id="example-popover" className="showcase-example"><Popover><PopoverTrigger render={<Button variant="outline" />}><Settings2 />Quick edit</PopoverTrigger><PopoverContent className="form-stack"><div><PopoverTitle>Project nickname</PopoverTitle><PopoverDescription>A short label for your sidebar.</PopoverDescription></div><Input aria-label="Project nickname" defaultValue="Customer experience" /><PopoverClose render={<Button onClick={() => setNotice("Nickname updated in this preview.")} />}>Apply changes</PopoverClose></PopoverContent></Popover></div>
-            <div role="group" aria-label="Alert dialog example" id="example-alert-dialog" className="showcase-example"><AlertDialog><AlertDialogTrigger render={<Button variant="outline" />}>Archive project</AlertDialogTrigger><AlertDialogContent><AlertDialogHeader><AlertDialogTitle>Archive this project?</AlertDialogTitle><AlertDialogDescription>Team members will lose access to the active project. You can restore it from the archive. This preview changes no real data.</AlertDialogDescription></AlertDialogHeader><AlertDialogFooter><AlertDialogCancel>Keep project</AlertDialogCancel><AlertDialogAction onClick={() => setNotice("Project archived in this preview.")}>Archive project</AlertDialogAction></AlertDialogFooter></AlertDialogContent></AlertDialog></div>
+            <div role="group" aria-label="Alert dialog example" id="example-alert-dialog" className="showcase-example"><AlertDialog><AlertDialogTrigger render={<Button variant="outline" />}>Archive project</AlertDialogTrigger><AlertDialogContent><AlertDialogHeader><AlertDialogTitle>Archive this project?</AlertDialogTitle><AlertDialogDescription>Team members will lose access until you restore the project from the archive.</AlertDialogDescription></AlertDialogHeader><AlertDialogFooter><AlertDialogCancel>Keep project</AlertDialogCancel><AlertDialogAction onClick={() => setNotice("Project archived in this preview.")}>Archive project</AlertDialogAction></AlertDialogFooter></AlertDialogContent></AlertDialog></div>
           </div>
-          <p className="field-description">Arrow keys navigate menus. Escape dismisses overlays and returns focus.</p>
+
           <div className="toolbar"><div role="group" aria-label="Button group example" id="example-button-group" className="showcase-example"><ButtonGroup aria-label="Preview actions"><Button variant="outline" onClick={() => setNotice("Changes saved in this preview.")}>Save changes</Button><Button variant="outline" onClick={() => setNotice("Draft saved in this preview.")}>Save draft</Button></ButtonGroup></div></div>
         </div>
         <div className="catalog-example">
