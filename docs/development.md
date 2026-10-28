@@ -26,11 +26,13 @@ either deployment.
 
 ## Manual GitHub checks
 
-Run GitHub CI through **Actions → CI → Run workflow**. Pages deployment is a separate manual workflow;
+GitHub CI runs only through **Actions → CI → Run workflow**. Pushes and pull
+requests do not trigger it. Pages deployment is a separate manual workflow;
 see [publishing and releases](releasing.md#manual-github-workflows) for its
 deployment steps.
 
-Maintainers initiate dependency version updates.
+Dependency version updates are also maintainer-initiated; no scheduled
+Dependabot version-update configuration is installed.
 
 ## Browser verification
 
@@ -47,8 +49,7 @@ npm run verify:ui
 npm run verify:quality
 ```
 
-`verify:quality` checks every gallery page across themes, densities, and mobile/desktop
-layouts, then runs token, input, overlay, data/media, and pattern interaction checks.
+`verify:quality` runs the gallery matrix and token, input, overlay, data/media, and pattern interaction checks.
 
 For checks that exercise the production bootstrap and built Starter, build both
 outputs and start `npm run preview -- --host 127.0.0.1 --port 4173`, then run:
@@ -59,24 +60,14 @@ npm run verify:details
 ```
 
 `EVENFORM_URL` overrides the target origin for these scripts. The default is
-port 5173 for `verify:ui` and `verify:quality`, and port 4173 for the production checks.
+port 5173 for `verify:ui` and `verify:quality` and port 4173 for the other scripts.
 `PLAYWRIGHT_EXECUTABLE_PATH` can point to an existing Chromium executable.
-Scripts write screenshots and results under `evidence/`, associated with their
-checkout and run. Coverage focuses on the flows listed below.
+Scripts write screenshots and results under `evidence/`. Keep results tied to
+their actual checkout and run; do not interpret historical screenshots as a
+current passing test. These scripts exercise representative flows, not every
+upstream component option.
 
-The Foundations page, library search, and controls have focused browser checks
-against the source dev server (port 5173 by default):
-
-```bash
-node scripts/verify-foundations.mjs
-node scripts/verify-library-navigation.mjs
-node scripts/verify-control-resilience.mjs
-```
-
-All accept `EVENFORM_URL` and `PLAYWRIGHT_EXECUTABLE_PATH`. They cover the live
-Foundations interactions and narrow layouts, keyboard search and focus return,
-and long Select labels, Textarea sizing, and invalid grouped-input feedback.
-Each saves a fresh report and screenshots under its own `evidence/` directory.
+Focused dev-server checks for Foundations, library navigation, and control resilience are available as `node scripts/verify-foundations.mjs`, `node scripts/verify-library-navigation.mjs`, and `node scripts/verify-control-resilience.mjs`. They accept `EVENFORM_URL` and `PLAYWRIGHT_EXECUTABLE_PATH` and save reports under `evidence/`.
 
 `npm run verify:feedback` targets the source dev server (default port 4173). It
 generates an isolated fixture under ignored `evidence/field-feedback/`, checks
@@ -103,8 +94,8 @@ sizes, and a custom color. Verify Reset and CSS export, including restoring a
 slider to its inherited value without leaving an override marker.
 
 `verify:palette` checks 1,212 seeds in both themes against the generated semantic
-role pairs. Verify page layout and interaction separately. Keep screenshots and
-reports in the ignored `evidence/` directory.
+role pairs. It does not replace GUI checks or establish whole-page accessibility
+conformance. Keep screenshots and reports in the ignored `evidence/` directory.
 
 ## Updating dependencies
 
@@ -118,13 +109,19 @@ a generic MIT text without the correct copyright holder.
 `components.json` retains the official `base-nova` style identifier. That is the
 upstream shadcn preset name, independent of the Evenform project name.
 
+The Evenform rename changes project-specific classes, storage keys, custom
+events, and the chart adapter to `evenform-*` / `EvenformChart`. Earlier local
+Nova Showcase preferences are not migrated. The Starter's separate `app-*`
+keys are unchanged. Historical evidence retains the name used when recorded.
+
 ## Motion verification
 
 With `npm run dev -- --host 127.0.0.1` running, use `npm run verify:motion`.
 Set `EVENFORM_URL` for a different local port. The targeted check launches an
 isolated Playwright Chromium context, exercises animations and interruption,
-and records JSON, screenshots and video in ignored `evidence/motion/`.
-See [Motion](motion.md#verification) for measured animation and interaction coverage.
+and records JSON, screenshots and video in ignored `evidence/motion/`. It does
+not use a personal browser profile. See [Motion](motion.md#verification) for
+coverage and boundaries. Screenshot captures alone are not motion validation.
 
 ## Source adoption contract verification
 
@@ -141,8 +138,8 @@ are saved in `evidence/source-contracts/`.
 `verify:adoption` checks deterministic versioned manifests, exact direct package
 versions, source/license integrity, consumer-edit protection and a copied Vite
 host using OptionSelect and HeaderShell (including its additional CSS).
-The fixture links installed packages. Verify transitive dependency reproducibility
-with the host lockfile and CI installation.
+The fixture links installed packages rather than downloading them; use the real
+host lockfile and CI installation for transitive dependency reproducibility.
 
 With the same source server, `npm run verify:input-adoption` checks 16 viewport,
 theme, density and reduced-motion combinations, free-entry async/retry/cancellation,
@@ -150,7 +147,7 @@ SVG dialog return/fallback and ordinary HTML trigger restoration. `npm run verif
 checks zero server storage reads, three deterministic SSR snapshots and 18 preference
 hydration cases, including blocked storage and system-mode changes. They write to
 `evidence/input-adoption/` and `evidence/ssr/`. The SSR fixture uses actual server
-rendering/hydration; validate React Router deployment in the consuming host.
+rendering/hydration but is not a full React Router deployment test.
 
 `npm run analyze:adoption-size -- /path/to/consumer BEFORE_SHA AFTER_SHA` profiles
 archived consumer builds without editing the consumer or installing packages.
@@ -165,8 +162,8 @@ With the source server running at port 4173, use `verify:chart-contracts`,
 ignored `evidence/chart-contracts/`, `evidence/operations/` and
 `evidence/reading-contrast/`. Chart lifecycle/mark tests use the real runtime;
 composition tests use synthetic records; contrast tests measure selected actual
-CSS pairs. Test application integration and additional chart/theme combinations
-in the consuming host.
+CSS pairs. Their evidence does not establish backend, SSO, every chart family,
+every custom theme or a complete accessibility audit.
 
 `verify:operations` covers desktop/mobile × Light/Dark × Compact/Comfortable
 (eight cases): real pointer selection of the minimum-width tiny contribution,
@@ -178,4 +175,5 @@ dynamic OS/local reduced motion. It records instant horizontal scroll requests.
 The compact cases additionally check Neutral/Indigo/Teal/Rose in both viewports
 and themes (16 cases), resolving CSS colors through Canvas and compositing the
 actual translucent destructive Badge over its tinted inspector background.
-Selected text and category Badge pairs are checked within the same recipe matrix.
+Selected text and category Badge pairs are checked too. This local recipe matrix
+is not a global status-color audit or coverage of arbitrary custom palettes.

@@ -1,7 +1,8 @@
 # Source adoption contracts
 
-Recipes for restored values, free-entry suggestions, SVG dialog focus,
-bounded workspaces, menus, scrolling feeds and surface presets.
+These recipes cover restored values, free-entry suggestions, SVG dialog focus,
+bounded workspaces, menu anatomy, scrolling feeds and surface presets. They
+retain the Base UI interaction contracts.
 See the runnable **Patterns → Workflow → Scrolling workspace** example, or
 [`workspace-adoption-example.tsx`](../src/playground/workspace-adoption-example.tsx).
 **Patterns → Workflow → Inputs and focus** adds runnable input/focus recipes in
@@ -44,17 +45,22 @@ const input = useRef<HTMLInputElement>(null)
 The primitive can emit `input-clear` after an unmatched input loses focus. For
 this contract, process deliberate typing (`input-change`) and non-null selected
 items; clear the draft only through the field's explicit clear action or typing
-an empty string. `ComboboxClear` clears a **selection** and can be absent for unmatched
+an empty string. Do not forward every input/selection change into one state
+setter. `ComboboxClear` clears a **selection** and can be absent for unmatched
 text; the separate Button above clears the free-entry **input**.
 
-The host owns ID validation, form serialization, request debouncing and
-persistence. Serialize `draft` explicitly in forms.
+This changes no default Combobox behavior: closed-set and multiple-selection
+callers keep the existing primitive API. Validation of a free-typed ID, its form
+serialization, request debouncing and persistence remain host responsibilities.
+If the field is in a form, serialize `draft` explicitly rather than relying on
+the selected-value form field.
 
 The runnable recipe loads suggestions on opening. It aborts the preceding request,
 ignores aborted completions (even when a loader ignores its signal), preserves
 the draft across loading/error/retry, and focuses the input after clearing.
-Show loading, error and empty-success states separately, preserving the draft
-on failure. Replace the sample loader with the application data source.
+Show loading and error feedback separately from an empty successful response;
+do not fabricate an option or erase the draft when a request fails. The sample
+loader returns illustrative local records; it is not an application data API.
 
 ## Dialogs opened from SVG or removed elements
 
@@ -82,9 +88,10 @@ The source example captures the opener on both click and Enter/Space, exposes
 SVG controls inside a `role="group"` root, and uses a stable HTML reset action
 when the selected element is removed. An SVG `role="img"` root can hide
 interactive descendants from assistive technology. Give each interactive part
-an accessible name, keyboard action and visible focus treatment. Scope the
-custom focus policy to this Dialog and return only connected elements. Provide
-a fallback when filtering, virtualization or navigation removes the opener.
+an accessible name, keyboard action and visible focus treatment. Do not change
+the shared Dialog's default focus policy for all consumers, or return a removed
+element. The host also owns focus fallback when filtering, virtualization or
+navigation removes an opener. This recipe is not a complete chart accessibility audit.
 
 ## Restored Select labels
 
@@ -120,10 +127,11 @@ import { OptionSelect } from "@/components/ui/option-select"
 
 Asynchronous options must include the saved selection's label while the full
 list loads. Seed from a saved `{value, label}` record, then merge the response by
-unique value. The host owns loading, request cancellation, errors and retry:
+unique value. Do not assume an unknown ID has a human-readable label. Loading,
+request cancellation, errors and retry are application state:
 
 ```tsx
-// Seed the label from the restored record.
+// selectedRecord comes from the restored record, not a second label dictionary.
 const byValue = new Map<string, SelectOption>()
 if (selectedRecord) byValue.set(selectedRecord.value, selectedRecord)
 for (const option of loadedOptions ?? []) byValue.set(option.value, option)
@@ -133,8 +141,8 @@ const options = [...byValue.values()]
 ```
 
 Updating `options` or a controlled `value` updates a closed trigger immediately;
-opening the popup is unnecessary. Use the explicit items collection for labels;
-React child traversal cannot reliably resolve wrappers or lazy content.
+opening the popup is unnecessary. Never infer labels by traversing React children:
+wrappers, lazy content and asynchronous lists make that unreliable.
 
 ## A viewport workspace with independent scrolling
 
@@ -165,17 +173,17 @@ Set `--ds-header-shell-height` when embedding below an existing application head
 .workspace-panels > * { min-width: 0; min-height: 0; overflow: auto; }
 ```
 
-The default shell owns the `main` landmark and skip link. Inside an existing
-main use `contentAs="div"`; the containing
+The default shell owns the single `main` landmark and skip link. Children must not
+add another main. Inside an existing main use `contentAs="div"`; the containing
 application owns the landmark. Give multiple embedded shells unique `mainId`s.
 Product panels own their responsive arrangement, headings and scroll focus.
-Constrain scrolling on the panel rather than the document body.
+Do not fix the body height globally just to repair one panel's scroll boundary.
 
 ## Named menu groups and multiple choices
 
 `DropdownMenuGroupLabel` (also exported as `DropdownMenuLabel` for compatibility)
 is Base UI GroupLabel and **requires a DropdownMenuGroup ancestor**. Keep labels
-and items inside the same group.
+inside their group; do not wrap them in an implicit group that excludes the items.
 
 ```tsx
 <DropdownMenu>
@@ -205,11 +213,12 @@ editing contract.
 
 ## Cards in a scrolling feed
 
-Card defaults to `flex-shrink: 0`, so a constrained column scrolls instead of
+Card now defaults to `flex-shrink: 0`, so a constrained column scrolls instead of
 compressing each card and clipping content behind `overflow: hidden`.
 This changes flex allocation; layouts intentionally shrinking a card can use
 `className="shrink"` or `--ds-card-shrink: 1` and must provide their own content
-scroll boundary. For a feed mixing cards, messages and other flex children, protect **all** direct
+scroll boundary. Grid sizing and ordinary content pages retain their layout.
+For a feed mixing cards, messages and other flex children, protect **all** direct
 children with `*:shrink-0`, or an equivalent components-layer rule:
 
 ```css
@@ -235,7 +244,7 @@ portal container rather than a local React ancestor for backdrop overrides.
 | `--ds-card-boundary-color` | foreground at 10% in Oklab |
 | `--ds-card-shrink` | `0` |
 | `--ds-backdrop-color` | `#000` |
-| `--ds-backdrop-opacity` | `10%` (color-mix percentage) |
+| `--ds-backdrop-opacity` | `10%` (color-mix percentage, not a unitless number) |
 | `--ds-backdrop-blur` | `4px` |
 
 ```css
@@ -250,8 +259,9 @@ portal container rather than a local React ancestor for backdrop overrides.
 .dark { --ds-backdrop-opacity: 32%; }
 ```
 
-Backdrop tint mixes into the background color independently of animated
-opacity. Presence, focus restoration and CSS reduced-motion behavior
+Defaults match the prior boundary, corner and backdrop treatment. Backdrop tint
+is mixed into the background color; it does not replace the primitive's animated
+opacity. Existing presence, focus restoration and CSS reduced-motion behavior
 remain in `motion.css`. Utilities such as `rounded-none`, `ring-0`, `shrink` and
 `bg-transparent` intentionally override components-layer defaults. Card header,
 footer and image corner rules follow the public radius token.

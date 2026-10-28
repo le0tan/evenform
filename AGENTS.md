@@ -1,6 +1,6 @@
 # UI development
 
-- Keep copy concise. Remove redundant subtitles, implementation explanations, and defensive comparisons. Retain useful labels, instructions, and state feedback.
+- Avoid unnecessary secondary labels and descriptions. Let the layout do the explaining.
 - Motion defaults live in CSS Tokens. Preserve primitive presence/focus contracts, make transitions interruptible, and verify CSS + JavaScript reduced-motion paths; see docs/motion.md.
 
 - 开始 UI 工作前阅读 DESIGN.md；区分工程契约、设计原则与当前实现，用户明确约束优先。

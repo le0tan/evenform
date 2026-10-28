@@ -8,10 +8,6 @@ import { defineConfig, loadEnv } from "vite"
 export default defineConfig(({ mode }) => ({
   base: loadEnv(mode, process.cwd(), "VITE_").VITE_BASE_PATH || "/",
   plugins: [cn({ css: "src/core.css", out: "src/lib/cn-tables.ts", full: true }), react(), tailwindcss()],
-  server: {
-    // Let editor writes finish before cn reads the CSS theme scales.
-    watch: { awaitWriteFinish: { stabilityThreshold: 150, pollInterval: 20 } },
-  },
   resolve: {
     alias: {
       "@": resolve(import.meta.dirname, "./src"),
