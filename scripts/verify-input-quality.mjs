@@ -23,7 +23,9 @@ import{Form,FormField,FormFieldLabel,FormFieldError,FormFieldControl}from'../../
 import{Field,FieldLabel,FieldDescription,FieldError}from'../../src/components/ui/field';import{OptionSelect}from'../../src/components/ui/option-select';
 const params=new URLSearchParams(location.search);document.documentElement.dataset.density=params.get('density')||'compact';document.documentElement.classList.toggle('dark',params.get('theme')==='dark');
 const long='AnExtremelyLongCategoryLabelWithoutBreaks'.repeat(4);
+const stableOptions=[{id:'alpha',label:'Alpha',children:[{id:'a',label:'Alpha child'}]},{id:'beta',label:'Beta',children:[{id:'b',label:'Beta child'}]}];
 function Fixture(){
+const[stablePath,setStablePath]=useState([]);const[count,setCount]=useState(0);
 const[combo,setCombo]=useState('Alpha');const[mention,setMention]=useState('');const[plainMention,setPlainMention]=useState('');
 const[tags,setTags]=useState(['alpha','beta']);const[path,setPath]=useState(['region','leaf']);const[tree,setTree]=useState([]);const[targets,setTargets]=useState([]);const[search,setSearch]=useState('query');
 const[gradient,setGradient]=useState({type:'linear',angle:90,stops:[{id:'a',color:'#4433ee',offset:0},{id:'b',color:'#ffaa00',offset:100}]});const[files,setFiles]=useState([]);const[rejections,setRejections]=useState([]);const[submitted,setSubmitted]=useState(false);
@@ -39,6 +41,7 @@ return <main style={{padding:16,display:'grid',gridTemplateColumns:'minmax(0,1fr
 <section id="numbers"><NumberField min={0} max={3} defaultValue={2}><NumberFieldGroup><NumberFieldDecrement/><NumberFieldInput aria-label="Quantity"/><NumberFieldIncrement/></NumberFieldGroup></NumberField><NumberField readOnly defaultValue={2}><NumberFieldGroup><NumberFieldDecrement/><NumberFieldInput aria-label="Read only quantity"/><NumberFieldIncrement/></NumberFieldGroup></NumberField><Slider defaultValue={[20,80]} min={0} max={100} getAriaLabel={i=>i===0?'Lower limit':'Upper limit'}/><OTPField length={4} aria-label="Verification code"/><Rating label="Score" defaultValue={2} allowClear/><Rating label="Read only score" value={2.5} readOnly/></section>
 <section id="select"><OptionSelect defaultValue="a" options={[{value:'a',label:'Alpha'},{value:'blocked',label:'Blocked',disabled:true},{value:'b',label:long}]} triggerProps={{'aria-label':'Single option'}}/><OptionSelect defaultValue="compact" options={[{value:'compact',label:'Compact'},{value:'comfortable',label:'Comfortable'}]} triggerProps={{'aria-label':'Density choice',style:{width:130}}}/></section>
 <section id="suggestions"><Combobox items={['Alpha','Beta']} value={combo} onValueChange={setCombo}><ComboboxInputGroup><ComboboxInput aria-label="Team suggestion"/><ComboboxTrigger/><ComboboxClear/></ComboboxInputGroup><ComboboxContent><ComboboxList>{item=><ComboboxItem key={item} value={item}>{item}</ComboboxItem>}</ComboboxList></ComboboxContent></Combobox><output id="combo-value">{combo}</output><Mentions aria-label="Mention note" value={mention} onMentionsChange={change=>{setMention(change.value);setPlainMention(change.plainTextValue)}}><Mention trigger="@" data={[{id:'alex',display:'Alex'},{id:'jamie',display:'Jamie'}]} appendSpaceOnAdd/></Mentions><output id="mention-value">{plainMention}</output></section><section id="cascader"><Cascader label="Location" options={[{id:'region',label:'Region',children:[{id:'leaf',label:'Leaf'},{id:'blocked',label:'Blocked',disabled:true},{id:'long',label:long}]},{id:'other',label:'Other'}]} value={path} onValueChange={setPath}/><output id="path-value">{JSON.stringify(path)}</output></section>
+<section id="stable-cascader"><Cascader label="Stable paths" options={stableOptions} value={stablePath} changeOnSelect onValueChange={value=>{setStablePath(value);setCount(count+1)}}/><output id="stable-count">{count}</output></section>
 <section id="tree"><TreeSelect label="Folders" selectionMode="multiple" items={[{id:'enabled',label:'Enabled'},{id:'disabled',label:'Disabled',disabled:true},{id:'branch',label:'Branch',children:[{id:'child',label:'Child'}]}]} selectedKeys={tree} onSelectionChange={setTree} defaultExpandedKeys={['branch']}/><output id="tree-value">{JSON.stringify(tree)}</output></section>
 <section id="transfer"><Transfer items={[{id:'one',label:'One'},{id:'two',label:'Two'},{id:'blocked',label:'Blocked',disabled:true}]} targetKeys={targets} onTargetKeysChange={setTargets}/><output id="target-value">{JSON.stringify(targets)}</output></section>
 <section id="dates"><DateField label="Date" defaultValue={new CalendarDate(2026,10,28)}/><TimeField label="Time" defaultValue={new Time(10,30)}/><DatePicker label="Choose date" defaultValue={new CalendarDate(2026,10,28)}/><DateRangePicker label="Date range" defaultValue={{start:new CalendarDate(2026,10,20),end:new CalendarDate(2026,10,28)}}/><DateField label="Read only date" isReadOnly defaultValue={new CalendarDate(2026,10,28)}/><DateField label="Invalid date" isInvalid errorMessage="Outside the allowed range" defaultValue={new CalendarDate(2026,10,28)}/><PeriodPicker mode="month" label="Reporting period" defaultValue={{type:'month',year:2026,month:10}} isClearable minValue={new CalendarDate(2026,10,1)} maxValue={new CalendarDate(2026,12,31)}/><PeriodPicker mode="year" label="Read only period" defaultValue={{type:'year',year:2026}} isReadOnly isClearable/><PeriodPicker mode="quarter" label="Quarter" defaultValue={{type:'quarter',year:2026,quarter:2}}/><PeriodPicker mode="year" label="Year" defaultValue={{type:'year',year:2026}}/><PeriodPicker mode="week" label="Week" defaultValue={{type:'week',start:new CalendarDate(2026,10,26)}}/><div id="rtl-calendar" dir="rtl"><DateLocaleProvider locale="ar-AE"><Calendar aria-label="RTL calendar" defaultValue={new CalendarDate(2026,10,28)}/></DateLocaleProvider></div></section>
@@ -161,10 +164,17 @@ try {
   await page.locator('.evenform-cascader-popup').waitFor({ state: 'hidden' })
   await page.getByRole('button', { name: 'Clear path' }).press('Enter')
   assert.equal(await page.locator('#path-value').innerText(), '[]')
-  assert(await page.locator('.evenform-cascader-trigger').evaluate(e => e === document.activeElement))
+  assert(await page.locator('#cascader .evenform-cascader-trigger').evaluate(e => e === document.activeElement))
+  await page.getByRole('button', { name: 'Stable paths Choose a path…' }).click()
+  await page.getByRole('option', { name: 'Alpha', exact: true }).click()
+  assert.equal(await page.locator('#stable-count').innerText(), '1')
+  await page.getByRole('option', { name: 'Beta', exact: true }).click()
+  assert.equal(await page.locator('#stable-count').innerText(), '2')
+  await page.keyboard.press('Escape')
+  report.cases.push('Stable Cascader options invoke the latest controlled callback across parent selections')
   await page.getByRole('button',{name:'Folders Choose…'}).click()
   const tree = page.getByRole('treegrid')
-  await tree.getByRole('row').first().press('Control+a')
+  await tree.getByRole('row').first().press('ControlOrMeta+a')
   assert.deepEqual(JSON.parse(await page.locator('#tree-value').innerText()), ['enabled', 'branch', 'child'])
   await page.keyboard.press('Escape')
   await page.locator('.evenform-tree-select-popup').waitFor({ state: 'hidden' })

@@ -184,7 +184,7 @@
     cursor: pointer;
     transition: background-color var(--ds-duration-fast) var(--ds-ease-out), border-color var(--ds-duration-fast) var(--ds-ease-out), color var(--ds-duration-fast) var(--ds-ease-out);
   }
-  [data-slot="plan-option"]:not([data-disabled]):hover {
+  [data-slot="plan-option"]:where(:not([data-disabled])):hover {
     background: var(--muted);
   }
   [data-slot="plan-option"]:has([data-checked]) {
