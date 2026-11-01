@@ -96,11 +96,14 @@ export type EvenformChartProps = {
   description: string
   className?: string
   palette?: ChartPalette
+  loadingLabel?: string
+  errorLabel?: string
+  retryLabel?: string
 }
 
 /** VChart owns rendering and pointer interactions; React owns its lifecycle.
  * The caller owns data, legends, filters, and an accessible table alternative. */
-export function EvenformChart({ spec, label, description, className, palette = "categorical" }: EvenformChartProps) {
+export function EvenformChart({ spec, label, description, className, palette = "categorical", loadingLabel = "Loading chart…", errorLabel = "Unable to render this chart.", retryLabel = "Try again" }: EvenformChartProps) {
   const container = useRef<HTMLDivElement>(null)
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading")
   const [attempt, setAttempt] = useState(0)
@@ -157,7 +160,7 @@ export function EvenformChart({ spec, label, description, className, palette = "
 
   return <div className={cn("evenform-chart", className)}>
     <div ref={container} className="evenform-chart-canvas" role="img" aria-label={`${label}. ${description}`} aria-busy={status === "loading"} />
-    {status === "loading" && <output className="evenform-chart-message">Loading chart…</output>}
-    {status === "error" && <div className="evenform-chart-message" role="alert"><p>Unable to render this chart.</p><Button variant="outline" size="sm" onClick={() => { setStatus("loading"); setAttempt((value) => value + 1) }}>Try again</Button></div>}
+    {status === "loading" && <output className="evenform-chart-message">{loadingLabel}</output>}
+    {status === "error" && <div className="evenform-chart-message" role="alert"><p>{errorLabel}</p><Button variant="outline" size="sm" onClick={() => { setStatus("loading"); setAttempt((value) => value + 1) }}>{retryLabel}</Button></div>}
   </div>
 }

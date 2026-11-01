@@ -64,7 +64,7 @@ const result={files,groups};const client=this.environment.name==='client';writeF
   const profile = JSON.parse(await readFile(join(root, "profile-client.json"), "utf8"))
   const totals = Object.fromEntries(["javascript", "css", "asset"].map(kind => [kind, profile.files.filter(file => file.kind === kind).reduce((sum, file) => ({ bytes: sum.bytes + file.bytes, gzipBytes: sum.gzipBytes + file.gzipBytes }), { bytes: 0, gzipBytes: 0 })]))
   const styles = []
-  for (const relative of ["app/app.css", "src/core.css", "src/styles/tokens.css", "src/styles/appearance.css", "src/styles/control-sizing.css", "src/styles/patterns.css", "src/styles/extended-controls.css", "src/styles/extended-patterns.css", "src/styles/motion.css", "src/styles/workflow-aids.css"]) {
+  for (const relative of ["app/app.css", "src/core.css", "src/styles/token-values.css", "src/styles/tokens.css", "src/styles/appearance.css", "src/styles/control-sizing.css", "src/styles/patterns.css", "src/styles/extended-controls.css", "src/styles/extended-patterns.css", "src/styles/motion.css", "src/styles/workflow-aids.css"]) {
     if (await exists(join(root, relative))) styles.push({ file: relative, sourceBytes: Buffer.byteLength(await readFile(join(root, relative))) })
   }
   report.cases.push({ label, revision, versions: Object.fromEntries(await Promise.all(["react", "react-dom", "vite", "@tailwindcss/vite", "@react-router/dev"].map(async name => [name, JSON.parse(await readFile(join(root, "node_modules", name, "package.json"), "utf8")).version]))), totals, styles, ...profile })

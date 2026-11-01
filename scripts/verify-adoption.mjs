@@ -1,6 +1,6 @@
 import assert from "node:assert/strict"
 import { execFileSync } from "node:child_process"
-import { mkdir, mkdtemp, readFile, stat, symlink, writeFile } from "node:fs/promises"
+import { mkdir, mkdtemp, readFile, readdir, stat, symlink, writeFile } from "node:fs/promises"
 import { tmpdir } from "node:os"
 import { dirname, join, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
@@ -112,3 +112,56 @@ const beforeConflict = await readFile(buttonPath, 'utf8')
 assert.throws(() => execFileSync(process.execPath, [join(source, 'scripts/adopt-source.mjs'), '--to', host, '--entry', 'src/components/ui/button.tsx'], { stdio: 'pipe' }))
 assert.equal(await readFile(buttonPath, 'utf8'), beforeConflict)
 console.log('PASS compatibility provenance, product ownership exclusion, read-only check and notice conflict preflight')
+
+// Every component exported on its own must carry the stylesheet that defines its classes.
+const classesIn = text => new Set([...text.matchAll(/(?<![\w-])(evenform-[\w-]+)/g)].map(match => match[1]))
+const allStyles = (await readdir(join(source, 'src/styles'))).filter(name => name.endsWith('.css') && name !== 'playground.css')
+const definedAnywhere = new Set()
+for (const name of allStyles) for (const [, cls] of (await readFile(join(source, 'src/styles', name), 'utf8')).matchAll(/\.(evenform-[\w-]+)/g)) definedAnywhere.add(cls)
+const missing = []
+for (const folder of ['src/components/ui', 'src/components/patterns']) {
+  for (const name of (await readdir(join(source, folder))).filter(file => file.endsWith('.tsx'))) {
+    const single = await mkdtemp(join(tmpdir(), 'evenform-style-'))
+    execFileSync(process.execPath, [join(source, 'scripts/adopt-source.mjs'), '--to', single, '--entry', `${folder}/${name}`], { stdio: 'pipe' })
+    const result = JSON.parse(await readFile(join(single, 'evenform-adoption.json'), 'utf8'))
+    let css = ''
+    let tsx = ''
+    for (const file of result.files) {
+      const text = await readFile(join(single, file), 'utf8')
+      if (file.endsWith('.css')) css += text
+      else if (/\.tsx?$/.test(file)) tsx += text
+    }
+    const defined = new Set([...css.matchAll(/\.(evenform-[\w-]+)/g)].map(match => match[1]))
+    for (const cls of classesIn(tsx)) if (definedAnywhere.has(cls) && !defined.has(cls)) missing.push(`${name}: ${cls}`)
+  }
+}
+assert.deepEqual(missing, [], `Exported components lack their stylesheet:\n${missing.join('\n')}`)
+console.log('PASS every single-component export includes the stylesheets that define its classes')
+
+const cascaderHost = await mkdtemp(join(tmpdir(), 'evenform-cascader-'))
+execFileSync(process.execPath, [join(source, 'scripts/adopt-source.mjs'), '--to', cascaderHost, '--entry', 'src/components/ui/transfer.tsx', '--entry', 'src/components/ui/cascader.tsx'], { stdio: 'pipe' })
+const cascaderManifest = JSON.parse(await readFile(join(cascaderHost, 'evenform-adoption.json'), 'utf8'))
+assert(cascaderManifest.styleEntries.includes('src/styles/data-controls.css'))
+assert(cascaderManifest.styleEntries.includes('src/styles/choice-tools.css'))
+
+// A shadcn host keeps its own cn and Button; Evenform lands beside them.
+const shadcnHost = await mkdtemp(join(tmpdir(), 'evenform-shadcn-'))
+const hostUtils = "import { clsx } from 'clsx'\nexport const cn = (...inputs: unknown[]) => clsx(inputs)\n"
+await mkdir(join(shadcnHost, 'src/lib'), { recursive: true })
+await mkdir(join(shadcnHost, 'src/components/ui'), { recursive: true })
+await writeFile(join(shadcnHost, 'src/lib/utils.ts'), hostUtils)
+await writeFile(join(shadcnHost, 'src/components/ui/button.tsx'), 'export const Button = () => null\n')
+assert.throws(() => execFileSync(process.execPath, [join(source, 'scripts/adopt-source.mjs'), '--to', shadcnHost, '--entry', 'src/components/ui/button.tsx'], { stdio: 'pipe' }))
+execFileSync(process.execPath, [join(source, 'scripts/adopt-source.mjs'), '--to', shadcnHost, '--into', 'src/evenform', '--entry', 'src/components/ui/dialog.tsx'], { stdio: 'pipe' })
+assert.equal(await readFile(join(shadcnHost, 'src/lib/utils.ts'), 'utf8'), hostUtils)
+const namespaced = JSON.parse(await readFile(join(shadcnHost, 'evenform-adoption.json'), 'utf8'))
+assert.equal(namespaced.into, 'src/evenform')
+assert(namespaced.files.includes('src/evenform/components/ui/dialog.tsx'))
+assert(namespaced.styleEntries.includes('src/evenform/core.css'))
+for (const file of namespaced.files.filter(name => /\.tsx?$/.test(name))) assert(!/from\s*["']@\//.test(await readFile(join(shadcnHost, file), 'utf8')), `${file} keeps an @/ import`)
+assert((await readFile(join(shadcnHost, 'scripts/build-cn.mjs'), 'utf8')).includes('src/evenform/core.css'))
+execFileSync(process.execPath, [join(source, 'scripts/adopt-source.mjs'), '--to', shadcnHost, '--check'], { stdio: 'pipe' })
+await symlink(join(source, 'node_modules'), join(shadcnHost, 'node_modules'))
+await writeFile(join(shadcnHost, 'tsconfig.json'), JSON.stringify({ compilerOptions: { target: 'ES2022', module: 'ESNext', moduleResolution: 'bundler', allowImportingTsExtensions: true, jsx: 'react-jsx', strict: true, skipLibCheck: true, noEmit: true }, include: ['src/evenform/**/*.ts', 'src/evenform/**/*.tsx'] }, null, 2))
+execFileSync(process.execPath, [join(source, 'node_modules/typescript/bin/tsc'), '-p', join(shadcnHost, 'tsconfig.json')], { stdio: 'inherit' })
+console.log('PASS --into exports beside a shadcn host without touching its cn or Button, with no @/ alias')

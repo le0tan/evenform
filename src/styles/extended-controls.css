@@ -136,7 +136,7 @@
     position: fixed;
     inset-block-start: 50%;
     left: 50%;
-    z-index: 50;
+    z-index: var(--ds-layer-overlay);
     display: grid;
     gap: var(--ds-overlay-gap);
     width: min(
@@ -147,7 +147,7 @@
     overflow-y: auto;
     padding: var(--ds-dialog-inset, var(--ds-dialog-padding));
     transform: translate(-50%, -50%);
-    border-radius: var(--radius-xl);
+    border-radius: var(--ds-dialog-radius, var(--ds-radius-surface));
     background: var(--popover);
     color: var(--popover-foreground);
     box-shadow: var(--ds-dialog-shadow, var(--ds-elevation-modal, var(--ds-shadow-overlay)));
@@ -176,7 +176,7 @@
     justify-content: center;
     width: 16px;
     height: 16px;
-    border: var(--ds-border-width) solid var(--input);
+    border: var(--ds-border-width) solid var(--ds-control-border);
     border-radius: 50%;
     color: var(--primary-foreground);
     background: var(--background);
@@ -498,21 +498,21 @@
     .evenform-combobox-input,
     .evenform-combobox-action,
     .evenform-slider-control {
-      min-height: 44px;
+      min-height: var(--ds-touch-target-min);
     }
     .evenform-number-group,
     .evenform-combobox-group {
-      min-height: 44px;
+      min-height: var(--ds-touch-target-min);
     }
     .evenform-number-group .evenform-number-input,
     .evenform-number-group .evenform-number-step,
     .evenform-combobox-group .evenform-combobox-input,
     .evenform-combobox-group .evenform-combobox-action {
-      min-height: calc(44px - 2 * var(--ds-border-width));
+      min-height: calc(var(--ds-touch-target-min) - 2 * var(--ds-border-width));
     }
     .evenform-number-step,
     .evenform-combobox-action {
-      min-width: 44px;
+      min-width: var(--ds-touch-target-min);
     }
     /* Enlarge the radio's pointer target without changing its visual circle. */
     .evenform-radio {
@@ -521,15 +521,15 @@
     .evenform-radio::before {
       position: absolute;
       content: "";
-      width: 44px;
-      height: 44px;
+      width: var(--ds-touch-target-min);
+      height: var(--ds-touch-target-min);
     }
     .evenform-radio-group {
       gap: max(var(--ds-form-field-gap), var(--ds-space-4));
     }
     .evenform-chip-remove {
-      min-width: 44px;
-      min-height: 44px;
+      min-width: var(--ds-touch-target-min);
+      min-height: var(--ds-touch-target-min);
     }
   }
   @media (prefers-reduced-motion: reduce) {

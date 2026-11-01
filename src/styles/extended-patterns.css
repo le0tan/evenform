@@ -41,7 +41,7 @@
   [data-slot='status-message'][data-tone='info'] { --_status-color: var(--ds-info); --_status-surface: var(--ds-info-surface); }
   [data-slot='status-message'][data-tone='success'] { --_status-color: var(--ds-success); --_status-surface: var(--ds-success-surface); }
   [data-slot='status-message'][data-tone='warning'] { --_status-color: var(--ds-warning); --_status-surface: var(--ds-warning-surface); }
-  [data-slot='status-message'][data-tone='error'] { --_status-color: var(--destructive); --_status-surface: color-mix(in oklab, var(--destructive), var(--background) 94%); }
+  [data-slot='status-message'][data-tone='error'] { --_status-color: var(--destructive); --_status-surface: var(--ds-destructive-surface); }
   [data-slot='status-message-icon'] { display: flex; flex: none; padding-top: 0.15em; }
   [data-slot='status-message-icon'] > svg { width: 1.125em; height: 1.125em; }
   [data-slot='status-message-content'] { min-width: 0; flex: 1; overflow-wrap: anywhere; }
@@ -94,7 +94,7 @@
   [data-slot='filter-bar-search'] > * { width: 100%; }
   [data-slot='filter-bar-actions'] { margin-inline-start: auto; }
   .evenform-filter-chip { max-width: 100%; height: auto; min-height: var(--ds-button-height-sm); padding-block: var(--ds-space-1); white-space: normal; text-align: start; }
-  @media (pointer: coarse) { .evenform-filter-chip { min-height: 44px; } }
+  @media (pointer: coarse) { .evenform-filter-chip { min-height: var(--ds-touch-target-min); } }
   [data-slot='filter-chip-label'] { min-width: 0; overflow-wrap: anywhere; }
 
   [data-slot='detail-layout'] { container: evenform-detail / inline-size; display: flex; flex-direction: column; gap: var(--ds-section-gap); min-width: 0; }

@@ -74,7 +74,9 @@
 .workspace-identity strong { font-size: var(--ds-text-label); font-weight: var(--ds-weight-medium); }
 .workspace-identity p { color: var(--muted-foreground); font-size: var(--ds-text-caption); margin-top: var(--ds-space-1); }
 .settings-save { display: flex; align-items: center; justify-content: space-between; gap: var(--ds-panel-gap); }
-.theme-choices { display: flex; gap: var(--ds-toolbar-gap); flex-wrap: wrap; }
+.settings-choices { display: flex; flex-wrap: wrap; gap: var(--ds-form-field-gap) var(--ds-form-group-gap); }
+.settings-choice { display: inline-flex; align-items: center; gap: var(--ds-control-gap); font-weight: var(--ds-weight-normal); }
+.settings-choice > svg { width: 16px; height: 16px; color: var(--muted-foreground); }
 .feedback-example { display: flex; align-items: flex-start; gap: var(--ds-space-3); padding: var(--ds-space-4); border: 1px solid var(--destructive); border-radius: var(--radius); color: var(--destructive); }
 .feedback-example p { font-size: var(--ds-text-label); margin-top: var(--ds-space-1); }
 .skeleton-example { display: flex; align-items: center; gap: var(--ds-space-3); }

@@ -36,7 +36,7 @@
   .evenform-date-range-control > .evenform-date-input { flex: 0 1 auto; padding-inline-end: 0; }
   .evenform-date-range-control > .evenform-date-trigger { margin-inline-start: auto; }
   .evenform-date-range-separator { color: var(--muted-foreground); }
-  .evenform-date-popover { z-index: 50; max-width: calc(100vw - var(--ds-space-4)); max-height: var(--available-height); overflow: auto; background: var(--popover); color: var(--popover-foreground); border-radius: var(--radius-lg); box-shadow: var(--ds-shadow-overlay); outline: none; }
+  .evenform-date-popover { z-index: var(--ds-layer-overlay); max-width: calc(100vw - var(--ds-space-4)); max-height: var(--available-height); overflow: auto; background: var(--popover); color: var(--popover-foreground); border-radius: var(--radius-lg); box-shadow: var(--ds-shadow-overlay); outline: none; }
   .evenform-date-dialog { padding: var(--ds-space-2); outline: none; }
-  @media (pointer: coarse) { .evenform-calendar-cell, .evenform-calendar-nav, .evenform-date-trigger { min-height: 44px; min-width: 44px; } .evenform-date-control { min-height: 44px; } }
+  @media (pointer: coarse) { .evenform-calendar-cell, .evenform-calendar-nav, .evenform-date-trigger { min-height: var(--ds-touch-target-min); min-width: var(--ds-touch-target-min); } .evenform-date-control { min-height: var(--ds-touch-target-min); } }
 }

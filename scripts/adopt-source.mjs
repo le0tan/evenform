@@ -12,12 +12,8 @@ let target
 let check = false
 let overwrite = false
 let legacyNodeResolution = false
+let into = null
 const styleEntries = new Set(['src/core.css'])
-const companionStyles = {
-  'src/components/patterns/header-layout.tsx': ['src/styles/workflow-aids.css'],
-  'src/components/ui/copy-button.tsx': ['src/styles/utility-aids.css'],
-  'src/components/ui/event-calendar.tsx': ['src/styles/design-tools.css'],
-}
 const entries = ['src/core.css', 'src/components/theme-provider.tsx', 'src/lib/cn-tables.ts', 'public/evenform-init.js', 'scripts/build-cn.mjs']
 for (let i = 0; i < args.length; i++) {
   const flag = args[i]
@@ -30,9 +26,11 @@ for (let i = 0; i < args.length; i++) {
   else if (flag === '--check') check = true
   else if (flag === '--overwrite') overwrite = true
   else if (flag === '--legacy-node-resolution') legacyNodeResolution = true
+  else if (flag === '--into') into = args[++i]?.replace(/^\.\/|\/+$/g, '')
   else throw new Error(`Unknown argument: ${flag}`)
 }
-if (!target || entries.some(value => !value)) throw new Error('Usage: node scripts/adopt-source.mjs --to <directory> --entry src/components/ui/button.tsx [--style src/styles/date-controls.css] [--overwrite]')
+if (!target || entries.some(value => !value) || into === undefined || into === '') throw new Error('Usage: node scripts/adopt-source.mjs --to <directory> --entry src/components/ui/button.tsx [--style src/styles/date-controls.css] [--into src/evenform] [--overwrite]')
+if (into && (isAbsolute(into) || into.split('/').includes('..'))) throw new Error('--into must be a relative folder inside the host, such as src/evenform.')
 target = resolve(target)
 if (target === resolve(root) || !relative(resolve(root), target).startsWith('..')) throw new Error('Choose a host outside the Evenform source tree.')
 const hash = content => createHash('sha256').update(content).digest('hex')
@@ -51,6 +49,26 @@ if (check) {
 const manifest = JSON.parse(await readFile(resolve(root, 'package.json'), 'utf8'))
 const visited = new Set()
 const packages = new Set(['react', 'react-dom', 'tailwindcss', '@tailwindcss/vite'])
+// Optional stylesheets (imported by index.css, not core.css) own the rules whose
+// first compound names one of their classes or slots. A component that renders
+// that class or slot needs the stylesheet; descendant selectors are context only.
+const ownedStyles = new Map()
+for (const [, path] of (await readFile(resolve(root, 'src/index.css'), 'utf8')).matchAll(/@import\s+["']\.\/(styles\/[^"']+)["']/g)) {
+  const style = `src/${path}`
+  const css = (await readFile(resolve(root, style), 'utf8')).replace(/\/\*[\s\S]*?\*\//g, '')
+  for (const [, selectors] of css.matchAll(/([^{}]+)\{/g)) for (const selector of selectors.split(',')) {
+    for (const match of selector.trim().split(/[\s>~+]/)[0].matchAll(/\.((?:evenform|ds)-[\w-]+)|data-slot=["']([\w-]+)["']/g)) {
+      const pattern = match[1] ? `(?<![\\w-])${match[1]}(?![\\w-])` : `data-slot=["'{\`]*${match[2]}["'\`]`
+      if (!ownedStyles.has(pattern)) ownedStyles.set(pattern, new Set())
+      ownedStyles.get(pattern).add(style)
+    }
+  }
+}
+const stylesFor = source => {
+  const found = new Set()
+  for (const [pattern, styles] of ownedStyles) if (new RegExp(pattern).test(source)) for (const style of styles) found.add(style)
+  return [...found].sort()
+}
 const exists = async path => { try { return (await stat(path)).isFile() } catch (error) { if (error.code === 'ENOENT') return false; throw error } }
 async function visit(name) {
   const absolute = resolve(root, name)
@@ -59,13 +77,12 @@ async function visit(name) {
   if (visited.has(local)) return
   if (!await exists(absolute)) throw new Error(`Missing source: ${local}`)
   visited.add(local)
-  // This pattern's CSS is not part of core.css.
-  for (const style of companionStyles[local] ?? []) {
+  const source = await readFile(absolute, 'utf8')
+  if (!/\.(css|tsx?|mjs)$/.test(local)) return
+  if (/\.tsx?$/.test(local)) for (const style of stylesFor(source)) {
     styleEntries.add(style)
     await visit(style)
   }
-  const source = await readFile(absolute, 'utf8')
-  if (!/\.(css|tsx?|mjs)$/.test(local)) return
   const imports = local.endsWith('.css')
     ? [...source.matchAll(/@import\s+["']([^"']+)["']/g)].map(match => match[1])
     : [...source.matchAll(/(?:\bfrom\s*|\bimport\s*(?:\(\s*)?)["']([^"']+)["']/g)].map(match => match[1])
@@ -81,11 +98,19 @@ async function visit(name) {
   }
 }
 for (const entry of entries) await visit(entry)
+// --into keeps Evenform beside host files with the same names (lib/utils.ts,
+// components/ui/button.tsx): src/ moves under the folder and @/ imports become relative.
+const destinationFor = file => into && file.startsWith('src/') ? `${into}/${file.slice(4)}` : file
+const relativeImport = (file, id) => {
+  const path = relative(dirname(destinationFor(file)), destinationFor(`src/${id}`))
+  return path.startsWith('.') ? path : `./${path}`
+}
 const contentFor = async file => {
-  const content = await readFile(resolve(root, file))
-  return legacyNodeResolution && file === 'src/lib/utils.ts'
-    ? Buffer.from(content.toString().replace('./cn-tables.ts', './cn-tables'))
-    : content
+  let content = (await readFile(resolve(root, file))).toString()
+  if (legacyNodeResolution && file === 'src/lib/utils.ts') content = content.replace('./cn-tables.ts', './cn-tables')
+  if (into && /\.tsx?$/.test(file)) content = content.replace(/(\bfrom\s*|\bimport\s*(?:\(\s*)?)(["'])@\/([^"']+)\2/g, (_, prefix, quote, id) => `${prefix}${quote}${relativeImport(file, id)}${quote}`)
+  if (into && file === 'scripts/build-cn.mjs') content = content.replace('"src/core.css"', `"${destinationFor('src/core.css')}"`).replace('"src/lib/cn-tables.ts"', `"${destinationFor('src/lib/cn-tables.ts')}"`)
+  return Buffer.from(content)
 }
 const legacyTypes = `// Compatibility for TypeScript moduleResolution=node; definitions stay upstream.
 declare module 'cn/engine' { export { createCn } from 'cn/dist/engine'; }
@@ -104,20 +129,20 @@ for (const name of noticeFiles) {
 }
 // Preflight all collisions before copying anything.
 for (const file of visited) {
-  const destination = resolve(target, file)
-  if (!overwrite && await exists(destination) && !Buffer.from(await readFile(destination)).equals(await contentFor(file))) throw new Error(`Different host file already exists: ${file}. Review it before using --overwrite.`)
+  const destination = resolve(target, destinationFor(file))
+  if (!overwrite && await exists(destination) && !Buffer.from(await readFile(destination)).equals(await contentFor(file))) throw new Error(`Different host file already exists: ${destinationFor(file)}. Review it, export with --into src/evenform, or use --overwrite.`)
 }
 if (legacyNodeResolution && !overwrite && await exists(resolve(target, 'src/cn-legacy.d.ts')) && await readFile(resolve(target, 'src/cn-legacy.d.ts'), 'utf8') !== legacyTypes) throw new Error('Different host src/cn-legacy.d.ts already exists.')
 for (const file of visited) {
-  await mkdir(dirname(resolve(target, file)), { recursive: true })
-  await writeFile(resolve(target, file), await contentFor(file))
+  await mkdir(dirname(resolve(target, destinationFor(file))), { recursive: true })
+  await writeFile(resolve(target, destinationFor(file)), await contentFor(file))
 }
 if (legacyNodeResolution) await writeFile(resolve(target, 'src/cn-legacy.d.ts'), legacyTypes)
 await mkdir(resolve(target, 'licenses/evenform'), { recursive: true })
 for (const file of ['LICENSE', 'THIRD_PARTY_NOTICES.md', 'licenses']) await cp(resolve(root, file), resolve(target, 'licenses/evenform', file), { recursive: true })
 const lock = JSON.parse(await readFile(resolve(root, 'package-lock.json'), 'utf8'))
 const hashes = {}
-for (const file of visited) hashes[file] = hash(await readFile(resolve(target, file)))
+for (const file of visited) hashes[destinationFor(file)] = hash(await readFile(resolve(target, destinationFor(file))))
 if (legacyNodeResolution) hashes['src/cn-legacy.d.ts'] = hash(legacyTypes)
 async function hashNotices(directory) {
   for (const entry of await readdir(resolve(target, directory), { withFileTypes: true })) {
@@ -130,5 +155,6 @@ await hashNotices('licenses/evenform')
 let revision = null
 try { revision = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim() } catch { /* Downloaded source has no Git metadata; hashes still identify it. */ }
 const dependencies = Object.fromEntries([...packages].sort().map(name => [name, lock.packages?.[`node_modules/${name}`]?.version ?? manifest.dependencies?.[name] ?? manifest.devDependencies?.[name] ?? 'REVIEW REQUIRED']))
-await writeFile(resolve(target, 'evenform-adoption.json'), JSON.stringify({ schemaVersion: 1, source: 'https://github.com/le0tan/evenform', revision, sourceLockHash: hash(await readFile(resolve(root, 'package-lock.json'))), entries: [...new Set(entries)].sort(), styleEntries: [...styleEntries].sort(), transformations: legacyNodeResolution ? { 'src/lib/utils.ts': { sourceHash: hash(await readFile(resolve(root, 'src/lib/utils.ts'))), kind: 'extensionless-cn-import' }, 'src/cn-legacy.d.ts': { kind: 'upstream-type-bridge' } } : {}, hashes: Object.fromEntries(Object.entries(hashes).sort(([a], [b]) => a.localeCompare(b))), files: [...visited, ...(legacyNodeResolution ? ['src/cn-legacy.d.ts'] : [])].sort(), legacyNodeResolution, dependencies, notes: ['Review package versions against the source lockfile; this manifest does not install packages.', 'Import core.css and selected additional styles in the host.', 'Preserve the head bootstrap and align theme/density keys.', 'Configure @/ alias; regenerate cn tables after changing CSS @theme.'] }, null, 2) + '\n')
+await writeFile(resolve(target, 'evenform-adoption.json'), JSON.stringify({ schemaVersion: 1, source: 'https://github.com/le0tan/evenform', revision, sourceLockHash: hash(await readFile(resolve(root, 'package-lock.json'))), entries: [...new Set(entries)].sort(), ...(into ? { into } : {}), styleEntries: [...styleEntries].map(destinationFor).sort(), transformations: { ...(legacyNodeResolution ? { 'src/lib/utils.ts': { sourceHash: hash(await readFile(resolve(root, 'src/lib/utils.ts'))), kind: 'extensionless-cn-import' }, 'src/cn-legacy.d.ts': { kind: 'upstream-type-bridge' } } : {}), ...(into ? { '*': { kind: 'namespace-relative-imports', into } } : {}) }, hashes: Object.fromEntries(Object.entries(hashes).sort(([a], [b]) => a.localeCompare(b))), files: [...[...visited].map(destinationFor), ...(legacyNodeResolution ? ['src/cn-legacy.d.ts'] : [])].sort(), legacyNodeResolution, dependencies, notes: ['Review package versions against the source lockfile; this manifest does not install packages.', 'Import every styleEntries file in the host; each component\'s optional stylesheet is listed there.', 'Preserve the head bootstrap and align theme/density keys.', into ? 'Imports are relative to the --into folder; no @/ alias is required for Evenform files.' : 'Configure @/ alias; regenerate cn tables after changing CSS @theme.'] }, null, 2) + '\n')
 console.log(`Copied ${visited.size} source files to ${target}; review evenform-adoption.json and install its required dependencies.`)
+console.log(`Import these styles in the host: ${[...styleEntries].map(destinationFor).sort().join(', ')}`)

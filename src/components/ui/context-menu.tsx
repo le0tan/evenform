@@ -28,7 +28,7 @@ const ContextMenuLinkItem = ContextMenuPrimitive.LinkItem
 
 type ContextMenuContentProps = ContextMenuPrimitive.Popup.Props & Pick<ContextMenuPrimitive.Positioner.Props, "side" | "align" | "sideOffset" | "alignOffset">
 function ContextMenuContent({className, side, align, sideOffset, alignOffset, ...props}: ContextMenuContentProps) {
-  return <ContextMenuPrimitive.Portal><ContextMenuPrimitive.Positioner side={side} align={align} sideOffset={sideOffset} alignOffset={alignOffset} className="isolate z-50"><ContextMenuPrimitive.Popup data-slot="context-menu-content" className={(state) => cn("evenform-floating-panel evenform-menu", typeof className === "function" ? className(state) : className)} {...props} /></ContextMenuPrimitive.Positioner></ContextMenuPrimitive.Portal>
+  return <ContextMenuPrimitive.Portal><ContextMenuPrimitive.Positioner side={side} align={align} sideOffset={sideOffset} alignOffset={alignOffset} className="isolate z-(--ds-layer-overlay)"><ContextMenuPrimitive.Popup data-slot="context-menu-content" className={(state) => cn("evenform-floating-panel evenform-menu", typeof className === "function" ? className(state) : className)} {...props} /></ContextMenuPrimitive.Positioner></ContextMenuPrimitive.Portal>
 }
 export { ContextMenu, ContextMenuTrigger, ContextMenuContent, ContextMenuLinkItem }
 export type { ContextMenuContentProps }

@@ -14,7 +14,7 @@ import {
   DescriptionItem,
   DescriptionList,
 } from "@/components/patterns/description-list"
-import { FormField } from "@/components/patterns/layouts"
+import { LabeledField } from "@/components/patterns/layouts"
 import { StatusMessage } from "@/components/patterns/status-message"
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
@@ -256,7 +256,7 @@ function StepFormExample() {
           >
             {step === 0 ? (
               <div className="workflow-aids-example">
-                <FormField
+                <LabeledField
                   id="workflow-owner-name"
                   label="Owner name"
                   error={errors.name}
@@ -271,8 +271,8 @@ function StepFormExample() {
                       errors.name ? "workflow-owner-name-error" : undefined
                     }
                   />
-                </FormField>
-                <FormField
+                </LabeledField>
+                <LabeledField
                   id="workflow-owner-email"
                   label="Owner email"
                   error={errors.email}
@@ -288,10 +288,10 @@ function StepFormExample() {
                       errors.email ? "workflow-owner-email-error" : undefined
                     }
                   />
-                </FormField>
+                </LabeledField>
               </div>
             ) : step === 1 ? (
-              <FormField
+              <LabeledField
                 id="workflow-review-scope"
                 label="What should the reviewer check?"
                 description="Include the main task and any open questions."
@@ -308,7 +308,7 @@ function StepFormExample() {
                       : "workflow-review-scope-description"
                   }
                 />
-              </FormField>
+              </LabeledField>
             ) : (
               <div className="workflow-aids-example">
                 <DescriptionList>

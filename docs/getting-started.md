@@ -31,7 +31,7 @@ See the [chart guide](charts.md) for supported chart families and boundaries.
 2. Build pages in `src/starter/App.tsx`. Choose a layout appropriate to the task;
    a persistent sidebar is optional. Keep Showcase state in `src/playground/`.
 3. Use the shared UI, patterns, and CSS directly. Adjust shared design parameters
-   in `src/styles/tokens.css` or a product stylesheet loaded last.
+   in `src/styles/token-values.css` (values) or a product stylesheet loaded last.
 4. Keep the synchronous `public/evenform-init.js` script in the HTML head. Match
    its theme/density keys and default theme to the React providers. The Starter
    uses `app-theme` / `app-density`, separately from the Showcase.
@@ -59,13 +59,31 @@ exported source/notices, the source lockfile hash and exact direct package versi
 from that lockfile. Hashes identify the exported bytes even for a modified checkout;
 the revision alone does not identify uncommitted changes. It does not install
 packages or edit host config.
-Choose additional styles from the [adoption map](dependencies.md#base-entry-and-common-adoption-map);
-not every pattern imports its own stylesheet. The exporter automatically includes
-HeaderShell, CopyButton and EventCalendar companion styles and records
-`styleEntries` for the host to import. Adjacent TSX-imported CSS follows its
-component automatically. Other additional styles remain an explicit `--style`
-selection documented in the adoption map. Existing differing source files
-stop the export; review them before explicitly using `--overwrite`.
+The exporter adds each component's optional stylesheet automatically: a stylesheet
+imported by `src/index.css` owns the classes and slots its rules start with, and a
+component that renders one of them pulls that stylesheet in. The manifest's
+`styleEntries` and the final console line list every CSS file the host must import;
+`npm run verify:adoption` checks this for every single-component export. `--style`
+remains available for extra stylesheets. Existing differing source files stop the
+export; review them before explicitly using `--overwrite`.
+
+When the host already has files with the same names — typically a shadcn
+`src/lib/utils.ts` and `src/components/ui/button.tsx` — export into a folder instead:
+
+```bash
+node scripts/adopt-source.mjs --to /path/to/host --into src/evenform \
+  --entry src/components/ui/dialog.tsx
+```
+
+`src/` paths move under `src/evenform/`, `@/` imports become relative, and the host's
+own `cn` and components stay untouched; no `@/` alias is needed for Evenform files.
+
+To use only Evenform's design values, import `src/evenform-tokens.css`. It defines
+the `--ds-*` primitives, semantics and density as custom properties and adds no
+selectors, Tailwind utilities or base styles; semantic values read the host's shadcn
+roles (`--background`, `--accent`, `--chart-1`…). `core.css` is the full theme: it
+also styles standard shadcn slots (`card`, `table-row`, `select-item`…) and base
+elements, so importing it restyles the host's existing shadcn components too.
 For a host that must retain TypeScript's legacy `moduleResolution: node`, add
 `--legacy-node-resolution` to export an extensionless class-table import and a
 type bridge to the upstream `cn` definitions. Validate with the host's TypeScript

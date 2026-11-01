@@ -33,7 +33,20 @@
     "verify:source-contracts": "node scripts/verify-source-contracts.mjs",
     "verify:chart-contracts": "node scripts/verify-chart-contracts.mjs",
     "verify:operations": "node scripts/verify-operations.mjs",
-    "verify:reading-contrast": "node scripts/verify-reading-contrast.mjs"
+    "verify:reading-contrast": "node scripts/verify-reading-contrast.mjs",
+    "verify:static": "npm run verify:navigation && npm run verify:classes && npm run verify:palette && npm run verify:adoption",
+    "verify:tokens": "node scripts/verify-token-integrity.mjs",
+    "verify:anchored-tooltip": "node scripts/verify-anchored-tooltip.mjs",
+    "verify:control-resilience": "node scripts/verify-control-resilience.mjs",
+    "verify:copy-writer": "node scripts/verify-copy-writer.mjs",
+    "verify:data-media": "node scripts/verify-data-media.mjs",
+    "verify:foundations": "node scripts/verify-foundations.mjs",
+    "verify:input-quality": "node scripts/verify-input-quality.mjs",
+    "verify:library-navigation": "node scripts/verify-library-navigation.mjs",
+    "verify:library-pages": "node scripts/verify-library-pages.mjs",
+    "verify:motion-review": "node scripts/verify-motion-review.mjs",
+    "verify:overlay-quality": "node scripts/verify-overlay-quality.mjs",
+    "verify:pattern-quality": "node scripts/verify-pattern-quality.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",

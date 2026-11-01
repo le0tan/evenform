@@ -51,7 +51,7 @@ function SelectTrigger({
       data-size={size}
       className={(state) =>
         cn(
-          "flex w-fit min-w-0 max-w-full items-center justify-between rounded-lg border border-input bg-transparent text-[length:var(--ds-text-control)] whitespace-nowrap transition-colors outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 data-placeholder:text-muted-foreground data-[size=sm]:rounded-[min(var(--radius-md),10px)] dark:bg-input/30 dark:hover:bg-input/50 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-[var(--ds-control-icon-size)]",
+          "flex w-fit min-w-0 max-w-full items-center justify-between border border-input bg-transparent text-[length:var(--ds-text-control)] whitespace-nowrap transition-colors outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 data-placeholder:text-muted-foreground data-[size=sm]:rounded-[min(var(--radius-md),10px)] dark:bg-input/30 dark:hover:bg-input/50 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-[var(--ds-control-icon-size)]",
           typeof className === "function" ? className(state) : className
         )
       }
@@ -89,14 +89,14 @@ function SelectContent({
         align={align}
         alignOffset={alignOffset}
         alignItemWithTrigger={alignItemWithTrigger}
-        className="isolate z-50"
+        className="isolate z-(--ds-layer-overlay)"
       >
         <SelectPrimitive.Popup
           data-slot="select-content"
           data-align-trigger={alignItemWithTrigger}
           className={(state) =>
             cn(
-              "relative isolate z-50 max-h-(--available-height) w-max min-w-[min(max(9rem,var(--anchor-width)),var(--available-width))] max-w-(--available-width) origin-(--transform-origin) overflow-x-hidden overflow-y-auto rounded-lg bg-popover text-popover-foreground border border-foreground/10",
+              "relative isolate z-(--ds-layer-overlay) max-h-(--available-height) w-max min-w-[min(max(9rem,var(--anchor-width)),var(--available-width))] max-w-(--available-width) origin-(--transform-origin) overflow-x-hidden overflow-y-auto rounded-lg bg-popover text-popover-foreground border border-foreground/10",
               typeof className === "function" ? className(state) : className
             )
           }

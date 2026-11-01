@@ -27,8 +27,17 @@ type ImagePreviewProps = Omit<ComponentProps<typeof Dialog>, "children"> & {
   onIndexChange?: (index: number) => void
   title?: string
   contentProps?: ComponentProps<typeof DialogContent>
+  labels?: Partial<ImagePreviewLabels>
 }
-function PreviewStage({ image }: { image: PreviewImage }) {
+export type ImagePreviewLabels = {
+  zoomGroup: string; zoomIn: string; zoomOut: string; fit: string; pan: string
+  previous: string; next: string; empty: string; position: (current: number, total: number) => string
+}
+const defaultImagePreviewLabels: ImagePreviewLabels = {
+  zoomGroup: "Image zoom", zoomIn: "Zoom in", zoomOut: "Zoom out", fit: "Fit", pan: "Zoomed image, scroll to pan",
+  previous: "Previous", next: "Next", empty: "No images available.", position: (current, total) => `${current} of ${total}`,
+}
+function PreviewStage({ image, labels }: { image: PreviewImage; labels: ImagePreviewLabels }) {
   const [zoom, setZoom] = useState(1)
   return (
     <>
@@ -36,7 +45,7 @@ function PreviewStage({ image }: { image: PreviewImage }) {
         className="evenform-image-preview-stage"
         data-zoomed={zoom > 1 || undefined}
         tabIndex={zoom > 1 ? 0 : undefined}
-        aria-label={zoom > 1 ? "Zoomed image, scroll to pan" : undefined}
+        aria-label={zoom > 1 ? labels.pan : undefined}
       >
         <Image
           src={image.src}
@@ -53,12 +62,12 @@ function PreviewStage({ image }: { image: PreviewImage }) {
       <div
         className="evenform-image-preview-zoom"
         role="group"
-        aria-label="Image zoom"
+        aria-label={labels.zoomGroup}
       >
         <Button
           size="icon-sm"
           variant="outline"
-          aria-label="Zoom out"
+          aria-label={labels.zoomOut}
           disabled={zoom <= 1}
           onClick={() => setZoom(Math.max(1, zoom - 0.5))}
         >
@@ -68,7 +77,7 @@ function PreviewStage({ image }: { image: PreviewImage }) {
         <Button
           size="icon-sm"
           variant="outline"
-          aria-label="Zoom in"
+          aria-label={labels.zoomIn}
           disabled={zoom >= 3}
           onClick={() => setZoom(Math.min(3, zoom + 0.5))}
         >
@@ -81,7 +90,7 @@ function PreviewStage({ image }: { image: PreviewImage }) {
           disabled={zoom === 1}
         >
           <MaximizeIcon />
-          Fit
+          {labels.fit}
         </Button>
       </div>
     </>
@@ -97,6 +106,7 @@ function ImagePreview({
   onIndexChange,
   title = "Image preview",
   contentProps,
+  labels,
   ...props
 }: ImagePreviewProps) {
   const [internalIndex, setInternalIndex] = useState(defaultIndex)
@@ -105,6 +115,7 @@ function ImagePreview({
     Math.min(images.length - 1, index ?? internalIndex)
   )
   const image = images[current]
+  const text = { ...defaultImagePreviewLabels, ...labels }
   function select(next: number) {
     if (index === undefined) setInternalIndex(next)
     onIndexChange?.(next)
@@ -146,13 +157,13 @@ function ImagePreview({
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>
-            {image?.caption ?? image?.alt ?? "No images to preview."}
+            {image?.caption ?? image?.alt ?? text.empty}
           </DialogDescription>
         </DialogHeader>
         {image ? (
-          <PreviewStage key={`${current}:${image.src}`} image={image} />
+          <PreviewStage key={`${current}:${image.src}`} image={image} labels={text} />
         ) : (
-          <p className="text-muted-foreground">No images available.</p>
+          <p className="text-muted-foreground">{text.empty}</p>
         )}
         {images.length > 1 && (
           <div className="evenform-image-preview-navigation">
@@ -163,10 +174,10 @@ function ImagePreview({
               onClick={() => select(current - 1)}
             >
               <ArrowLeftIcon />
-              Previous
+              {text.previous}
             </Button>
             <span role="status" className="evenform-image-preview-position">
-              {current + 1} of {images.length}
+              {text.position(current + 1, images.length)}
             </span>
             <Button
               variant="outline"
@@ -174,7 +185,7 @@ function ImagePreview({
               disabled={current === images.length - 1}
               onClick={() => select(current + 1)}
             >
-              Next
+              {text.next}
               <ArrowRightIcon />
             </Button>
           </div>

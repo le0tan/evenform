@@ -3,7 +3,7 @@ import { readFile } from 'node:fs/promises'
 import { createThemePalette, contrast, normalizeHex } from '../src/lib/theme-palette.ts'
 
 // Resolve the committed achromatic OKLCH primitives independently of the DOM.
-const css = await readFile(new URL('../src/styles/tokens.css', import.meta.url), 'utf8')
+const css = (await readFile(new URL('../src/styles/token-values.css', import.meta.url), 'utf8')) + (await readFile(new URL('../src/styles/tokens.css', import.meta.url), 'utf8'))
 function neutral(step) {
   const lightness = Number(css.match(new RegExp(`--ds-neutral-${step}: oklch\\(([^ ]+) 0 0\\)`))[1])
   const linear = lightness ** 3

@@ -28,7 +28,7 @@
   .evenform-command-item > svg { width: 16px; height: 16px; flex: none; }
   .evenform-command-separator { height: var(--ds-border-width); margin: var(--ds-space-1) 0; background: var(--border); }
   .evenform-command-shortcut { margin-inline-start: auto; color: var(--muted-foreground); font-size: var(--ds-text-caption); }
-  @media (pointer: coarse) { .evenform-command-item, .evenform-color-input, .evenform-color-swatch { min-height: 44px; } }
+  @media (pointer: coarse) { .evenform-command-item, .evenform-color-input, .evenform-color-swatch { min-height: var(--ds-touch-target-min); } }
 }
 @layer components {
   .evenform-cascader { display: flex; flex-direction: column; gap: var(--ds-form-field-gap); min-width: 0; }
@@ -45,5 +45,5 @@
   .evenform-cascader-option[data-hovered], .evenform-cascader-option[data-selected] { background: var(--accent); color: var(--accent-foreground); }
   .evenform-cascader-option[data-focus-visible] { outline: 2px solid var(--ring); outline-offset: -2px; }
   .evenform-cascader-option[data-disabled] { opacity: .5; cursor: default; }
-  @media (pointer: coarse) { .evenform-cascader-option { min-height: 44px; } }
+  @media (pointer: coarse) { .evenform-cascader-option { min-height: var(--ds-touch-target-min); } }
 }

@@ -6,7 +6,7 @@ import { ContentLayout } from "@/components/patterns/content-layout"
 import { DashboardGrid, DashboardItem, DashboardLayout } from "@/components/patterns/dashboard-layout"
 import { DescriptionItem, DescriptionList } from "@/components/patterns/description-list"
 import { FormLayout, FormLayoutSection } from "@/components/patterns/form-layout"
-import { FormField } from "@/components/patterns/layouts"
+import { LabeledField } from "@/components/patterns/layouts"
 import { PageNavigation } from "@/components/patterns/page-navigation"
 import { Result } from "@/components/patterns/result"
 import { SplitLayout } from "@/components/patterns/split-layout"
@@ -72,8 +72,8 @@ function FormExample() {
   function reset() { setName("Design workspace"); setSummary("Shared design resources, decisions, and implementation notes."); setNotify(true); setSaved(false) }
   return <FormLayout aria-label="Workspace preferences" onSubmit={submit} header={<div><h3>Workspace preferences</h3></div>} footer={<><Button type="submit"><Save />Save preferences</Button><Button type="button" variant="outline" onClick={reset}>Reset form</Button>{saved && <span role="status" className="layout-aids-note">Preferences saved in this preview.</span>}</>}>
     <FormLayoutSection title="Workspace identity">
-      <FormField id="layout-workspace-name" label="Workspace name"><Input id="layout-workspace-name" value={name} required onChange={(event) => { setName(event.target.value); setSaved(false) }} /></FormField>
-      <FormField id="layout-workspace-summary" label="Summary" description="Use a short description of what belongs here."><Textarea id="layout-workspace-summary" aria-describedby="layout-workspace-summary-description" value={summary} onChange={(event) => { setSummary(event.target.value); setSaved(false) }} /></FormField>
+      <LabeledField id="layout-workspace-name" label="Workspace name"><Input id="layout-workspace-name" value={name} required onChange={(event) => { setName(event.target.value); setSaved(false) }} /></LabeledField>
+      <LabeledField id="layout-workspace-summary" label="Summary" description="Use a short description of what belongs here."><Textarea id="layout-workspace-summary" aria-describedby="layout-workspace-summary-description" value={summary} onChange={(event) => { setSummary(event.target.value); setSaved(false) }} /></LabeledField>
     </FormLayoutSection>
     <FormLayoutSection title="Notifications"><label className="flex items-start gap-field"><Checkbox checked={notify} onCheckedChange={(value) => { setNotify(value); setSaved(false) }} /><span>Notify me when a review is requested</span></label></FormLayoutSection>
   </FormLayout>

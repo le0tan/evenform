@@ -36,6 +36,8 @@ Evenform 复用成熟交互模型，CSS 继续是外观参数的唯一来源。�
 ```text
 src/index.css（完整入口）
 src/core.css（基础入口，index.css 也复用它）
+src/evenform-tokens.css（仅变量入口，不在 index.css 中）
+src/styles/token-values.css
 src/styles/tokens.css
 src/styles/appearance.css
 src/styles/control-sizing.css

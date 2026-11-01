@@ -1,6 +1,6 @@
 import { useRef, useState } from "react"
 import { Check, ChevronDown, Pencil, ClipboardCheck } from "lucide-react"
-import { PageHeader, FormField } from "@/components/patterns/layouts"
+import { PageHeader, LabeledField } from "@/components/patterns/layouts"
 import { Button } from "@/components/ui/button"
 import { ResetButton } from "@/components/ui/reset-button"
 import { Input } from "@/components/ui/input"
@@ -93,40 +93,25 @@ export function AppearanceLab({ tokens }: { tokens: TokenPlayground }) {
             >
               <fieldset>
                 <legend>Mode</legend>
-                <Tabs
-                  value={theme}
-                  onValueChange={(value) =>
-                    setTheme(value as "light" | "dark" | "system")
-                  }
-                >
-                  <TabsList
-                    motion="slide"
-                    className="w-full"
-                    aria-label="Color mode"
-                  >
-                    <TabsTrigger value="light">Light</TabsTrigger>
-                    <TabsTrigger value="dark">Dark</TabsTrigger>
-                    <TabsTrigger value="system">System</TabsTrigger>
-                  </TabsList>
-                </Tabs>
+                <div className="appearance-options">
+                  {(["light", "dark", "system"] as const).map((value) => (
+                    <label key={value} className="appearance-choice">
+                      <input type="radio" name="appearance-mode" value={value} checked={theme === value} onChange={() => setTheme(value)} />
+                      <span>{value[0].toUpperCase() + value.slice(1)}</span>
+                    </label>
+                  ))}
+                </div>
               </fieldset>
               <fieldset>
                 <legend>Density</legend>
-                <Tabs
-                  value={tokens.density}
-                  onValueChange={(value) =>
-                    tokens.setDensity(value as "compact" | "comfortable")
-                  }
-                >
-                  <TabsList
-                    motion="slide"
-                    className="w-full"
-                    aria-label="Preview density"
-                  >
-                    <TabsTrigger value="compact">Compact</TabsTrigger>
-                    <TabsTrigger value="comfortable">Comfortable</TabsTrigger>
-                  </TabsList>
-                </Tabs>
+                <div className="appearance-options">
+                  {(["compact", "comfortable"] as const).map((value) => (
+                    <label key={value} className="appearance-choice">
+                      <input type="radio" name="appearance-density" value={value} checked={tokens.density === value} onChange={() => tokens.setDensity(value)} />
+                      <span>{value[0].toUpperCase() + value.slice(1)}</span>
+                    </label>
+                  ))}
+                </div>
               </fieldset>
               <AppearanceControls tokens={tokens} />
             </TabsContent>
@@ -173,7 +158,7 @@ export function AppearanceLab({ tokens }: { tokens: TokenPlayground }) {
                 setSaved(true)
               }}
             >
-              <FormField id="appearance-name" label="Workspace name">
+              <LabeledField id="appearance-name" label="Workspace name">
                 <Input
                   ref={nameInput}
                   id="appearance-name"
@@ -184,8 +169,8 @@ export function AppearanceLab({ tokens }: { tokens: TokenPlayground }) {
                   }}
                   required
                 />
-              </FormField>
-              <FormField id="appearance-team" label="Team">
+              </LabeledField>
+              <LabeledField id="appearance-team" label="Team">
                 <Select
                   value={team}
                   onValueChange={(value) => {
@@ -205,8 +190,8 @@ export function AppearanceLab({ tokens }: { tokens: TokenPlayground }) {
                     <SelectItem value="product">Product team</SelectItem>
                   </SelectContent>
                 </Select>
-              </FormField>
-              <FormField id="appearance-description" label="Description">
+              </LabeledField>
+              <LabeledField id="appearance-description" label="Description">
                 <Textarea
                   id="appearance-description"
                   value={description}
@@ -215,7 +200,7 @@ export function AppearanceLab({ tokens }: { tokens: TokenPlayground }) {
                     setSaved(false)
                   }}
                 />
-              </FormField>
+              </LabeledField>
               <label className="toolbar">
                 <Checkbox
                   checked={summary}
@@ -269,9 +254,9 @@ export function AppearanceLab({ tokens }: { tokens: TokenPlayground }) {
                 </PopoverTrigger>
                 <PopoverContent>
                   <PopoverTitle>Quick edit</PopoverTitle>
-                  <FormField id="appearance-short-name" label="Short name">
+                  <LabeledField id="appearance-short-name" label="Short name">
                     <Input id="appearance-short-name" defaultValue="Evenform" />
-                  </FormField>
+                  </LabeledField>
                 </PopoverContent>
               </Popover>
               <Dialog open={reviewOpen} onOpenChange={setReviewOpen}>

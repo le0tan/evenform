@@ -29,8 +29,8 @@
   .ds-pagination-content { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ds-space-1); }
   .ds-pagination-link { display: inline-flex; align-items: center; justify-content: center; min-height: var(--ds-control-height); min-width: var(--ds-control-height); padding-inline: var(--ds-control-padding-x); border-radius: var(--radius); font-size: var(--ds-text-label); text-decoration: none; }
   .ds-pagination-link:hover { background: var(--muted); color: var(--foreground); }
-  .ds-pagination-link[aria-current='page'] { background: var(--accent); color: var(--accent-foreground); }
-  .ds-pagination-link[aria-current='page'] { font-weight: var(--ds-weight-medium); }
+  /* The current page carries a boundary, not only a faint neutral fill. */
+  .ds-pagination-link[aria-current='page'] { box-shadow: inset 0 0 0 var(--ds-border-width) var(--primary); color: var(--primary); font-weight: var(--ds-weight-semibold); }
   .ds-pagination-ellipsis { display: inline-flex; padding: var(--ds-space-2); color: var(--muted-foreground); }
   .ds-tag { display: inline-flex; align-items: center; gap: var(--ds-space-1); max-width: 100%; padding: var(--ds-space-1) var(--ds-space-2); border-radius: calc(var(--radius) * .6); border: var(--ds-border-width) solid var(--border); font-size: var(--ds-text-caption); line-height: var(--ds-leading-tight); overflow-wrap: anywhere; }
   .ds-tag button { display: inline-flex; align-items: center; justify-content: center; border-radius: 2px; color: var(--muted-foreground); min-width: 16px; min-height: 16px; }
@@ -44,5 +44,5 @@
   .ds-form-section-fields { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--ds-form-group-gap); }
   @container evenform-form-section (min-width: 36rem) { .ds-form-section-fields[data-columns='2'] { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   /* Joined borders and keyboard glyphs use fixed geometry. */
-  @media (pointer: coarse) { .ds-tag button { min-width: 28px; min-height: 28px; } .ds-pagination-link { min-height: 44px; min-width: 44px; } }
+  @media (pointer: coarse) { .ds-tag button { min-width: 28px; min-height: 28px; } .ds-pagination-link { min-height: var(--ds-touch-target-min); min-width: var(--ds-touch-target-min); } }
 }
