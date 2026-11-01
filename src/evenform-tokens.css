@@ -1,0 +1,6 @@
+/* Tokens-only entry for an existing host (for example an existing shadcn app).
+   Defines Evenform's --ds-* primitives, semantics and density as custom properties;
+   it adds no element or [data-slot] rules, Tailwind utilities or base styles.
+   Semantic values read the host's shadcn roles (--background, --accent, --chart-1…).
+   core.css is the full theme: it also styles standard shadcn slots and base elements. */
+@import "./styles/token-values.css";

@@ -1,25 +1,8 @@
-import { useId, type ComponentProps, type ReactNode } from "react"
+import { cloneElement, isValidElement, useId, type ComponentProps, type ReactNode } from "react"
 import { cn } from "@/lib/utils"
-import { SidebarProvider } from "@/components/ui/sidebar"
 import { Label } from "@/components/ui/label"
 
-export function AppShell({ sidebar, header, aside, children }: {
-  sidebar: ReactNode; header: ReactNode; aside?: ReactNode; children: ReactNode
-}) {
-  return <SidebarProvider>
-    <a className="skip-link" href="#main-content">Skip to content</a>
-    {sidebar}
-    <div className="app-shell-body">
-      <header className="app-shell-header">{header}</header>
-      <div className="app-shell-workspace">
-        <main id="main-content" className="app-shell-main" tabIndex={-1}>
-          <div className="page-content">{children}</div>
-        </main>
-        {aside}
-      </div>
-    </div>
-  </SidebarProvider>
-}
+// AppShell lives in app-shell.tsx so page patterns do not pull in the sidebar.
 
 export function PageHeader({ title, description, actions }: {
   title: string; description?: ReactNode; actions?: ReactNode
@@ -40,8 +23,8 @@ export function PageSection({ title, description, actions, children, className, 
   </section>
 }
 
-export function SettingsLayout({ navigation, children }: { navigation: ReactNode; children: ReactNode }) {
-  return <div className="settings-layout"><nav aria-label="Settings sections" className="settings-navigation">{navigation}</nav><div className="settings-content">{children}</div></div>
+export function SettingsLayout({ navigation, children, navigationLabel = "Settings sections" }: { navigation: ReactNode; children: ReactNode; navigationLabel?: string }) {
+  return <div className="settings-layout"><nav aria-label={navigationLabel} className="settings-navigation">{navigation}</nav><div className="settings-content">{children}</div></div>
 }
 
 export function SettingsGroup({ title, description, children }: { title: string; description?: string; children: ReactNode }) {
@@ -52,17 +35,31 @@ export function Toolbar({ className, ...props }: ComponentProps<"div">) {
   return <div className={cn("toolbar", className)} {...props} />
 }
 
-/** Associate label, description and invalid state at the call site using id.
- * Native and Base UI controls keep their normal APIs. */
-export function FormField({ id, label, description, error, children }: {
-  id: string; label: string; description?: string; error?: string; children: ReactNode
+type ControlProps = { id?: string; "aria-describedby"?: string; "aria-invalid"?: boolean | "true" | "false" }
+
+/** Label, description and error layout for one control. When the only child is
+ * the control with the same id, its aria-describedby and aria-invalid are wired
+ * here; wrapped controls (InputGroup, Select) receive `${id}-description` and
+ * `${id}-error` at the call site. For Base UI validation use ui/form FormField. */
+export function LabeledField({ id, label, description, error, children }: {
+  id: string; label: string; description?: ReactNode; error?: ReactNode; children: ReactNode
 }) {
+  const describedBy = [description && `${id}-description`, error && `${id}-error`].filter(Boolean).join(" ")
+  const control = isValidElement<ControlProps>(children) && children.props.id === id
+    ? cloneElement(children, {
+      "aria-describedby": [children.props["aria-describedby"], describedBy].filter(Boolean).join(" ") || undefined,
+      "aria-invalid": children.props["aria-invalid"] ?? (error ? true : undefined),
+    })
+    : children
   return <div className="form-field" data-invalid={Boolean(error) || undefined}>
-    <Label htmlFor={id}>{label}</Label>{children}
+    <Label htmlFor={id}>{label}</Label>{control}
     {description && <p id={`${id}-description`} className="field-description">{description}</p>}
-    {error && <p id={`${id}-error`} className="field-error" role="alert">{error}</p>}
+    {error && <p id={`${id}-error`} className="field-error">{error}</p>}
   </div>
 }
+
+/** @deprecated Renamed to LabeledField; ui/form exports the Base UI FormField. */
+export const FormField = LabeledField
 
 export function DataListLayout({ toolbar, children, empty, isEmpty, footer }: {
   toolbar: ReactNode; children: ReactNode; empty: ReactNode; isEmpty: boolean; footer?: ReactNode

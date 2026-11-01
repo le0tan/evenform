@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react"
 import { ArrowLeft, Download, Send } from "lucide-react"
-import { PageHeader, FormField } from "@/components/patterns/layouts"
+import { PageHeader, LabeledField } from "@/components/patterns/layouts"
 import { Stat, StatGroup } from "@/components/patterns/stat"
 import { SplitLayout } from "@/components/patterns/split-layout"
 import { EmptyState } from "@/components/patterns/empty-state"
@@ -399,7 +399,7 @@ export function SupportInbox() {
             <Button
               variant="ghost"
               size="sm"
-              className="self-start"
+              className="justify-self-start"
               onClick={() => setSelected(null)}
             >
               <ArrowLeft />
@@ -441,7 +441,7 @@ export function SupportInbox() {
                 )
               }}
             >
-              <FormField id="support-reply" label="Reply">
+              <LabeledField id="support-reply" label="Reply">
                 <Textarea
                   id="support-reply"
                   value={reply}
@@ -449,7 +449,7 @@ export function SupportInbox() {
                   placeholder="Write a helpful reply…"
                   required
                 />
-              </FormField>
+              </LabeledField>
               <div className="toolbar">
                 <Button type="submit" disabled={!reply.trim()}>
                   <Send />

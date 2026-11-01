@@ -60,7 +60,7 @@
   .evenform-image-preview-media .evenform-image-element { object-fit: contain; }
   .evenform-image-preview-zoom, .evenform-image-preview-navigation { display: flex; align-items: center; justify-content: center; gap: var(--ds-control-gap); flex-wrap: wrap; }
   .evenform-image-preview-zoom output, .evenform-image-preview-position { font-variant-numeric: tabular-nums; font-size: var(--ds-text-caption); color: var(--muted-foreground); }
-  @media (pointer: coarse) { .evenform-rating-option:has(input) { min-width: var(--ds-touch-target-min, 44px); min-height: var(--ds-touch-target-min, 44px); } }
+  @media (pointer: coarse) { .evenform-rating-option:has(input) { min-width: var(--ds-touch-target-min); min-height: var(--ds-touch-target-min); } }
 }
 
 @layer components {

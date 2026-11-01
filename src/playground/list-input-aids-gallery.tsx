@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState } from "react"
-import { PageSection, FormField } from "@/components/patterns/layouts"
+import { PageSection, LabeledField } from "@/components/patterns/layouts"
 import { Button } from "@/components/ui/button"
 import { InputTag } from "@/components/ui/input-tag"
 import { SearchField } from "@/components/ui/search-field"
@@ -151,7 +151,7 @@ export function ListInputAidsGallery() {
             )
           }}
         >
-          <FormField
+          <LabeledField
             id="list-input-topics"
             label="Review topics"
             description="Up to 6 unique topics, 30 characters each. Press Enter to add."
@@ -173,7 +173,7 @@ export function ListInputAidsGallery() {
               aria-describedby="list-input-topics-description"
               placeholder="Add a topic…"
             />
-          </FormField>
+          </LabeledField>
           <div className="evenform-list-input-toolbar">
             <Button type="submit">Submit topics</Button>
             <Button
@@ -195,7 +195,7 @@ export function ListInputAidsGallery() {
               Submitted values: {saved.length ? saved.join(", ") : "None"}.
             </p>
           )}
-          <FormField
+          <LabeledField
             id="list-input-keywords"
             label="Repeated keywords"
             description="Labels are added when you leave the field. Duplicates allowed."
@@ -209,8 +209,8 @@ export function ListInputAidsGallery() {
               aria-describedby="list-input-keywords-description"
               placeholder="Add any keyword…"
             />
-          </FormField>
-          <FormField id="list-input-readonly" label="Read-only topics">
+          </LabeledField>
+          <LabeledField id="list-input-readonly" label="Read-only topics">
             <InputTag
               id="list-input-readonly"
               aria-label="Read-only topics"
@@ -218,15 +218,15 @@ export function ListInputAidsGallery() {
               onValueChange={() => {}}
               readOnly
             />
-          </FormField>
-          <FormField id="list-input-disabled" label="Unavailable topics">
+          </LabeledField>
+          <LabeledField id="list-input-disabled" label="Unavailable topics">
             <InputTag
               id="list-input-disabled"
               value={["Managed by administrator"]}
               onValueChange={() => {}}
               disabled
             />
-          </FormField>
+          </LabeledField>
         </form>
       </PageSection>
     </div>

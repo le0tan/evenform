@@ -3,7 +3,7 @@ import { readFile } from "node:fs/promises"
 import { cn } from "../src/lib/utils.ts"
 
 // Derive every semantic font scale from CSS rather than duplicating a theme list.
-const tokens = await readFile(new URL("../src/styles/tokens.css", import.meta.url), "utf8")
+const tokens = (await readFile(new URL("../src/styles/token-values.css", import.meta.url), "utf8")) + (await readFile(new URL("../src/styles/tokens.css", import.meta.url), "utf8"))
 const sizes = [...tokens.matchAll(/--text-([\w-]+):/g)].map(match => match[1]).filter(name => !name.includes("--"))
 let count = 0
 for (const size of sizes) {

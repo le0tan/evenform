@@ -398,8 +398,8 @@
   }
   @media (pointer: coarse) {
     .evenform-sortable-handle {
-      min-width: 44px;
-      min-height: 44px;
+      min-width: var(--ds-touch-target-min);
+      min-height: var(--ds-touch-target-min);
     }
   }
 }

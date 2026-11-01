@@ -115,7 +115,7 @@ function AutocompleteContent({
         align={align}
         alignOffset={alignOffset}
         anchor={anchor}
-        className="isolate z-50"
+        className="isolate z-(--ds-layer-overlay)"
       >
         <AutocompletePrimitive.Popup
           data-slot="autocomplete-content"

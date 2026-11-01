@@ -48,9 +48,21 @@ export interface RichTextEditorProps extends Omit<
   renderToolbar?: (editor: Editor) => ReactNode
   footer?: ReactNode | ((editor: Editor) => ReactNode)
   onEditorReady?: (editor: Editor) => void
+  labels?: Partial<RichTextEditorLabels>
 }
 
-function RichTextToolbar({ editor }: { editor: Editor }) {
+export type RichTextEditorLabels = {
+  formatting: string; bold: string; italic: string; heading: string; bulletList: string; numberedList: string
+  editLink: string; removeLink: string; undo: string; redo: string; linkUrl: string
+  applyLink: string; cancel: string; invalidLink: string
+}
+const defaultRichTextLabels: RichTextEditorLabels = {
+  formatting: "Text formatting", bold: "Bold", italic: "Italic", heading: "Heading", bulletList: "Bullet list", numberedList: "Numbered list",
+  editLink: "Edit link", removeLink: "Remove link", undo: "Undo", redo: "Redo", linkUrl: "Link URL",
+  applyLink: "Apply link", cancel: "Cancel", invalidLink: "Enter a complete http, https, or mailto URL.",
+}
+
+function RichTextToolbar({ editor, labels: text }: { editor: Editor; labels: RichTextEditorLabels }) {
   const [linkOpen, setLinkOpen] = useState(false)
   const [url, setUrl] = useState("")
   const [linkError, setLinkError] = useState(false)
@@ -91,31 +103,31 @@ function RichTextToolbar({ editor }: { editor: Editor }) {
   })
   const controls = [
     {
-      label: "Bold",
+      label: text.bold,
       icon: Bold,
       active: state.bold,
       action: () => editor.chain().focus().toggleBold().run(),
     },
     {
-      label: "Italic",
+      label: text.italic,
       icon: Italic,
       active: state.italic,
       action: () => editor.chain().focus().toggleItalic().run(),
     },
     {
-      label: "Heading",
+      label: text.heading,
       icon: Heading2,
       active: state.heading,
       action: () => editor.chain().focus().toggleHeading({ level: 2 }).run(),
     },
     {
-      label: "Bullet list",
+      label: text.bulletList,
       icon: List,
       active: state.bullet,
       action: () => editor.chain().focus().toggleBulletList().run(),
     },
     {
-      label: "Numbered list",
+      label: text.numberedList,
       icon: ListOrdered,
       active: state.ordered,
       action: () => editor.chain().focus().toggleOrderedList().run(),
@@ -125,7 +137,7 @@ function RichTextToolbar({ editor }: { editor: Editor }) {
     <div data-slot="rich-text-toolbar">
       <div
         role="group"
-        aria-label="Text formatting"
+        aria-label={text.formatting}
         className="flex flex-wrap gap-1"
       >
         {controls.map(({ label, icon: Icon, active, action }) => (
@@ -146,9 +158,9 @@ function RichTextToolbar({ editor }: { editor: Editor }) {
           type="button"
           variant={state.link ? "secondary" : "ghost"}
           size="icon-sm"
-          aria-label="Edit link"
+          aria-label={text.editLink}
           ref={linkTrigger}
-          title="Edit link"
+          title={text.editLink}
           aria-pressed={state.link}
           aria-expanded={linkOpen}
           onClick={() => {
@@ -163,8 +175,8 @@ function RichTextToolbar({ editor }: { editor: Editor }) {
           type="button"
           variant="ghost"
           size="icon-sm"
-          aria-label="Remove link"
-          title="Remove link"
+          aria-label={text.removeLink}
+          title={text.removeLink}
           disabled={!state.link}
           onClick={() =>
             editor.chain().focus().extendMarkRange("link").unsetLink().run()
@@ -176,8 +188,8 @@ function RichTextToolbar({ editor }: { editor: Editor }) {
           type="button"
           variant="ghost"
           size="icon-sm"
-          aria-label="Undo"
-          title="Undo"
+          aria-label={text.undo}
+          title={text.undo}
           disabled={!state.undo}
           onClick={() => editor.chain().focus().undo().run()}
         >
@@ -187,8 +199,8 @@ function RichTextToolbar({ editor }: { editor: Editor }) {
           type="button"
           variant="ghost"
           size="icon-sm"
-          aria-label="Redo"
-          title="Redo"
+          aria-label={text.redo}
+          title={text.redo}
           disabled={!state.redo}
           onClick={() => editor.chain().focus().redo().run()}
         >
@@ -202,7 +214,7 @@ function RichTextToolbar({ editor }: { editor: Editor }) {
         >
           <Input
             autoFocus
-            aria-label="Link URL"
+            aria-label={text.linkUrl}
             placeholder="https://example.com"
             value={url}
             onChange={(event) => {
@@ -225,7 +237,7 @@ function RichTextToolbar({ editor }: { editor: Editor }) {
             }}
           />
           <Button size="sm" type="button" onClick={applyLink}>
-            Apply link
+            {text.applyLink}
           </Button>
           <Button
             size="sm"
@@ -233,7 +245,7 @@ function RichTextToolbar({ editor }: { editor: Editor }) {
             variant="ghost"
             onClick={closeLink}
           >
-            Cancel
+            {text.cancel}
           </Button>
           {linkError && (
             <p
@@ -241,7 +253,7 @@ function RichTextToolbar({ editor }: { editor: Editor }) {
               role="alert"
               className="w-full text-sm text-destructive"
             >
-              Enter a complete http, https, or mailto URL.
+              {text.invalidLink}
             </p>
           )}
         </div>
@@ -263,6 +275,7 @@ export function RichTextEditor({
   renderToolbar,
   footer,
   onEditorReady,
+  labels,
   ...props
 }: RichTextEditorProps) {
   const editor = useEditor({
@@ -322,7 +335,7 @@ export function RichTextEditor({
         (renderToolbar ? (
           renderToolbar(editor)
         ) : (
-          <RichTextToolbar editor={editor} />
+          <RichTextToolbar editor={editor} labels={{ ...defaultRichTextLabels, ...labels }} />
         ))}
       <EditorContent editor={editor} />
       {editor && footer && (

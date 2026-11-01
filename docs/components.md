@@ -38,7 +38,7 @@
 | primitive 表单 `form`、`fieldset` | Form；FormField/Label/Description/Error/Control/Validity/Item；Fieldset、FieldsetLegend | Base UI Form/Field/Fieldset，保留原生约束、自定义验证、错误映射和 ref；与 patterns/layouts 同名 FormField 不同 |
 | Mention 输入 `mentions` | Mentions（别名 MentionsInput）、Mention；MentionsInputHandle 与 change/data/search 类型 | react-mentions-ts 管理 caret、markup/明文映射、候选与异步取消；保留 trigger/data/renderSuggestion/classNames/ref；数据源与身份权限归应用 |
 
-`patterns/layouts` 的 `FormField { id, label, description?, error?, children }` 是轻量标签排版：生成 `${id}-description` 和 `${id}-error`，应用把 `aria-describedby` / `aria-invalid` 传给控件；它不克隆 children。需要 primitive 自动关联时选 `ui/form`，同时使用两个同名导出时在 import 处起别名。`ui/field` 的 FieldSet 与 `ui/fieldset` 的 Fieldset 也有不同语义契约，按任务选择。
+`patterns/layouts` 的 `LabeledField { id, label, description?, error?, children }` 是轻量标签排版：生成 `${id}-description` 和 `${id}-error`；当唯一子元素就是 `id` 相同的控件时，自动合并 `aria-describedby` 并在有错误时设置 `aria-invalid`，包裹型控件（InputGroup、Select）仍在调用处传入这两个 id。错误文本不再使用 `role="alert"`，避免每次渲染都打断读屏。旧名 `FormField` 作为弃用别名保留。需要 Base UI 校验与自动关联时选 `ui/form` 的 `FormField`。`ui/field` 的 FieldSet 与 `ui/fieldset` 的 Fieldset 也有不同语义契约，按任务选择。
 
 Select 的触发器限制在可用容器内，长纯文本选中值单行省略，带图标等元素的标签保留同行对齐与间距；展开后的完整选项允许换行，包括无空格的长标识符，弹层宽度不超过可用视口。Textarea 默认只允许纵向拖动调整，避免拉宽窄屏表单；调用方仍可用 `resize-*` utility 显式覆盖。InputGroup 内的无效字段在获得焦点时继续使用 destructive 颜色，错误状态不会被普通焦点色掩盖。`node scripts/verify-control-resilience.mjs` 在本地开发服务上检查长标签、富标签对齐、键盘选择、窄屏边界与错误焦点；浏览器可通过 `PLAYWRIGHT_EXECUTABLE_PATH` 指定。
 
@@ -132,9 +132,9 @@ DataTable 的 columns/data 引用应稳定；跨服务端分页选择时传 getR
 
 | 模块 | 主要导出 / 组合点 | 结构与边界 |
 | --- | --- | --- |
-| `layouts` | AppShell/sidebar/header/aside；PageHeader、PageSection | AppShell 含 SidebarProvider、Skip link 和 main；PageHeader 生成 h1，命名 Section 生成 h2；避免嵌套 shell/main |
+| `app-shell`、`layouts` | AppShell/sidebar/header/aside（`patterns/app-shell`）；PageHeader、PageSection | AppShell 单独成文件，含 SidebarProvider、Skip link（`skipLinkLabel`）和 main，页面级 Pattern 不再连带 Sidebar；PageHeader 生成 h1，命名 Section 生成 h2；避免嵌套 shell/main |
 | `header-layout` | HeaderShell/variant/header/secondaryNavigation/footer/mainId/contentAs/contentClassName/headerClassName/footerClassName | 无持久 Sidebar 的壳；默认 main+Skip link，嵌入已有 main 时 contentAs=div；次级导航名称可配 |
-| `layouts` | SettingsLayout/SettingsGroup；Toolbar；FormField；DataListLayout | 设置导航、字段节奏与普通工具栏；DataListLayout 接收 toolbar/isEmpty/empty/footer，只排版和选择内容；请求状态归应用 |
+| `layouts` | SettingsLayout/SettingsGroup；Toolbar；LabeledField（旧名 FormField 已弃用）；DataListLayout | 设置导航、字段节奏与普通工具栏；DataListLayout 接收 toolbar/isEmpty/empty/footer，只排版和选择内容；请求状态归应用 |
 | `content-layout`、`page-navigation` | ContentLayout/navigation/aside；PageNavigation/items/activeId | 正文 article、可读宽度、支持栏；原生锚点，activeId 来自路由/observer；不生成第二个 main |
 | `detail-layout`、`description-list` | DetailLayout/header/aside/footer；DescriptionList/DescriptionItem | 单条记录详情；dl/dt/dd、columns=1/2、divided，按容器宽度换行；二维对照用 Table |
 | `split-layout` | SplitLayout/list/activePane/listLabel/detailLabel | 列表/详情双栏，窄容器仅显示 activePane；两栏保持挂载；选择、返回、路由和切换焦点归应用 |
@@ -188,7 +188,7 @@ ThemeProvider/useTheme 位于 `@/components/theme-provider`；System Theme 的�
 
 ```tsx
 import { useState } from "react"
-import { FormField } from "@/components/patterns/layouts"
+import { LabeledField } from "@/components/patterns/layouts"
 import {
   Combobox, ComboboxInputGroup, ComboboxInput, ComboboxTrigger,
   ComboboxContent, ComboboxEmpty, ComboboxList, ComboboxItem,
@@ -201,7 +201,7 @@ export function TeamFields() {
   const [team, setTeam] = useState<string | null>(null)
   const [reviewers, setReviewers] = useState<string[]>(["设计"])
   return <>
-    <FormField id="team" label="所属团队" description="输入名称以筛选团队。">
+    <LabeledField id="team" label="所属团队" description="输入名称以筛选团队。">
       <Combobox items={teams} value={team} onValueChange={setTeam}>
         <ComboboxInputGroup>
           <ComboboxInput id="team" aria-describedby="team-description" />
@@ -214,8 +214,8 @@ export function TeamFields() {
           }</ComboboxList>
         </ComboboxContent>
       </Combobox>
-    </FormField>
-    <FormField id="reviewers" label="复核团队">
+    </LabeledField>
+    <LabeledField id="reviewers" label="复核团队">
       <Combobox multiple items={teams} value={reviewers} onValueChange={setReviewers}>
         <ComboboxChips>
           <ComboboxValue>{(values: string[]) => <>
@@ -232,7 +232,7 @@ export function TeamFields() {
           }</ComboboxList>
         </ComboboxContent>
       </Combobox>
-    </FormField>
+    </LabeledField>
   </>
 }
 ```

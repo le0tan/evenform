@@ -248,10 +248,10 @@
   @media (pointer: coarse) {
     .evenform-input-action,
     .evenform-data-forms-choice {
-      min-height: 44px;
+      min-height: var(--ds-touch-target-min);
     }
     .evenform-input-action {
-      min-width: 44px;
+      min-width: var(--ds-touch-target-min);
     }
     .evenform-data-table-checkbox {
       width: 24px;
@@ -261,7 +261,7 @@
       width: max(var(--ds-space-5), var(--ds-data-table-resize-target, var(--ds-space-3)));
     }
     .evenform-data-table-tree-spacer {
-      width: 44px;
+      width: var(--ds-touch-target-min);
     }
     .evenform-checkbox-group {
       gap: max(var(--ds-form-field-gap), var(--ds-space-4));

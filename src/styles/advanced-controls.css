@@ -110,7 +110,7 @@
   .evenform-editor-toolbar-separator[data-orientation="horizontal"] { width: 100%; height: var(--ds-border-width); margin-block: var(--ds-space-1); }
   .evenform-toast-viewport {
     position: fixed;
-    z-index: 60;
+    z-index: var(--ds-layer-toast);
     inset-block-end: max(var(--ds-space-4), env(safe-area-inset-bottom));
     inset-inline-end: max(var(--ds-space-4), env(safe-area-inset-right));
     display: flex;
@@ -152,8 +152,8 @@
   .evenform-toast-close:focus-visible, .evenform-toast-action:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
   @media (pointer: coarse) {
     .evenform-menu-bar-trigger, .evenform-editor-toolbar-button, .evenform-editor-toolbar-input,
-    .evenform-otp-input, .evenform-toast-close, .evenform-toast-action { min-height: 44px; }
-    .evenform-otp-input, .evenform-toast-close { min-width: 44px; }
+    .evenform-otp-input, .evenform-toast-close, .evenform-toast-action { min-height: var(--ds-touch-target-min); }
+    .evenform-otp-input, .evenform-toast-close { min-width: var(--ds-touch-target-min); }
     .evenform-scrollbar { opacity: 1; }
   }
   @media (prefers-reduced-motion: reduce) {

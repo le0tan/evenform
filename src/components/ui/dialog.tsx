@@ -34,7 +34,7 @@ function DialogOverlay({
       data-slot="dialog-overlay"
       className={(state) =>
         cn(
-          "fixed inset-0 isolate z-50",
+          "fixed inset-0 isolate z-(--ds-layer-overlay)",
           typeof className === "function" ? className(state) : className
         )
       }
@@ -47,9 +47,11 @@ function DialogContent({
   className,
   children,
   showCloseButton = true,
+  closeLabel = "Close",
   ...props
 }: DialogPrimitive.Popup.Props & {
   showCloseButton?: boolean
+  closeLabel?: string
 }) {
   return (
     <DialogPortal>
@@ -58,7 +60,7 @@ function DialogContent({
         data-slot="dialog-content"
         className={(state) =>
           cn(
-            "fixed top-1/2 left-1/2 z-50 grid w-full -translate-x-1/2 -translate-y-1/2 rounded-xl bg-popover text-sm text-popover-foreground border border-foreground/10 outline-none",
+            "fixed top-1/2 left-1/2 z-(--ds-layer-overlay) grid w-full -translate-x-1/2 -translate-y-1/2 bg-popover text-sm text-popover-foreground border border-foreground/10 outline-none",
             typeof className === "function" ? className(state) : className
           )
         }
@@ -77,7 +79,7 @@ function DialogContent({
             }
           >
             <XIcon />
-            <span className="sr-only">Close</span>
+            <span className="sr-only">{closeLabel}</span>
           </DialogPrimitive.Close>
         )}
       </DialogPrimitive.Popup>
@@ -107,7 +109,7 @@ function DialogFooter({
     <div
       data-slot="dialog-footer"
       className={cn(
-        "flex flex-col-reverse rounded-b-xl sm:flex-row sm:justify-end",
+        "flex flex-col-reverse rounded-b-[var(--_dialog-radius)] sm:flex-row sm:justify-end",
         className
       )}
       {...props}

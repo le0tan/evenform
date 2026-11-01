@@ -1,7 +1,7 @@
 @layer components {
 /* Composition uses semantic tokens; these classes are reusable in real apps. */
 .app-shell-body { flex: 1; min-width: 0; }
-.app-shell-header { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; justify-content: space-between; gap: var(--ds-toolbar-gap); height: var(--ds-header-height); padding-inline: var(--ds-page-padding-x); border-bottom: var(--ds-border-width) solid var(--border); background: var(--background); }
+.app-shell-header { position: sticky; top: 0; z-index: var(--ds-layer-sticky); display: flex; align-items: center; justify-content: space-between; gap: var(--ds-toolbar-gap); height: var(--ds-header-height); padding-inline: var(--ds-page-padding-x); border-bottom: var(--ds-border-width) solid var(--border); background: var(--background); }
 .app-shell-workspace { display: flex; align-items: flex-start; }
 .app-shell-main { flex: 1; min-width: 0; padding: var(--ds-page-padding-y) var(--ds-page-padding-x); outline: none; }
 .page-content { display: flex; flex-direction: column; gap: var(--ds-section-gap); max-width: var(--ds-content-max-width); margin-inline: auto; }
@@ -45,7 +45,7 @@
 .data-list-footer { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ds-toolbar-gap); justify-content: space-between; color: var(--muted-foreground); font-size: var(--ds-text-caption); }
 .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--ds-space-3); min-height: 220px; text-align: center; color: var(--muted-foreground); padding: var(--ds-card-padding); }
 .empty-state h3 { color: var(--foreground); font-weight: var(--ds-weight-medium); }
-.skip-link { position: fixed; top: var(--ds-space-3); left: var(--ds-space-3); z-index: 100; transform: translateY(-200%); padding: var(--ds-space-3); background: var(--background); color: var(--foreground); border: 1px solid var(--border); border-radius: var(--radius); }
+.skip-link { position: fixed; top: var(--ds-space-3); left: var(--ds-space-3); z-index: var(--ds-layer-top); transform: translateY(-200%); padding: var(--ds-space-3); background: var(--background); color: var(--foreground); border: 1px solid var(--border); border-radius: var(--radius); }
 .skip-link:focus { transform: translateY(0); }
 @media (max-width: 900px) {
   .settings-layout { grid-template-columns: minmax(0, 1fr); }

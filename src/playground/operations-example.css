@@ -9,8 +9,8 @@
     --op-tint: 9%;
     --op-selection-tint: 14%;
     --op-tone: var(--op-intake);
-    /* Local, measured status foreground for translucent badges over tinted surfaces. */
-    --destructive: color-mix(in oklab, var(--ds-red-600) 78%, var(--ds-neutral-950));
+    /* Badges sit on translucent tinted surfaces; use the shared strong destructive text. */
+    --destructive: var(--ds-destructive-strong);
     display: flex; flex-direction: column; gap: var(--ds-panel-gap); min-width: 0;
     padding: var(--ds-card-padding); background: var(--muted); border-radius: var(--radius-xl);
     overflow-anchor: none;
@@ -22,7 +22,6 @@
     --op-context: var(--ds-amber-400);
     --op-tint: 10%;
     --op-selection-tint: 16%;
-    --destructive: color-mix(in oklab, var(--ds-red-400) 60%, var(--ds-neutral-0));
   }
   .operations-example [data-category] {
     --op-tone: var(--op-intake);

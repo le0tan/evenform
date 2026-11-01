@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { AlignCenter, AlignLeft, AlignRight, Check, ChevronDown, Copy, Search, Settings2 } from "lucide-react"
-import { PageSection, FormField } from "@/components/patterns/layouts"
+import { PageSection, LabeledField } from "@/components/patterns/layouts"
 import { StatusMessage } from "@/components/patterns/status-message"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -40,31 +40,31 @@ export function ComponentCatalog() {
     <PageSection title="Input & selection">
       <div className="catalog-grid">
         <div className="catalog-example">
-          <div role="group" aria-label="Combobox example" id="example-combobox" className="showcase-example"><FormField id="catalog-team" label="Team">
+          <div role="group" aria-label="Combobox example" id="example-combobox" className="showcase-example"><LabeledField id="catalog-team" label="Team">
             <Combobox items={teams} value={team} onValueChange={setTeam}>
               <ComboboxInputGroup><ComboboxInput id="catalog-team" /><ComboboxTrigger aria-label="Show teams" /></ComboboxInputGroup>
               <ComboboxContent><ComboboxEmpty>No teams found.</ComboboxEmpty><ComboboxList>{(item: string) => <ComboboxItem key={item} value={item}>{item}</ComboboxItem>}</ComboboxList></ComboboxContent>
             </Combobox>
-          </FormField></div>
-          <FormField id="catalog-reviewers" label="Reviewers" description="Select one or more reviewers.">
+          </LabeledField></div>
+          <LabeledField id="catalog-reviewers" label="Reviewers" description="Select one or more reviewers.">
             <Combobox multiple items={people} value={reviewers} onValueChange={setReviewers}>
               <ComboboxChips>
                 <ComboboxValue>{(values: string[]) => <>{values.map(value => <ComboboxChip key={value}>{value}<ComboboxChipRemove aria-label={`Remove ${value}`} /></ComboboxChip>)}<ComboboxInput id="catalog-reviewers" placeholder="Add reviewer…" aria-describedby="catalog-reviewers-description" /></>}</ComboboxValue>
               </ComboboxChips>
               <ComboboxContent><ComboboxEmpty>No people found.</ComboboxEmpty><ComboboxList>{(item: string) => <ComboboxItem key={item} value={item}>{item}</ComboboxItem>}</ComboboxList></ComboboxContent>
             </Combobox>
-          </FormField>
-          <div role="group" aria-label="Input group example" id="example-input-group" className="showcase-example"><FormField id="catalog-search" label="Input group" >
+          </LabeledField>
+          <div role="group" aria-label="Input group example" id="example-input-group" className="showcase-example"><LabeledField id="catalog-search" label="Input group" >
             <InputGroup><InputGroupAddon><Search size={16} aria-hidden="true" /></InputGroupAddon><InputGroupInput id="catalog-search" placeholder="Search projects…" /><InputGroupAddon align="end"><Kbd>⌘ K</Kbd></InputGroupAddon></InputGroup>
-          </FormField></div>
+          </LabeledField></div>
         </div>
         <div className="catalog-example">
           <fieldset className="catalog-fieldset"><legend>Visibility</legend><div role="group" aria-label="Radio group example" id="example-radio-group" className="showcase-example"><RadioGroup value={visibility} onValueChange={setVisibility} aria-label="Project visibility"><label className="catalog-choice"><RadioGroupItem value="team" /><span>Team only<small>Everyone in your workspace</small></span></label><label className="catalog-choice"><RadioGroupItem value="invited" /><span>Invited people<small>Only people you add</small></span></label><label className="catalog-choice"><RadioGroupItem value="public" disabled /><span>Public<small>Unavailable on this plan</small></span></label></RadioGroup></div></fieldset>
-          <div role="group" aria-label="Number field example" id="example-number-field" className="showcase-example"><FormField id="catalog-seats" label="Seats" description="1–50 seats.">
+          <div role="group" aria-label="Number field example" id="example-number-field" className="showcase-example"><LabeledField id="catalog-seats" label="Seats" description="1–50 seats.">
             <NumberField value={seats} onValueChange={setSeats} min={1} max={50}>
               <NumberFieldGroup><NumberFieldDecrement aria-label="Remove one seat" /><NumberFieldInput id="catalog-seats" aria-describedby="catalog-seats-description" /><NumberFieldIncrement aria-label="Add one seat" /></NumberFieldGroup>
             </NumberField>
-          </FormField></div>
+          </LabeledField></div>
           <div className="catalog-range"><span id="catalog-range-label" className="catalog-label">Capacity range <output>{range[0]}–{range[1]}%</output></span><div role="group" aria-label="Slider example" id="example-slider" className="showcase-example"><Slider value={range} onValueChange={setRange} min={0} max={100} step={5} aria-labelledby="catalog-range-label" getAriaLabel={(index) => index === 0 ? "Minimum capacity" : "Maximum capacity"} getAriaValueText={(value) => `${value}%`} /></div></div>
         </div>
       </div>

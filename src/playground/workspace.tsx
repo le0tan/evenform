@@ -13,7 +13,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Checkbox } from "@/components/ui/checkbox"
 import { SortableList } from "@/components/patterns/sortable-list"
 import { DescriptionItem, DescriptionList } from "@/components/patterns/description-list"
-import { DataListLayout, FormField, PageHeader, PageSection } from "@/components/patterns/layouts"
+import { DataListLayout, LabeledField, PageHeader, PageSection } from "@/components/patterns/layouts"
 
 type Project = { name: string; description: string; status: string; lead: string; due: string; progress: number }
 const initialProjects: Project[] = [
@@ -75,7 +75,7 @@ export function Workspace() {
       <TabsContent value="activity"><PageSection title="Workspace activity"><Activity /></PageSection></TabsContent>
     </Tabs>
     {notice && <p role="status" className="inline-notice"><Check size={15} />{notice}<button onClick={() => setNotice("")}>Dismiss</button></p>}
-    <Dialog open={createOpen} onOpenChange={setCreateOpen}><DialogContent><DialogHeader><DialogTitle>Create a project</DialogTitle><DialogDescription>Saved in this preview.</DialogDescription></DialogHeader><form className="form-stack" onSubmit={createProject}><FormField id="project-name" label="Project name"><Input id="project-name" name="name" placeholder="e.g. Customer portal" required maxLength={80} /></FormField><FormField id="project-description" label="Description"><Textarea id="project-description" name="description" placeholder="What are you working toward?" maxLength={240} /></FormField><DialogFooter><Button variant="outline" type="button" onClick={() => setCreateOpen(false)}>Cancel</Button><Button type="submit"><Plus />Create project</Button></DialogFooter></form></DialogContent></Dialog>
+    <Dialog open={createOpen} onOpenChange={setCreateOpen}><DialogContent><DialogHeader><DialogTitle>Create a project</DialogTitle><DialogDescription>Saved in this preview.</DialogDescription></DialogHeader><form className="form-stack" onSubmit={createProject}><LabeledField id="project-name" label="Project name"><Input id="project-name" name="name" placeholder="e.g. Customer portal" required maxLength={80} /></LabeledField><LabeledField id="project-description" label="Description"><Textarea id="project-description" name="description" placeholder="What are you working toward?" maxLength={240} /></LabeledField><DialogFooter><Button variant="outline" type="button" onClick={() => setCreateOpen(false)}>Cancel</Button><Button type="submit"><Plus />Create project</Button></DialogFooter></form></DialogContent></Dialog>
     <Sheet open={Boolean(selected)} onOpenChange={(open) => { if (!open) setSelected(null) }}><SheetContent><SheetHeader><SheetTitle>{selected?.name}</SheetTitle><SheetDescription>{selected?.description}</SheetDescription></SheetHeader>{selected && <SheetBody className="project-details"><Status value={selected.status} /><DescriptionList aria-label="Project details"><DescriptionItem label="Project lead">{selected.lead}</DescriptionItem><DescriptionItem label="Due date">{selected.due}</DescriptionItem><DescriptionItem label="Progress">{selected.progress}% complete</DescriptionItem></DescriptionList></SheetBody>}</SheetContent></Sheet>
   </>
 }

@@ -41,7 +41,7 @@
   .evenform-blockquote > :last-child { margin-block-end: 0; }
   .evenform-blockquote-attribution { margin-block-start: var(--ds-form-field-gap); font-size: var(--ds-text-caption); color: var(--muted-foreground); }
   .evenform-inline-code { border-radius: var(--ds-inline-code-radius, var(--ds-space-1)); background: var(--muted); color: var(--foreground); padding: .125em .3em; font-family: var(--ds-font-mono); font-size: .9em; }
-  .evenform-affix { position: sticky; z-index: var(--ds-affix-z-index, 10); }
+  .evenform-affix { position: sticky; z-index: var(--ds-affix-z-index, var(--ds-layer-raised)); }
   .evenform-affix[data-edge=top] { top: var(--ds-affix-offset, 0px); }
   .evenform-affix[data-edge=bottom] { bottom: var(--ds-affix-offset, 0px); }
   [data-slot=back-to-top][hidden] { display: none; }

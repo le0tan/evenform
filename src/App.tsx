@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useState } from "react"
 import { ChevronRight, Moon, SlidersHorizontal, Search, Sun } from "lucide-react"
-import { AppShell } from "@/components/patterns/layouts"
+import { AppShell } from "@/components/patterns/app-shell"
 import { Button } from "@/components/ui/button"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import { Sheet, SheetBody, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet"

@@ -29,6 +29,26 @@ jobs:
       - run: npm ci
       - run: npm run typecheck
       - run: npm run lint
-      - run: npm run verify:navigation
+      - run: npm run verify:static
       - run: npm run build
       - run: npm run build:starter
+
+  browser:
+    name: Browser quality
+    runs-on: ubuntu-latest
+    env:
+      EVENFORM_URL: http://127.0.0.1:5173
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run generate:cn
+      - run: npx vite --host 127.0.0.1 --port 5173 --strictPort &
+      - run: for i in $(seq 60); do curl -fs "$EVENFORM_URL" >/dev/null && exit 0; sleep 1; done; exit 1
+      - run: npm run verify:quality

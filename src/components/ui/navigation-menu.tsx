@@ -26,7 +26,7 @@ function NavigationMenuViewport({ className, ...props }: NavigationMenuPrimitive
 
 type NavigationMenuOverlayProps = NavigationMenuPrimitive.Popup.Props & Pick<NavigationMenuPrimitive.Positioner.Props, "side" | "align" | "sideOffset" | "alignOffset">
 function NavigationMenuOverlay({side = "bottom", sideOffset = 8, align = "start", alignOffset = 0, children, ...props}: NavigationMenuOverlayProps) {
- return <NavigationMenuPortal><NavigationMenuPositioner side={side} sideOffset={sideOffset} align={align} alignOffset={alignOffset} className="isolate z-50"><NavigationMenuPopup {...props}>{children ?? <NavigationMenuViewport />}</NavigationMenuPopup></NavigationMenuPositioner></NavigationMenuPortal>
+ return <NavigationMenuPortal><NavigationMenuPositioner side={side} sideOffset={sideOffset} align={align} alignOffset={alignOffset} className="isolate z-(--ds-layer-overlay)"><NavigationMenuPopup {...props}>{children ?? <NavigationMenuViewport />}</NavigationMenuPopup></NavigationMenuPositioner></NavigationMenuPortal>
 }
 export { NavigationMenu, NavigationMenuItem, NavigationMenuIcon, NavigationMenuList, NavigationMenuTrigger, NavigationMenuContent, NavigationMenuLink, NavigationMenuOverlay, NavigationMenuPopup, NavigationMenuViewport, NavigationMenuPortal, NavigationMenuPositioner }
 export type { NavigationMenuOverlayProps }

@@ -39,7 +39,7 @@ Tabs 的选中标记表达状态，整条轨道是否需要另行判断。Table 
 
 ## 唯一参数来源与三层结构
 
-`src/styles/tokens.css` 是设计参数的 CSS 唯一来源，没有需要人工同步的 JSON / TS token 副本。
+设计参数只在 CSS 中定义，没有需要人工同步的 JSON / TS token 副本：Primitive 与 Semantic 值在 `src/styles/token-values.css`（纯自定义属性，也是仅变量入口 `src/evenform-tokens.css` 的来源），`@theme` 桥接与 Component 层规则在 `src/styles/tokens.css`。
 
 1. **Primitive**：`--ds-space-*`、`--ds-neutral-*`、`--ds-font-size-base`、字体族、字重、行高、基础圆角、边界、浮层阴影和动效。间距基于 4px。图标和分割线等固定细节可以继续使用官方 utility。
 2. **Semantic**：`--ds-page-padding-x/y`、`--ds-section-gap`、`--ds-card-padding`、`--ds-control-height` 等有用途的参数。本 Starter 的密度预设集中覆盖这一层，便于协调组件。组件有不同密度需求时可通过 Component 层适配，但应继续响应同一个预设，避免分散维护互相脱节的尺度。颜色在 `src/index.css` 保留官方 Light / Dark 结构，值引用 primitive palette。
@@ -53,7 +53,7 @@ Component 层在组件所在元素解析变量，因此也支持局部 override�
 
 主题色、Elevation、控件尺寸与 Appearance lab 已上线，使用说明见 [Appearance](docs/appearance.md)。默认 Neutral / Soft / Compact / Auto；mode 默认 Light，由 ThemeProvider 独立管理。`data-palette` 选择 Neutral / Indigo / Teal / Rose / Custom，`data-elevation` 选择 Flat / Soft / Layered，`data-control-size` 选择 Auto / Small / Medium / Large。密度与控件尺寸独立，显式组件覆盖继续优先。
 
-Appearance lab 的 General / Tokens / Export 与全局 Design tokens 面板共享状态、编辑器和 CSS 导出。预设值分别由 `src/styles/appearance.css`、`control-sizing.css` 和 `tokens.css` 管理；自定义颜色由用户种子计算 Light/Dark 角色，不维护 TS 预设副本。颜色检查范围与接入要求见使用指南。
+Appearance lab 的 General / Tokens / Export 与全局 Design tokens 面板共享状态、编辑器和 CSS 导出。预设值分别由 `src/styles/appearance.css`、`control-sizing.css` 和 `token-values.css` 管理；自定义颜色由用户种子计算 Light/Dark 角色，不维护 TS 预设副本。颜色检查范围与接入要求见使用指南。
 
 ## Motion
 
@@ -84,6 +84,14 @@ Appearance lab 的 General / Tokens / Export 与全局 Design tokens 面板共�
 | 基础字号 / 圆角 | `--ds-font-size-base` / `--ds-radius-base` |
 | 正文 / 标签 / 辅助 / 页面标题字号 | `--ds-text-body/label/caption/page-title` |
 | 正文 / 标题字体 | `--ds-font-body` / `--ds-font-heading` |
+| 控件 / 表面圆角 | `--ds-radius-control` / `--ds-radius-surface`（都基于 `--radius`） |
+| 粗指针最小点击区域 | `--ds-touch-target-min` |
+| 页面级层级 | `--ds-layer-raised/sticky/overlay/toast/top`；组件内部 0–2 的局部层级保持局部 |
+| 独立表达状态的控件轮廓（Checkbox / Radio / Switch） | `--ds-control-border`（对背景 ≥ 3:1） |
+| Destructive 着色面 / 着色面上的文字 | `--ds-destructive-surface` / `--ds-destructive-strong` |
+| 选中/高亮 accent 面上的辅助文字 | `--ds-accent-muted-foreground`；自定义选中面用 `data-ds-surface="accent"` 接入 |
+
+Table 行高由 `--ds-control-height` 派生，随密度与控件尺寸一起变化。
 
 ## 调整全局样式
 
@@ -273,9 +281,13 @@ Sheet 正文优先组合 `SheetBody`，与 Header / Footer 使用同一 inset，
 
 完整目录、导入和示例见 [components.md](docs/components.md)，参考目录逐项映射与能力边界见 [reference-audit.md](docs/reference-audit.md)，依赖和完整 CSS 清单见 [dependencies.md](docs/dependencies.md)。本次累计扩展不新增全局 Token；VirtualList 的数据身份/完整内容策略、InputTag 的提交数据、PeriodPicker 的周期序列化、DataTable 的树行/列状态，以及 ResizeBox/可编辑文本的业务保存都通过当前组件 API 交给应用。控件专属几何在 components 层局部回退到已有语义，CSS 仍是参数唯一来源。新增交互继续组合 Base UI，保留受控/非受控状态、render、ref、键盘和 ARIA 契约；菜单命令、远程查询、过滤、选择、分页数据和提交均由业务持有。`AlertDialogAction` 是同步 Close 组合；异步任务用 controlled Root + 普通 Button，成功后再关闭。
 
+互斥的设置项（主题、密度、控件尺寸等）使用单选语义：库组件中用 RadioGroup，或原生 radio 组成的选项卡片；不要用 Tabs（它对应内容面板）或 `aria-pressed` 按钮表达互斥设置。同一面板内同类单选保持同一种视觉；只有选项需要预览（颜色、阴影）时才使用带预览的卡片。
+
+内置可访问名称与默认文案提供英文默认值，并通过 props 覆盖：单个文案用 `xxxLabel`（如 Dialog/Sheet 的 `closeLabel`、Pagination 的 `previousLabel/nextLabel/moreLabel/pageLabel`、Sidebar 的 `label`、AppShell 的 `skipLinkLabel`、SettingsLayout 的 `navigationLabel`、EvenformChart 的 `loadingLabel/errorLabel/retryLabel`），文案较多时用 `labels` 对象（RichTextEditor、ImagePreview）。非英文产品同时设置 HTML `lang`。
+
 新增的 EmptyState、StatusMessage、Stat、Timeline、Steps、FilterBar、DetailLayout、AuthLayout、FormSection 和 SelectionBar 不导入 Playground。StatusMessage 默认没有 live role；异步反馈按需传 `role="status"` / `alert`。Steps 是静态有序进度，按状态设置 aria-current 与文字说明，不伪装成可点击向导。FormSection 保留原生 fieldset/legend 与 disabled。容器响应式处理详情辅栏、登录分栏、表单列数和步骤方向，不要求采用 AppShell。
 
-共享状态扩充限定为 `--ds-info` / `--ds-info-surface`、`--ds-warning` / `--ds-warning-surface` 四项。深色只更换前景原色，surface 从相同状态语义和背景以 Oklab 混合；不为每个 Badge、提示条或步骤单独定义配色。既有 success 也使用同样的混合方式，避免中性背景在 Oklch 中参与 hue 插值时偏色。其余新控件复用现有空间、文字、control、input、select、overlay 参数。浮层可读宽度、图标/滑块几何与结构断点保持局部；需要稳定局部覆盖的组件参数在 CSS 中回退到现有语义，不维护 TS 数值副本。
+共享状态扩充为 `--ds-info` / `--ds-info-surface`、`--ds-warning` / `--ds-warning-surface`，以及 `--ds-destructive-surface` / `--ds-destructive-strong`（半透明面与其上 ≥ 4.5:1 的文字，Destructive Button、Badge、错误 StatusMessage 与着色行上的徽标共用）。深色只更换前景原色，surface 从相同状态语义和背景以 Oklab 混合；不为每个 Badge、提示条或步骤单独定义配色。既有 success 也使用同样的混合方式，避免中性背景在 Oklch 中参与 hue 插值时偏色。其余新控件复用现有空间、文字、control、input、select、overlay 参数。浮层可读宽度、图标/滑块几何与结构断点保持局部；需要稳定局部覆盖的组件参数在 CSS 中回退到现有语义，不维护 TS 数值副本。
 
 Button 的默认圆角与尺寸一起放在 components 层，ButtonGroup 的连接边角通过稳定的 data-ds-component 标记生效；调用方的 rounded-* utility 仍能有意覆盖。InputGroup 让内层输入去除重复轮廓，并从输入高度减去外层边框，保证单独输入与组合控件遵循同一高度；禁用附加操作不会把可用输入误显为禁用。
 

@@ -13,7 +13,7 @@ function AlertDialogContent({
 }: AlertDialogPrimitive.Popup.Props) {
   return (
     <AlertDialogPrimitive.Portal>
-      <AlertDialogPrimitive.Backdrop data-slot="alert-dialog-overlay" className="fixed inset-0 isolate z-50" />
+      <AlertDialogPrimitive.Backdrop data-slot="alert-dialog-overlay" className="fixed inset-0 isolate z-(--ds-layer-overlay)" />
       <AlertDialogPrimitive.Popup
         data-slot="alert-dialog-content"
         className={(state) =>
