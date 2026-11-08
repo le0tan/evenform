@@ -263,7 +263,7 @@ defects, adoption tooling, and the host not knowing what upstream already ships.
 | Adding Select, Switch, Kbd and DropdownMenu later meant copying files and editing manifest hashes by hand, because a new export replaced the manifest. | `adopt-source --add` merges into the recorded entries, styles, `--into` and compatibility mode. | It refuses when adopted files differ from the checkout; add from the recorded revision or upgrade first. |
 | The host rebuilt about fifteen things Evenform already had: OptionSelect, FilterBar/FilterChip, DataTable sort headers, PaginationControls, Countdown, Timeline, Prose, CodeBlock, ImagePreview, Collapsible, ExpandableText, Badge/Tag (seven local chip styles) and the starter header with its theme menu. | Every export writes `evenform-catalog.md` (upstream modules by task, adopted vs available, `--add` command); getting-started gives an agent-instruction snippet that points at it. | The catalog is generated from `docs/components.md`; it does not judge fit for a task. |
 | Six `!important` widths on Sheet/Dialog, although `--ds-sheet-max-width` / `--ds-dialog-max-width` already work without them. | Documented next to the Sheet/Dialog guidance in DESIGN.md and in the host snippet. | No new `size` prop. |
-| A FormSection used as an independent panel needed a floated legend to keep the fieldset border from cutting through it. | `FormSection surface`. | Card-like boundary only; no new spacing scale. |
+| A FormSection used as an independent panel needed a floated legend to keep the fieldset border from cutting through it. | `FormSection surface`. Without a description the title sits `--ds-card-gap` above the fields, as in Card; with one, the description keeps `--ds-panel-gap`. | Card-like boundary only; no new spacing scale. |
 | A horizontal KPI band needed hand-written separators, padding resets and media queries for the first stat of each row. | `StatGroup divided`. | Existing column/value-size tokens still apply. |
 | Small text used literal 11/12/13px and ordered outcome colors used ad hoc `color-mix` values. | DESIGN.md maps small text to `--ds-text-label` / `--ds-text-caption`; new `--ds-*-subtle` and `--ds-neutral-mark(-subtle)` give secondary non-text marks. | Marks always need a text label; they do not replace chart category colors. |
 
@@ -276,5 +276,6 @@ product needs the same contract.
 `npm run verify:adoption` covers `--add` and the catalog;
 `node scripts/verify-adoption-feedback.mjs` (with the dev server running) checks
 nested dismissal from a Sheet and a Dialog, the icon CopyButton hit area, overlay
-width tokens, FormSection surface and divided StatGroup in light/dark, both
-densities and a 390px viewport.
+width tokens, FormSection surface (including the title-to-fields gap with and
+without a description) and divided StatGroup in light/dark, both densities and a
+390px viewport.
