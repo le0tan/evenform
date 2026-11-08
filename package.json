@@ -46,7 +46,8 @@
     "verify:library-pages": "node scripts/verify-library-pages.mjs",
     "verify:motion-review": "node scripts/verify-motion-review.mjs",
     "verify:overlay-quality": "node scripts/verify-overlay-quality.mjs",
-    "verify:pattern-quality": "node scripts/verify-pattern-quality.mjs"
+    "verify:pattern-quality": "node scripts/verify-pattern-quality.mjs",
+    "verify:adoption-feedback": "node scripts/verify-adoption-feedback.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",

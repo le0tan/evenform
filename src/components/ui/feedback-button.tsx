@@ -46,6 +46,9 @@ export function FeedbackButton({
     success: <Check />,
     error: <CircleAlert />,
   }
+  // Icon sizes have no room for text: faces show only their icon and keep the
+  // label for assistive technology, so it never spills over neighbouring controls.
+  const iconOnly = String(props.size ?? "").startsWith("icon")
   const text =
     statusMessage ?? (typeof labels[state] === "string" ? labels[state] : "")
   return (
@@ -84,7 +87,11 @@ export function FeedbackButton({
               aria-hidden={state !== face || undefined}
             >
               {icons[face]}
-              {labels[face]}
+              {iconOnly && labels[face] != null ? (
+                <span className="sr-only">{labels[face]}</span>
+              ) : (
+                labels[face]
+              )}
             </span>
           ))}
         </span>

@@ -141,6 +141,15 @@
   --ds-info-surface: color-mix(in oklab, var(--ds-info), var(--background) 94%);
   --ds-warning: var(--ds-amber-600);
   --ds-warning-surface: color-mix(in oklab, var(--ds-warning), var(--background) 94%);
+  /* Secondary non-text marks of the same status (a lighter bar segment or
+     swatch next to the primary one). Always pair with a text label. */
+  --ds-success-subtle: color-mix(in oklab, var(--ds-success), var(--background) 45%);
+  --ds-info-subtle: color-mix(in oklab, var(--ds-info), var(--background) 45%);
+  --ds-warning-subtle: color-mix(in oklab, var(--ds-warning), var(--background) 45%);
+  --ds-destructive-subtle: color-mix(in oklab, var(--destructive), var(--background) 45%);
+  /* Neutral marks for not-yet-finished or withdrawn items in the same chart. */
+  --ds-neutral-mark: color-mix(in oklab, var(--muted-foreground), var(--background) 35%);
+  --ds-neutral-mark-subtle: color-mix(in oklab, var(--muted-foreground), var(--background) 75%);
   /* Translucent so destructive badges and actions also sit on tinted rows. */
   --ds-destructive-surface: color-mix(in oklab, var(--destructive) 10%, transparent);
   /* Destructive text on its tinted surface or hover keeps 4.5:1. */

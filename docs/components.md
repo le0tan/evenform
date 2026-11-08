@@ -96,7 +96,7 @@ Select 的触发器限制在可用容器内，长纯文本选中值单行省略�
 | `typography` | Title/as/size；Text/as/size/tone/weight；Prose/as/measure；Blockquote/InlineCode | 标题语义与大小独立；原生/ref props 随元素；Prose 管理直属内容（包括 Text/Blockquote）的段间距，直属 span 按内容块排版；不解析或净化 HTML/Markdown |
 | `editable-text` | EditableText/label/value/defaultValue/onValueChange/onSave/onCancel/validate；multiline/disabled/readOnly/name/renderValue/inputProps/textareaProps；EditableTextProps | 编辑草稿与提交值分离；Enter 或多行 Ctrl/Command+Enter 保存，Escape 取消；onSave 支持 Promise，失败保留草稿并显示错误；保存成功再提交，焦点返回编辑按钮；文案/instructions 可配 |
 | `expandable-text` | ExpandableText/children/lines/expanded/defaultExpanded/onExpandedChange/expandLabel/collapseLabel/textClassName；ExpandableTextProps | 纯文本多行截断与展开；ResizeObserver/字体加载后测量真实溢出，只在需要时提供带 aria-expanded 的按钮；不解析 HTML、不替代 RichTextEditor |
-| `code-block`、`copy-button` | CodeBlock/code/language/filename/caption/copyable/codeProps；CopyButton/value/onCopy/onCopyError | 代码按文本渲染与滚动，无内置语法高亮；复制支持异步字符串和成功/失败反馈，仍依赖浏览器安全上下文/许可 |
+| `code-block`、`copy-button` | CodeBlock/code/language/filename/caption/copyable/codeProps；CopyButton/value/onCopy/onCopyError | 代码按文本渲染与滚动，无内置语法高亮；复制支持异步字符串和成功/失败反馈，仍依赖浏览器安全上下文/许可；icon 尺寸只显示状态图标，文案保留给可访问名称和 live region |
 | `card` | Card/Header/Title/Description/Action/Content/Footer；Card/size | 独立内容/操作边界；不自动给每节加 Card；尺寸与 inset 契约见 DESIGN |
 | `badge`、`tag` | Badge/badgeVariants；Tag/onRemove/removeLabel/disabled | 状态配文字；Tag 可移除；外观不推导状态机 |
 | `badge-group`、`indicator` | BadgeGroup/badge/action/children；Indicator/label/count/max/showZero/indicator | 组合说明/动作与未读点/数量；Indicator 名称必填；未读持久化归应用 |
@@ -139,12 +139,12 @@ DataTable 的 columns/data 引用应稳定；跨服务端分页选择时传 getR
 | `detail-layout`、`description-list` | DetailLayout/header/aside/footer；DescriptionList/DescriptionItem | 单条记录详情；dl/dt/dd、columns=1/2、divided，按容器宽度换行；二维对照用 Table |
 | `split-layout` | SplitLayout/list/activePane/listLabel/detailLabel | 列表/详情双栏，窄容器仅显示 activePane；两栏保持挂载；选择、返回、路由和切换焦点归应用 |
 | `dashboard-layout` | DashboardLayout/Grid/Item | 局部 --ds-dashboard-columns / --ds-dashboard-span 配宽布局，窄容器按 DOM 顺序堆叠；不接管数据/拖动 |
-| `form-layout`、`form-section` | FormLayout/header/footer；FormLayoutSection/title/description；FormSection/title/description/columns | FormLayout 是 form，Section 为 fieldset/legend；宽容器侧标签/两列；避免嵌套 form，保留原生 disabled；提交/验证归应用 |
+| `form-layout`、`form-section` | FormLayout/header/footer；FormLayoutSection/title/description；FormSection/title/description/columns/surface | FormLayout 是 form，Section 为 fieldset/legend；宽容器侧标签/两列；避免嵌套 form，保留原生 disabled；提交/验证归应用；`surface` 给独立面板卡片边界，legend 留在内边距内 |
 | `auth-layout` | AuthLayout/brand/aside/footer | 聚焦/分栏账号页面，不生成 main；应用提供 landmark、认证、会话和错误 |
 | `filter-bar`、`selection-bar` | FilterBar/search/filters/actions；FilterChip/removeLabel/onRemove；SelectionBar/selectedCount/onClear | 条件展示与批量操作，selectedCount<=0 不渲染；应用明确当前页/跨页/全部筛选结果范围 |
 | `empty-state`、`result` | EmptyState/title/description/icon/actions/headingLevel；Result/status | 空内容与 success/error/forbidden/not-found 结果；产品提供准确文案/恢复动作，不自动重定向/重试 |
 | `status-message`、`banner` | StatusMessage/tone/title/icon/actions；Banner/tone/icon/actions/onDismiss | 局部反馈/页面公告，默认无 live role；按需显式 role=status/alert；Banner 移除由应用控制 |
-| `stat` | StatGroup；Stat/label/value/change/help/actions | dl 展示数值；CSS `--ds-stat-group-columns` 配置分列、`--ds-stat-value-size` 配置数值字号；change.tone=beneficial/adverse/neutral；应用提供方向/比较周期和计算，不从正负号推断利好 |
+| `stat` | StatGroup/divided；Stat/label/value/change/help/actions | dl 展示数值；CSS `--ds-stat-group-columns` 配置分列、`--ds-stat-value-size` 配置数值字号；change.tone=beneficial/adverse/neutral；应用提供方向/比较周期和计算，不从正负号推断利好；`divided` 用行内分隔线代替间距，换行后每行首项不带分隔线 |
 | `timeline`、`steps` | Timeline/TimelineItem；Steps/Step | 有序事件/步骤进度；time 可用原生 time；Step 状态显式给出；不自动排序/推进流程 |
 | `step-form` | StepForm/StepFormStep；steps/currentStep/onStepChange/onComplete、busy/disabled、children render prop | 从 0 开始；发出 next/previous 请求，应用验证并修改状态；默认步骤变化后聚焦标题；不自动提交 |
 | `calendar-agenda` | CalendarAgenda、AgendaDay/date/actions/empty、AgendaEvent/title/time/meta/actions | 按日事件列表，分组/顺序/时区归应用；empty 指定时替代当天列表 |
