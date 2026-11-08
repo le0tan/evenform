@@ -51,6 +51,11 @@
   [data-slot='status-message-actions'] { margin-top: var(--ds-control-gap); justify-content: flex-start; }
 
   [data-slot='stat-group'] { display: grid; grid-template-columns: var(--ds-stat-group-columns, repeat(auto-fit, minmax(min(100%, var(--ds-stat-min-width, 12rem)), 1fr))); gap: var(--ds-panel-gap); min-width: 0; }
+  /* Every stat carries a leading separator; the group is shifted by one gap +
+     separator and clipped there, so the separator of each row's first stat is hidden. */
+  [data-slot='stat-group'][data-divided] { --_stat-divider: var(--ds-border-width); --_stat-gap: var(--ds-panel-gap); --_stat-shift: calc(var(--_stat-gap) + var(--_stat-divider)); column-gap: 0; margin-inline-start: calc(-1 * var(--_stat-shift)); clip-path: inset(calc(-1 * var(--ds-space-2)) calc(-1 * var(--ds-space-2)) calc(-1 * var(--ds-space-2)) var(--_stat-shift)); }
+  [data-slot='stat-group'][data-divided]:dir(rtl) { clip-path: inset(calc(-1 * var(--ds-space-2)) var(--_stat-shift) calc(-1 * var(--ds-space-2)) calc(-1 * var(--ds-space-2))); }
+  [data-slot='stat-group'][data-divided] > [data-slot='stat'] { padding-inline-start: var(--_stat-gap); border-inline-start: var(--_stat-divider) solid var(--border); }
   [data-slot='stat'] { display: flex; flex-direction: column; gap: var(--ds-form-field-gap); min-width: 0; overflow-wrap: anywhere; }
   [data-slot='stat'] dl { display: flex; flex-direction: column; gap: var(--ds-form-field-gap); margin: 0; }
   [data-slot='stat-label'] { font-size: var(--ds-text-label); color: var(--muted-foreground); }

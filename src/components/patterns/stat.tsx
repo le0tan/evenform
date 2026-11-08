@@ -1,8 +1,10 @@
 import { type ComponentProps, type ReactNode } from "react"
 import { cn } from "@/lib/utils"
 
-export function StatGroup({ className, ...props }: ComponentProps<"div">) {
-  return <div data-slot="stat-group" className={cn(className)} {...props} />
+/** `divided` draws a separator between stats on the same row instead of a gap,
+ * for a compact summary band inside one surface. Separators never start a row. */
+export function StatGroup({ divided = false, className, ...props }: ComponentProps<"div"> & { divided?: boolean }) {
+  return <div data-slot="stat-group" data-divided={divided ? "" : undefined} className={cn(className)} {...props} />
 }
 
 /** Change meaning is explicit: a lower number can be beneficial or adverse.

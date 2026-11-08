@@ -78,6 +78,34 @@ node scripts/adopt-source.mjs --to /path/to/host --into src/evenform \
 `src/` paths move under `src/evenform/`, `@/` imports become relative, and the host's
 own `cn` and components stay untouched; no `@/` alias is needed for Evenform files.
 
+To add modules later, pass `--add`. It reads the host's `evenform-adoption.json`,
+keeps the recorded entries, styles, `--into` folder and compatibility mode, and
+exports the union, so the manifest never loses earlier components and nothing is
+copied or recorded by hand:
+
+```bash
+node scripts/adopt-source.mjs --to /path/to/host --add \
+  --entry src/components/ui/option-select.tsx
+```
+
+Add from the revision recorded in the manifest. If adopted files differ from the
+current checkout, `--add` stops and asks for that revision or a full upgrade.
+
+Every export also writes `evenform-catalog.md`: each upstream component and
+pattern by task, marked as adopted (✓) or available (+), with the `--add`
+command. The host only contains the files it adopted, so this list is the place
+to look before writing a select, filter bar, sortable header, pagination,
+countdown, timeline, code block, prose or image preview by hand. Point the
+host's agent instructions at it, for example:
+
+```md
+- UI comes from Evenform (`evenform-catalog.md`). Before building a control,
+  overlay, list or layout, check the catalog and add the module with `--add`.
+- Do not edit adopted files; product styles go in a stylesheet imported last.
+- Size one Sheet/Dialog with `--ds-sheet-max-width` / `--ds-dialog-max-width`,
+  not `!important`; use `--ds-text-caption` / `--ds-text-label` for small text.
+```
+
 To use only Evenform's design values, import `src/evenform-tokens.css`. It defines
 the `--ds-*` primitives, semantics and density as custom properties and adds no
 selectors, Tailwind utilities or base styles; semantic values read the host's shadcn

@@ -248,3 +248,33 @@ now exercises these cases with synthetic data. The previous proportional bar's
 subpixel click overlay is removed from that example; EvenformChart's real-data
 proportional rendering contract remains unchanged. This follow-up adds no public
 ContributionStrip, topology API, palette shade or global severity adjustment.
+
+## Batch review workspace built from scratch
+
+A second consumer built a complete batch submission, progress and result-review
+application on a source-first adoption (React 19, Vite, TanStack Query). The
+adopted files never drifted from the manifest. The costs were two primitive
+defects, adoption tooling, and the host not knowing what upstream already ships.
+
+| Finding | Resolution | Boundary |
+| --- | --- | --- |
+| A Dialog opened from a Sheet or Dialog ignored presses outside it. Base UI draws no visible backdrop for a nested dialog and dismisses a modal only on its own (transparent) backdrop, which had no z-index and sat under the parent popup on the overlay layer. The consumer wrapped every nested dialog to force a visible backdrop. | The transparent modal backdrop is lifted to `--ds-layer-overlay` for Dialog, Sheet and AlertDialog portals. Outside press and Escape close only the nested dialog. | No visible backdrop is added for nested dialogs; that remains Base UI's choice. |
+| An icon-only CopyButton rendered its text status faces (label, copying, copied) inside a 28px button, so the text spilled over the neighbouring "open URL" action. | FeedbackButton icon sizes keep only the status icon visible; labels stay in the accessible name and the live region. | Text sizes are unchanged. |
+| Adding Select, Switch, Kbd and DropdownMenu later meant copying files and editing manifest hashes by hand, because a new export replaced the manifest. | `adopt-source --add` merges into the recorded entries, styles, `--into` and compatibility mode. | It refuses when adopted files differ from the checkout; add from the recorded revision or upgrade first. |
+| The host rebuilt about fifteen things Evenform already had: OptionSelect, FilterBar/FilterChip, DataTable sort headers, PaginationControls, Countdown, Timeline, Prose, CodeBlock, ImagePreview, Collapsible, ExpandableText, Badge/Tag (seven local chip styles) and the starter header with its theme menu. | Every export writes `evenform-catalog.md` (upstream modules by task, adopted vs available, `--add` command); getting-started gives an agent-instruction snippet that points at it. | The catalog is generated from `docs/components.md`; it does not judge fit for a task. |
+| Six `!important` widths on Sheet/Dialog, although `--ds-sheet-max-width` / `--ds-dialog-max-width` already work without them. | Documented next to the Sheet/Dialog guidance in DESIGN.md and in the host snippet. | No new `size` prop. |
+| A FormSection used as an independent panel needed a floated legend to keep the fieldset border from cutting through it. | `FormSection surface`. | Card-like boundary only; no new spacing scale. |
+| A horizontal KPI band needed hand-written separators, padding resets and media queries for the first stat of each row. | `StatGroup divided`. | Existing column/value-size tokens still apply. |
+| Small text used literal 11/12/13px and ordered outcome colors used ad hoc `color-mix` values. | DESIGN.md maps small text to `--ds-text-label` / `--ds-text-caption`; new `--ds-*-subtle` and `--ds-neutral-mark(-subtle)` give secondary non-text marks. | Marks always need a text label; they do not replace chart category colors. |
+
+Kept in the product, not promoted from a single consumer: a stacked outcome bar
+whose legend filters the table, entry rows that open detail dialogs, a truncated
+URL with open/copy actions, polling controls with a countdown ring, a JSON tree
+viewer, and a schema-agnostic structured-output renderer. Revisit when a second
+product needs the same contract.
+
+`npm run verify:adoption` covers `--add` and the catalog;
+`node scripts/verify-adoption-feedback.mjs` (with the dev server running) checks
+nested dismissal from a Sheet and a Dialog, the icon CopyButton hit area, overlay
+width tokens, FormSection surface and divided StatGroup in light/dark, both
+densities and a 390px viewport.

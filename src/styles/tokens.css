@@ -36,6 +36,12 @@
   --color-info-surface: var(--ds-info-surface);
   --color-warning: var(--ds-warning);
   --color-warning-surface: var(--ds-warning-surface);
+  --color-success-subtle: var(--ds-success-subtle);
+  --color-info-subtle: var(--ds-info-subtle);
+  --color-warning-subtle: var(--ds-warning-subtle);
+  --color-destructive-subtle: var(--ds-destructive-subtle);
+  --color-neutral-mark: var(--ds-neutral-mark);
+  --color-neutral-mark-subtle: var(--ds-neutral-mark-subtle);
   --color-destructive-surface: var(--ds-destructive-surface);
   --color-destructive-strong: var(--ds-destructive-strong);
 }
@@ -43,6 +49,11 @@
 /* Layer 3 · Component tokens. Kept on the component so scoped semantic
    overrides inherit correctly; public component tokens can override them. */
 @layer components {
+/* Base UI's invisible modal backdrop receives outside presses. A nested dialog
+   draws no visible overlay, so lift that backdrop to the overlay layer too;
+   otherwise the parent Sheet/Dialog (same layer, earlier in the DOM) covers it
+   and pressing outside the nested dialog does nothing. */
+:is([data-slot='dialog-portal'], [data-slot='sheet-portal'], [data-slot='alert-dialog-portal']) > [data-base-ui-inert] { z-index: var(--ds-layer-overlay); }
 [data-slot='card'] {
   flex-shrink: var(--ds-card-shrink, 0);
   border-radius: var(--ds-card-radius, var(--ds-radius-surface));

@@ -82,7 +82,8 @@ Appearance lab 的 General / Tokens / Export 与全局 Design tokens 面板共�
 | 浮层内容分组间距 | `--ds-overlay-gap` |
 | Sidebar item 高度 / 间距 | `--ds-sidebar-item-height` / `--ds-sidebar-item-gap` |
 | 基础字号 / 圆角 | `--ds-font-size-base` / `--ds-radius-base` |
-| 正文 / 标签 / 辅助 / 页面标题字号 | `--ds-text-body/label/caption/page-title` |
+| 正文 / 标签 / 辅助 / 页面标题字号 | `--ds-text-body/label/caption/page-title`；元信息、表头、图例等小字用 label（13px）或 caption（12px），不要散写 11–13px |
+| 同一状态的次级非文字标记 / 未完成或撤回项 | `--ds-success/info/warning/destructive-subtle` / `--ds-neutral-mark`、`--ds-neutral-mark-subtle`（必须配文字标签） |
 | 正文 / 标题字体 | `--ds-font-body` / `--ds-font-heading` |
 | 控件 / 表面圆角 | `--ds-radius-control` / `--ds-radius-surface`（都基于 `--radius`） |
 | 粗指针最小点击区域 | `--ds-touch-target-min` |
@@ -254,6 +255,8 @@ Accordion 正文默认继承内容色；内容是否为辅助说明由调用方�
 
 所有组件通过 `@/lib/utils` 合并类名。`lib/cn-tables.ts` 从 CSS `@theme` 自动生成；修改 theme scales 后重新生成，不手工维护一份字号表。基础接入可用 `src/core.css`，全库入口 `src/index.css` 复用它再补充扩展组件样式。
 
+单个 Sheet / Dialog 的宽度通过 `--ds-sheet-max-width` / `--ds-dialog-max-width` 设置（`style` 或产品 class 均可），仍受视口约束，不需要 `!important`。从 Sheet 或 Dialog 里打开的 Dialog 直接使用 `Dialog`：Base UI 不给嵌套弹窗绘制可见遮罩，但其透明 modal backdrop 已提升到 overlay 层，点击嵌套弹窗外只关闭它自己，Escape 同理，父级保持打开。
+
 Sheet 正文优先组合 `SheetBody`，与 Header / Footer 使用同一 inset，并负责内部滚动。全出血区域可用 `className="p-0"` 明确覆盖 Body；例如移动端 TokenPanel 自己管理开发工具内边距。Dialog / Sheet 的 Comfortable inset 为 32px，Compact 为 24px；SelectItem 同步调整高度和 padding。触摸目标、表格自然撑高和正文可读性优先于强制固定尺寸。
 
 ## 官方来源与升级
@@ -284,6 +287,10 @@ Sheet 正文优先组合 `SheetBody`，与 Header / Footer 使用同一 inset，
 互斥的设置项（主题、密度、控件尺寸等）使用单选语义：库组件中用 RadioGroup，或原生 radio 组成的选项卡片；不要用 Tabs（它对应内容面板）或 `aria-pressed` 按钮表达互斥设置。同一面板内同类单选保持同一种视觉；只有选项需要预览（颜色、阴影）时才使用带预览的卡片。
 
 内置可访问名称与默认文案提供英文默认值，并通过 props 覆盖：单个文案用 `xxxLabel`（如 Dialog/Sheet 的 `closeLabel`、Pagination 的 `previousLabel/nextLabel/moreLabel/pageLabel`、Sidebar 的 `label`、AppShell 的 `skipLinkLabel`、SettingsLayout 的 `navigationLabel`、EvenformChart 的 `loadingLabel/errorLabel/retryLabel`），文案较多时用 `labels` 对象（RichTextEditor、ImagePreview）。非英文产品同时设置 HTML `lang`。
+
+`FormSection surface` 用于需要独立身份的表单面板（卡片边界与 Card 一致，legend 在内边距内）；连续的同组字段保持默认无边界。`StatGroup divided` 用于一个表面里的紧凑摘要带：同行指标之间以分隔线代替间距，换行时每行首项不带线；仪表盘式独立指标卡继续用默认 StatGroup 或 Card。
+
+页面上没有区块应无限增长：长列表分页或在有上限的框内滚动，长文本截断（`ExpandableText`）或移入 Dialog / Sheet。
 
 新增的 EmptyState、StatusMessage、Stat、Timeline、Steps、FilterBar、DetailLayout、AuthLayout、FormSection 和 SelectionBar 不导入 Playground。StatusMessage 默认没有 live role；异步反馈按需传 `role="status"` / `alert`。Steps 是静态有序进度，按状态设置 aria-current 与文字说明，不伪装成可点击向导。FormSection 保留原生 fieldset/legend 与 disabled。容器响应式处理详情辅栏、登录分栏、表单列数和步骤方向，不要求采用 AppShell。
 
